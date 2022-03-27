@@ -1,0 +1,2 @@
+// silent
+export const silent = '';

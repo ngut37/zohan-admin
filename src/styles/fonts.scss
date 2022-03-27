@@ -1,0 +1,148 @@
+$raleway: Raleway, sans-serif;
+$noto_sans: Noto Sans, sans-serif;
+
+@font-face {
+  font-family: Raleway;
+  src: local('Raleway'),
+    url('../public/static/fonts/raleway/raleway-100-thin.ttf')
+      format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Raleway;
+  src: local('Raleway'),
+    url('../public/static/fonts/raleway/raleway-200-extra-light.ttf')
+      format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Raleway;
+  src: local('Raleway'),
+    url('../public/static/fonts/raleway/raleway-300-light.ttf')
+      format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Raleway;
+  src: local('Raleway'),
+    url('../public/static/fonts/raleway/raleway-400-regular.ttf')
+      format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Raleway;
+  src: local('Raleway'),
+    url('../public/static/fonts/raleway/raleway-500-medium.ttf')
+      format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Raleway;
+  src: local('Raleway'),
+    url('../public/static/fonts/raleway/raleway-600-semi-bold.ttf')
+      format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Raleway;
+  src: local('Raleway'),
+    url('../public/static/fonts/raleway/raleway-700-bold.ttf')
+      format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Raleway;
+  src: local('Raleway'),
+    url('../public/static/fonts/raleway/raleway-800-extra-bold.ttf')
+      format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Noto Sans;
+  src: local('Noto Sans'),
+    url('../public/static/fonts/noto-sans/noto-sans-100-thin.ttf')
+      format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Noto Sans;
+  src: local('Noto Sans'),
+    url('../public/static/fonts/noto-sans/noto-sans-200-extra-light.ttf')
+      format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Noto Sans;
+  src: local('Noto Sans'),
+    url('../public/static/fonts/noto-sans/noto-sans-300-light.ttf')
+      format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Noto Sans;
+  src: local('Noto Sans'),
+    url('../public/static/fonts/noto-sans/noto-sans-400-regular.ttf')
+      format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Noto Sans;
+  src: local('Noto Sans'),
+    url('../public/static/fonts/noto-sans/noto-sans-500-medium.ttf')
+      format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Noto Sans;
+  src: local('Noto Sans'),
+    url('../public/static/fonts/noto-sans/noto-sans-600-semi-bold.ttf')
+      format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Noto Sans;
+  src: local('Noto Sans'),
+    url('../public/static/fonts/noto-sans/noto-sans-700-bold.ttf')
+      format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: Noto Sans;
+  src: local('Noto Sans'),
+    url('../public/static/fonts/noto-sans/noto-sans-800-extra-bold.ttf')
+      format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}

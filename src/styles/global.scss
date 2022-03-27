@@ -1,0 +1,43 @@
+@use 'styles/fonts';
+@use 'styles/colors';
+@import 'styles/media';
+
+html {
+  font-family: fonts.$noto_sans;
+  color: colors.$white;
+}
+
+html,
+body {
+  position: relative;
+  height: 100%;
+  overscroll-behavior-y: contain;
+
+  @media print {
+    width: 1080px;
+    -webkit-print-color-adjust: exact;
+    -webkit-filter: opacity(1);
+  }
+}
+
+#__next {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-overflow-scroling: touch;
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+button {
+  font-family: fonts.$raleway;
+}
+
+a {
+  color: inherit;
+}

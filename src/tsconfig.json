@@ -1,0 +1,36 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@api/*": ["api/*"],
+      "@utils/*": ["utils/*"],
+      "@hooks/*": ["hooks/*"],
+      "@config*": ["config"],
+
+      // global components
+      "@atoms": ["atoms"],
+      "@molecules/*": ["molecules/*"],
+      "@organisms/*": ["organisms/*"],
+      "@templates/*": ["templates/*"],
+      "@modules/*": ["modules/*"],
+
+      "@hooks": ["hooks/*"],
+
+      "@messages": ["messages"],
+      "@types/*": ["types/*"],
+      "@styles": ["styles"],
+      "@styles/*": ["styles/*"]
+    },
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "rendererOptions": {
+            "sass": { "includePaths": ["./"] }
+          }
+        }
+      }
+    ]
+  }
+}

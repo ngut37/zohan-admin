@@ -50,7 +50,7 @@ export const LoginForm = () => {
     password: yup
       .string()
       .required(
-        messageToString({ id: m('input.password.error.required') }, intl)
+        messageToString({ id: m('input.password.error.required') }, intl),
       ),
   });
 
@@ -91,7 +91,7 @@ export const LoginForm = () => {
               autoComplete: 'email',
               placeholder: messageToString(
                 { id: m('input.email.placeholder') },
-                intl
+                intl,
               ),
               ...register('email'),
             }}
@@ -113,7 +113,7 @@ export const LoginForm = () => {
               type: 'password',
               placeholder: messageToString(
                 { id: m('input.password.placeholder') },
-                intl
+                intl,
               ),
               ...register('password'),
             }}

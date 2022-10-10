@@ -1,14 +1,40 @@
 import { apiClient } from '@api/api-client';
 
-export const fetchAndFormatCompany = async (ico: string) => {
+import { Company, CompanyFormData, CompleteCompanyFormData } from './types';
+
+export const fetchCompanyByIco = async (ico: string) => {
   try {
-    const response = await apiClient.request({
-      url: `/company/fetch-and-process?ico=${ico}`,
+    const response = await apiClient.request<{
+      success: boolean;
+      data: CompanyFormData;
+    }>({
+      url: '/companies/fetch-by-ico',
       method: 'POST',
+      data: {
+        ico,
+      },
     });
-    return response.data;
+    return response.data.data;
   } catch (error) {
-    console.log(error);
-    return undefined;
+    console.error(error);
+    throw error;
+  }
+};
+
+export const createCompany = async (payload: CompleteCompanyFormData) => {
+  try {
+    const response = await apiClient.request<{
+      success: boolean;
+      data: Company;
+    }>({
+      url: '/companies/create',
+      method: 'PUT',
+      data: payload,
+    });
+
+    return response.data.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 };

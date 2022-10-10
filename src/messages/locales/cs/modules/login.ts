@@ -16,5 +16,5 @@ export const loginMessages: MessageObject = {
   /* BUTTONS */
   'login.input.button': 'Přihlásit se',
   /* LINKS */
-  'login.link.register': 'Vytvoř si účet účet',
+  'login.link.register': 'Vytvořte si účet',
 };

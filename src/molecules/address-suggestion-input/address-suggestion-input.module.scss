@@ -1,0 +1,21 @@
+@use 'styles/colors';
+
+.dropDownWrapper {
+  opacity: 0;
+  border-color: colors.$silver;
+  box-shadow: 0 0 0 1px #319795;
+
+  &.open {
+    border: 1px solid;
+    border-color: #319795;
+    opacity: 1;
+  }
+
+  .item {
+    border-color: colors.$silver;
+    background-color: colors.$white;
+    &:hover {
+      background-color: #b2d0d0;
+    }
+  }
+}

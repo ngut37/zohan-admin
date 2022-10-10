@@ -20,6 +20,8 @@ const named = {
   teal_900: Color('#1D4044'),
   gray_400: Color('#A0AEC0'),
   interdimensional_blue: Color('#470dd9'),
+
+  blue_600: Color('#2b6cb0'),
 };
 
 export const colors = { ...base, ...named };

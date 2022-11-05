@@ -8,22 +8,22 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useIntl } from 'react-intl';
 
-import { login } from '@api/auth/auth';
+import { loginOrFail } from '@api/staff';
+
+import HttpStatusCode, { getResponseStatusCode } from '@api/utils';
 
 import { messageToString } from '@utils/message';
 import { yup } from '@utils/yup';
 import { messageIdConcat } from '@utils/message-id-concat';
+import { saveAccessTokenToken } from '@utils/storage/auth';
 
-import { Button, Input, Link, Text } from '@atoms';
+import { Button, Input, Link } from '@atoms';
 
 import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  CloseButton,
   Divider,
   Flex,
   InputLeftElement,
+  useToast,
   VStack,
 } from '@chakra-ui/react';
 
@@ -41,6 +41,7 @@ const m = messageIdConcat('login');
 export const LoginForm = () => {
   const intl = useIntl();
   const router = useRouter();
+  const toast = useToast();
 
   const schema = yup.object().shape({
     email: yup
@@ -55,7 +56,6 @@ export const LoginForm = () => {
   });
 
   const [submitting, setSubmitting] = useState(false);
-  const [showAuthError, setShowAuthError] = useState(false);
 
   const {
     register,
@@ -65,17 +65,38 @@ export const LoginForm = () => {
     mode: 'onSubmit',
     reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
+    defaultValues: {
+      email: 'kamo@pls.cz',
+      password: '123456',
+    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setSubmitting(true);
     try {
-      const { success } = await login(data);
-      if (success) {
-        router.push('/component-pallette');
-      }
+      const { accessToken } = await loginOrFail(data);
+
+      saveAccessTokenToken(accessToken);
+      router.push('/');
     } catch (e) {
-      setShowAuthError(true);
+      if (
+        e.response &&
+        getResponseStatusCode(e.response) !== HttpStatusCode.UNAUTHORIZED
+      ) {
+        toast({
+          description: messageToString({ id: m('toast.login_error') }, intl),
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          description: messageToString({ id: m('toast.error') }, intl),
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        });
+      }
     } finally {
       setSubmitting(false);
     }
@@ -141,24 +162,6 @@ export const LoginForm = () => {
     );
   }, [errors.email, errors.password, submitting]);
 
-  const loginError = useMemo(() => {
-    if (showAuthError)
-      return (
-        <Alert my={5} pr={8} status="error" borderRadius={4} maxWidth="300px">
-          <AlertIcon />
-          <AlertTitle mr={2}>
-            <Text message={{ id: m('error') }} color="gray.600"></Text>
-          </AlertTitle>
-          <CloseButton
-            onClick={() => setShowAuthError(false)}
-            position="absolute"
-            right="8px"
-            top="8px"
-          />
-        </Alert>
-      );
-  }, [showAuthError, intl, setShowAuthError]);
-
   return (
     <Flex
       my="40px"
@@ -189,7 +192,6 @@ export const LoginForm = () => {
             width="100%"
           >
             {form}
-            {loginError}
           </VStack>
           <Divider orientation="horizontal" my="10px" />
           <Link href="/register">

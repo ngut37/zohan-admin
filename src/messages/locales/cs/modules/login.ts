@@ -12,7 +12,9 @@ export const loginMessages: MessageObject = {
   'login.input.email.error.format': 'E-mailová adresa není ve správném tvaru',
   'login.input.email.error.required': 'E-mailová adresa nemůže být prázdná',
   'login.input.password.error.required': 'Heslo nemůže být prázdné',
-  'login.error': 'Chybně zadané heslo nebo emailová adresa',
+  /* TOASTS */
+  'login.toast.login_error': 'Chybně zadané heslo nebo emailová adresa.',
+  'login.toast.error': 'Došlo u nás k chybě, zkuste to prosím později.',
   /* BUTTONS */
   'login.input.button': 'Přihlásit se',
   /* LINKS */

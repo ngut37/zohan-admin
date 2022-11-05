@@ -1,31 +1,55 @@
-/**
- * ! NOT USED SINCE JWT IS HANDLED WITH BACKEND
- * ! HTTP ONLY
- */
+import { config } from '@config/config';
 
+import { verify, VerifyOptions } from 'jsonwebtoken';
 import Cookies from 'universal-cookie';
 
-type TokenType = 'access' | 'refresh';
+import { enumerate } from '@utils/enumerate';
 
-const tokenNameMap: Record<TokenType, string> = {
-  access: 'access_token',
-  refresh: 'refresh_token',
-};
+export type AccessTokenPayload = {};
 
 const cookies = new Cookies();
 
-export const saveToken = (type: TokenType, token: string) => {
-  if (typeof window === 'undefined') return;
+export const STAFF_ROLES_ENUM = enumerate('admin', 'editor', 'reader');
 
-  cookies.set(tokenNameMap[type], token, { path: '/' });
+export type StaffRole = keyof typeof STAFF_ROLES_ENUM;
+
+export type Staff = {
+  staffId: string;
+  name: string;
+  email: string;
+  role: StaffRole;
+  exp: number;
+  iat: number;
 };
 
-export const getToken = (type: TokenType) => {
-  const token = cookies.get(tokenNameMap[type]);
+export const saveAccessTokenToken = (token: string) => {
+  if (typeof window === 'undefined') return;
+
+  cookies.set('access_token', token, { path: '/' });
+};
+
+export const getAccessToken = () => {
+  const token = cookies.get('access_token');
   if (!token) return undefined;
   return token;
 };
 
-export const removeToken = (type: TokenType) => {
-  cookies.remove(tokenNameMap[type]);
+export const removeAccessToken = () => {
+  cookies.remove('access_token');
+};
+
+export const parseAccessToken = (
+  token: string,
+  verifyOptions: VerifyOptions,
+): Staff | undefined => {
+  try {
+    const payload = verify(
+      token,
+      config.ACCESS_TOKEN_SECRET || '',
+      verifyOptions,
+    ) as Staff;
+    return payload;
+  } catch {
+    return undefined;
+  }
 };

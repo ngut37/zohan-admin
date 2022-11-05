@@ -1,12 +1,13 @@
 import React from 'react';
 
+import { MainDashboard } from '@organisms/main-dashboard';
+
 import { Root } from '@modules/root';
-import { LoginForm } from '@organisms/login-form';
 
 export default function Home() {
   return (
-    <Root>
-      <LoginForm></LoginForm>
+    <Root protectedPage>
+      <MainDashboard />
     </Root>
   );
 }

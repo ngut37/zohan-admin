@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Root } from '@modules/root';
 import { RegisterForm } from '@organisms/register-form';
+
+import { Root } from '@modules/root';
 
 export default function Home() {
   return (

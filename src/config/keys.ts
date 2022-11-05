@@ -1,9 +1,11 @@
 import { enumerate } from '@utils/enumerate';
 
 export const CONFIG_KEYS = enumerate(
-  'PORT',
   'APP_ENV',
-  'TESTING_EMAIL',
+  'PORT',
 
   'API_URL',
+  'APP_URL',
+
+  'ACCESS_TOKEN_SECRET',
 );

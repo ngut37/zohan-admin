@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { config } from '@config/config';
 
-import { getToken } from '@utils/storage/auth';
+import { getAccessToken } from '@utils/storage/auth';
 
 export const apiClient = axios.create({
   baseURL: config.API_URL?.toString(),
@@ -25,7 +25,7 @@ protectedApiClient.request = async (
 ): Promise<any | undefined> => {
   try {
     // auth token inject
-    const token = getToken('access');
+    const token = getAccessToken();
     if (token) {
       if (!requestConfig.headers) requestConfig.headers = {};
       requestConfig.headers.authorization = `Bearer ${token}`;

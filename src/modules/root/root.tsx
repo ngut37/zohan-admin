@@ -13,13 +13,11 @@ export const Root = ({ protectedPage = false, hidden, children }: Props) => {
   if (hidden) return null;
 
   return (
-    <>
-      <AuthProvider protectedPage={protectedPage}>
-        <MessagesProvider>
-          <Navbar />
-          {children}
-        </MessagesProvider>
-      </AuthProvider>
-    </>
+    <AuthProvider protectedPage={protectedPage}>
+      <MessagesProvider>
+        <Navbar />
+        {children}
+      </MessagesProvider>
+    </AuthProvider>
   );
 };

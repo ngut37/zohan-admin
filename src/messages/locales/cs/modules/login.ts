@@ -14,7 +14,6 @@ export const loginMessages: MessageObject = {
   'login.input.password.error.required': 'Heslo nemůže být prázdné',
   /* TOASTS */
   'login.toast.login_error': 'Chybně zadané heslo nebo emailová adresa.',
-  'login.toast.error': 'Došlo u nás k chybě, zkuste to prosím později.',
   /* BUTTONS */
   'login.input.button': 'Přihlásit se',
   /* LINKS */

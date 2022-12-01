@@ -109,7 +109,9 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
   );
 
   return (
-    <AuthContext.Provider value={{ auth, authenticate, logout }}>
+    <AuthContext.Provider
+      value={{ auth, authenticate, logout, loading, setLoading }}
+    >
       {content}
     </AuthContext.Provider>
   );

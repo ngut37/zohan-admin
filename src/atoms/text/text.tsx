@@ -22,6 +22,12 @@ type TextBaseProps = {
 
 export type TextProps = TextBaseProps & ChakraTextProps;
 
+/**
+ * Wrapper for Chakra UI text component. Extended by heading-or-text picker and message.
+ *
+ * @see {@link https://chakra-ui.com/docs/components/text/usage} for Chakra UI Text component documentation.
+ *
+ */
 export const Text = ({ type = 'text', message, ...textProps }: TextProps) => {
   const intl = useIntl();
 

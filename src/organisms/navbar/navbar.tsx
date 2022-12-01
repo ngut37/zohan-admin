@@ -2,6 +2,8 @@ import React, { useMemo } from 'react';
 
 import { HiOutlineLogout } from 'react-icons/hi';
 
+import { messageIdConcat } from '@utils/message-id-concat';
+
 import { Text, Link, Button } from '@atoms';
 
 import { useAuth } from '@modules/root/context/auth';
@@ -9,6 +11,8 @@ import { useAuth } from '@modules/root/context/auth';
 import { Flex, HStack } from '@chakra-ui/react';
 
 import { colors } from '@styles';
+
+const m = messageIdConcat('navbar');
 
 export const Navbar = () => {
   const { auth, logout } = useAuth();
@@ -35,6 +39,7 @@ export const Navbar = () => {
       );
     else {
       const { name } = auth || {};
+      // TODO: use code below after implementing profile
       // const userAvatarUrl = user?.image || auth.avatarUrl;
       // const userAvatar = userAvatarUrl ? (
       //   <Flex borderRadius="50%" overflow="hidden" width="30px" height="30px">
@@ -45,7 +50,21 @@ export const Navbar = () => {
       // );
       return (
         <>
-          <Text message={{ text: name }} />
+          <Link href="/">
+            <Text
+              color="whitesmoke"
+              fontSize="sm"
+              message={{ text: 'Paleta' }}
+            />
+          </Link>
+          <Link href="/venues">
+            <Text
+              color="whitesmoke"
+              fontSize="sm"
+              message={{ id: m('link.venues') }}
+            />
+          </Link>
+          <Text fontWeight={600} color="white" message={{ text: name }} />
           <Button
             rightIcon={<HiOutlineLogout color="whitesmoke" />}
             variant="solid"
@@ -81,9 +100,6 @@ export const Navbar = () => {
         align="center"
         justifyContent="flex-end"
       >
-        <Link href="/">
-          <Text color="whitesmoke" fontSize="sm" message={{ text: 'Paleta' }} />
-        </Link>
         {authLinks}
       </HStack>
     </Flex>

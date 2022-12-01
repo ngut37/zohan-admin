@@ -79,7 +79,7 @@ export const registerMessages: MessageObject = {
 
   // toasts
   'register.company.toast.success':
-    'Společnost {companyName} a její účet byly vytvořeny.',
+    'Společnost "{companyName}" a její účet byly vytvořeny.',
   'register.company.toast.error':
     'Při registraci došlo k chybě, zkuste to prosím později.',
 };

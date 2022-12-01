@@ -2,14 +2,17 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { useIntl } from 'react-intl';
 
-import { suggest, SuggestionFormData } from '@api/address';
+import { suggestOrFail, SuggestionFormData } from '@api/address';
+
+import { messageToString } from '@utils/message';
 
 import { useDebouncedCallback } from '@hooks/use-debounce-callback';
 
 import { Input, InputProps, Text } from '@atoms';
 
-import { Divider, Flex, InputLeftElement } from '@chakra-ui/react';
+import { Divider, Flex, InputLeftElement, useToast } from '@chakra-ui/react';
 
 import { colors } from '@styles';
 
@@ -27,15 +30,32 @@ export const AddressSuggestionInput = ({
   defaultAddress,
   ...inputProps
 }: Props) => {
+  const toast = useToast();
+  const intl = useIntl();
+
   const [suggestions, setSuggestions] = useState<SuggestionFormData[]>([]);
   const [open, setOpen] = useState(true);
   const [inputValue, setInputValue] = useState<string>(defaultAddress || '');
+  const [toastErrorPushed, setToastErrorPushed] = useState<boolean>(false);
 
   const debouncedSuggestionChange = useDebouncedCallback(
     async (element: any) => {
-      const resultAddresses = await suggest(element.target.value);
+      try {
+        if (!String(element.target.value).trim().length) return;
+        const resultAddresses = await suggestOrFail(element.target.value);
 
-      setSuggestions(resultAddresses);
+        setSuggestions(resultAddresses);
+      } catch (e) {
+        if (!toastErrorPushed) {
+          toast({
+            description: messageToString({ id: 'error.api' }, intl),
+            status: 'error',
+            duration: 10000,
+            isClosable: true,
+          });
+        }
+        setToastErrorPushed(true);
+      }
     },
     500,
   );

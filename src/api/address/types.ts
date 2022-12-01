@@ -1,3 +1,5 @@
+type Coordinates = [number, number];
+
 export type SuggestionFormData = {
   stringAddress: string;
 
@@ -5,4 +7,6 @@ export type SuggestionFormData = {
   districtString: string;
   /** momc */
   quarterString?: string;
+
+  coordinates: Coordinates;
 };

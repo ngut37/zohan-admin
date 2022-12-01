@@ -13,5 +13,8 @@ export const globalMessages: MessageObject = {
   facebook: 'Facebook',
 
   // ERRORS
-  'error.api': 'Došlo k chybě, zkuste to prosím později',
+  'error.api': 'Došlo k chybě, zkuste to prosím později.',
+
+  // misc
+  no_content: 'Nic tu bohužel není',
 };

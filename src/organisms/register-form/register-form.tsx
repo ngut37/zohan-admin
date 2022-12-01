@@ -2,9 +2,9 @@ import React, { useCallback, useMemo, useState } from 'react';
 
 import { CompanyFormData } from '@api/company';
 
-import { Flex } from '@chakra-ui/react';
+import { Card } from '@atoms';
 
-import { colors } from '@styles';
+import { Flex } from '@chakra-ui/react';
 
 import { IcoForm } from './form-steps';
 import { CompanyForm } from './form-steps/company-form';
@@ -58,20 +58,9 @@ export const RegisterForm = () => {
       align="center"
     >
       <Flex width="100%" maxW="1200px" justify="center" align="flex-start">
-        <Flex
-          py="40px"
-          px={['20px', '40px']}
-          direction="column"
-          justify="center"
-          align="center"
-          bgColor={colors.white.hex()}
-          boxShadow="md"
-          border="1px"
-          borderColor="gray.100"
-          borderRadius="md"
-        >
+        <Card minW="450px" maxW="450px">
           {currentForm}
-        </Flex>
+        </Card>
       </Flex>
     </Flex>
   );

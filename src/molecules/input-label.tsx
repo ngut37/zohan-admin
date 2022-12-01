@@ -9,5 +9,13 @@ export const InputLabel = ({
   w = '100%',
   ...restProps
 }: Props) => {
-  return <Text fontSize={fontSize} w={w} {...restProps} />;
+  return (
+    <Text
+      fontSize={fontSize}
+      w={w}
+      align="left"
+      color="gray.600"
+      {...restProps}
+    />
+  );
 };

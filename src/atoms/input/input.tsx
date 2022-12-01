@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 
 import { FieldError } from 'react-hook-form';
+import { MdInfo } from 'react-icons/md';
 
 import {
   FormControl,
@@ -10,6 +11,7 @@ import {
   Input as ChakraInput,
   InputProps as ChakraInputProps,
   InputGroupProps,
+  Box,
 } from '@chakra-ui/react';
 
 import { colors } from '@styles';
@@ -37,10 +39,13 @@ export const Input = React.forwardRef(
             focusBorderColor={colors.teal_500.hex()}
             bg={colors.white.hex()}
             {...inputProps}
-          ></ChakraInput>
+          />
         </InputGroup>
         {error && (
           <FormErrorMessage overflowWrap="anywhere">
+            <Box marginRight="5px">
+              <MdInfo fontSize="17px" />
+            </Box>
             {error.message}
           </FormErrorMessage>
         )}

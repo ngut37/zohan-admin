@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react';
+import { createContext, Dispatch, SetStateAction, useContext } from 'react';
 
 import { Staff } from '@utils/storage/auth';
 
@@ -6,6 +6,8 @@ export type AuthContextType = {
   auth: Staff | undefined;
   authenticate: () => Promise<void>;
   logout: () => Promise<void>;
+  loading: boolean;
+  setLoading: Dispatch<SetStateAction<boolean>>;
 };
 
 /**
@@ -19,4 +21,6 @@ export const AuthContext = createContext<AuthContextType>({
   auth: undefined,
   authenticate: async () => {},
   logout: async () => {},
+  loading: false,
+  setLoading: () => {},
 });

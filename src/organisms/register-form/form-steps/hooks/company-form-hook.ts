@@ -192,16 +192,23 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
     setValue('regionString', '');
     setValue('districtString', '');
     setValue('quarterString', undefined);
+    setValue('coordinates', [0, 0]);
   }, [setValue]);
 
   const onAddressDropdownItemClickHandler = useCallback(
     (suggestion: SuggestionFormData) => {
-      const { stringAddress, regionString, districtString, quarterString } =
-        suggestion;
+      const {
+        stringAddress,
+        regionString,
+        districtString,
+        quarterString,
+        coordinates,
+      } = suggestion;
       setValue('stringAddress', stringAddress);
       setValue('regionString', regionString);
       setValue('districtString', districtString);
       setValue('quarterString', quarterString);
+      setValue('coordinates', coordinates);
     },
     [setValue],
   );

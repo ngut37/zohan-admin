@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CompanyFormData, fetchCompanyByIco } from '@api/company';
+import { HttpStatusCode, getResponseStatusCode } from '@api/utils';
 
 import { messageIdConcat } from '@utils/message-id-concat';
 import { messageToString } from '@utils/message';
@@ -59,13 +60,6 @@ export const IcoForm = ({ afterSubmit }: Props) => {
       try {
         companyFormData = await fetchCompanyByIco(data.ico);
 
-        if (!companyFormData) {
-          setError('ico', {
-            message: messageToString({ id: m('input.error.not_found') }, intl),
-          });
-          return;
-        }
-
         if (companyFormData.complete) {
           setError('ico', {
             message: messageToString({ id: m('input.error.conflict') }, intl),
@@ -76,6 +70,13 @@ export const IcoForm = ({ afterSubmit }: Props) => {
         afterSubmit && afterSubmit(companyFormData);
       } catch (e) {
         console.error(e);
+
+        if (getResponseStatusCode(e.response) === HttpStatusCode.NOT_FOUND) {
+          setError('ico', {
+            message: messageToString({ id: m('input.error.not_found') }, intl),
+          });
+          return;
+        }
       } finally {
         setIcoSubmitting(false);
       }

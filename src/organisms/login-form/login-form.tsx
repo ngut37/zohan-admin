@@ -10,14 +10,14 @@ import { useIntl } from 'react-intl';
 
 import { loginOrFail } from '@api/staff';
 
-import HttpStatusCode, { getResponseStatusCode } from '@api/utils';
+import { HttpStatusCode, getResponseStatusCode } from '@api/utils';
 
 import { messageToString } from '@utils/message';
 import { yup } from '@utils/yup';
 import { messageIdConcat } from '@utils/message-id-concat';
 import { saveAccessTokenToken } from '@utils/storage/auth';
 
-import { Button, Input, Link } from '@atoms';
+import { Button, Card, Input, Link } from '@atoms';
 
 import {
   Divider,
@@ -65,10 +65,6 @@ export const LoginForm = () => {
     mode: 'onSubmit',
     reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: 'kamo@pls.cz',
-      password: '123456',
-    },
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -81,7 +77,7 @@ export const LoginForm = () => {
     } catch (e) {
       if (
         e.response &&
-        getResponseStatusCode(e.response) !== HttpStatusCode.UNAUTHORIZED
+        getResponseStatusCode(e.response) === HttpStatusCode.UNAUTHORIZED
       ) {
         toast({
           description: messageToString({ id: m('toast.login_error') }, intl),
@@ -91,7 +87,7 @@ export const LoginForm = () => {
         });
       } else {
         toast({
-          description: messageToString({ id: m('toast.error') }, intl),
+          description: messageToString({ id: 'error.api' }, intl),
           status: 'error',
           duration: 10000,
           isClosable: true,
@@ -172,19 +168,7 @@ export const LoginForm = () => {
       align="center"
     >
       <Flex w="100%" maxW="1200px" justify="center" align="center">
-        <Flex
-          minW="400px"
-          py="40px"
-          px={['20px', '40px']}
-          direction="column"
-          justify="center"
-          align="center"
-          bgColor={colors.white.hex()}
-          boxShadow="md"
-          border="1px"
-          borderColor="gray.100"
-          borderRadius="md"
-        >
+        <Card minW="400px">
           <VStack
             direction="column"
             justify="center"
@@ -201,7 +185,7 @@ export const LoginForm = () => {
               message={{ id: m('link.register') }}
             />
           </Link>
-        </Flex>
+        </Card>
       </Flex>
     </Flex>
   );

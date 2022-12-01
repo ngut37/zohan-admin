@@ -49,128 +49,139 @@ export const CompanyForm = ({ defaultData, onBackButtonClick }: Props) => {
       </VStack>
       <VStack direction="column" justify="center" align="center" width="100%">
         <form onSubmit={handleSubmit()} className={classes.formWrapper}>
-          <VStack spacing={5}>
+          <VStack spacing={6}>
             {/* ICO */}
-            <InputLabel message={{ id: m('input.ico.label') }} />
-            <Input
-              inputProps={{
-                id: 'name',
-                placeholder: messageToString(
-                  { id: m('input.ico.placeholder') },
-                  intl,
-                ),
-                variant: 'flushed',
-                isDisabled: true,
-                cursor: 'not-allowed',
-                textColor: 'gray',
-                ...register('ico'),
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.ico),
-              }}
-              error={errors?.ico}
-            />
+            <VStack spacing="5px" width="100%">
+              <InputLabel message={{ id: m('input.ico.label') }} />
+              <Input
+                inputProps={{
+                  id: 'name',
+                  placeholder: messageToString(
+                    { id: m('input.ico.placeholder') },
+                    intl,
+                  ),
+                  variant: 'flushed',
+                  isDisabled: true,
+                  cursor: 'not-allowed',
+                  textColor: 'gray',
+                  ...register('ico'),
+                }}
+                formControlProps={{
+                  isInvalid: Boolean(errors.ico),
+                }}
+                error={errors?.ico}
+              />
+            </VStack>
 
             {/* NAME */}
-            <InputLabel message={{ id: m('input.name.label') }} />
-            <Input
-              inputProps={{
-                id: 'name',
-                placeholder: messageToString(
-                  { id: m('input.name.placeholder') },
-                  intl,
-                ),
-                variant: 'flushed',
-                ...register('name'),
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.name),
-              }}
-              error={errors?.name}
-            />
-
-            {/* ADDRESS */}
-            <InputLabel message={{ id: m('input.address.label') }} />
-            <AddressSuggestionInput
-              inputProps={{
-                id: 'address',
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.stringAddress),
-              }}
-              defaultAddress={defaultData?.stringAddress}
-              error={errors.stringAddress}
-              onDropdownClick={onAddressDropdownItemClickHandler}
-              onInputChange={onAddressInputChangeHandler}
-            />
+            <VStack spacing="5px" width="100%">
+              <InputLabel message={{ id: m('input.name.label') }} />
+              <Input
+                inputProps={{
+                  id: 'name',
+                  placeholder: messageToString(
+                    { id: m('input.name.placeholder') },
+                    intl,
+                  ),
+                  variant: 'flushed',
+                  ...register('name'),
+                }}
+                formControlProps={{
+                  isInvalid: Boolean(errors.name),
+                }}
+                error={errors?.name}
+              />
+            </VStack>
+            <VStack spacing="5px" width="100%">
+              {/* ADDRESS */}
+              <InputLabel message={{ id: m('input.address.label') }} />
+              <AddressSuggestionInput
+                inputProps={{
+                  id: 'address',
+                }}
+                formControlProps={{
+                  isInvalid: Boolean(errors.stringAddress),
+                }}
+                defaultAddress={defaultData?.stringAddress}
+                error={errors.stringAddress}
+                onDropdownClick={onAddressDropdownItemClickHandler}
+                onInputChange={onAddressInputChangeHandler}
+              />
+            </VStack>
 
             {/* STAFF NAME */}
-            <InputLabel message={{ id: m('input.staff_name.label') }} />
-            <Input
-              inputProps={{
-                id: 'staffName',
-                placeholder: messageToString(
-                  { id: m('input.staff_name.placeholder') },
-                  intl,
-                ),
-                ...register('staffName'),
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.staffName),
-              }}
-              error={errors?.staffName}
-            />
+            <VStack spacing="5px" width="100%">
+              <InputLabel message={{ id: m('input.staff_name.label') }} />
+              <Input
+                inputProps={{
+                  id: 'staffName',
+                  placeholder: messageToString(
+                    { id: m('input.staff_name.placeholder') },
+                    intl,
+                  ),
+                  ...register('staffName'),
+                }}
+                formControlProps={{
+                  isInvalid: Boolean(errors.staffName),
+                }}
+                error={errors?.staffName}
+              />
+            </VStack>
 
             {/* EMAIL */}
-            <InputLabel message={{ id: m('input.email.label') }} />
-            <Input
-              inputProps={{
-                id: 'email',
-                autoComplete: 'email',
-                placeholder: messageToString(
-                  { id: m('input.email.placeholder') },
-                  intl,
-                ),
-                ...register('email'),
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.email),
-              }}
-              error={errors?.email}
-            />
+            <VStack spacing="5px" width="100%">
+              <InputLabel message={{ id: m('input.email.label') }} />
+              <Input
+                inputProps={{
+                  id: 'email',
+                  autoComplete: 'email',
+                  placeholder: messageToString(
+                    { id: m('input.email.placeholder') },
+                    intl,
+                  ),
+                  ...register('email'),
+                }}
+                formControlProps={{
+                  isInvalid: Boolean(errors.email),
+                }}
+                error={errors?.email}
+              />
+            </VStack>
 
             {/* PASSWORD */}
-            <InputLabel message={{ id: m('input.password.label') }} />
-            <Input
-              inputProps={{
-                id: 'password',
-                type: 'password',
-                placeholder: messageToString(
-                  { id: m('input.password.placeholder') },
-                  intl,
-                ),
-                ...register('password'),
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.password),
-              }}
-              error={errors?.password}
-            />
-            <Input
-              inputProps={{
-                id: 'passwordConfirm',
-                type: 'password',
-                placeholder: messageToString(
-                  { id: m('input.password_confirm.placeholder') },
-                  intl,
-                ),
-                ...register('passwordConfirm'),
-              }}
-              formControlProps={{
-                isInvalid: Boolean(errors.passwordConfirm),
-              }}
-              error={errors?.passwordConfirm}
-            />
+            <VStack spacing="5px" width="100%">
+              <InputLabel message={{ id: m('input.password.label') }} />
+              <Input
+                inputProps={{
+                  id: 'password',
+                  type: 'password',
+                  placeholder: messageToString(
+                    { id: m('input.password.placeholder') },
+                    intl,
+                  ),
+                  ...register('password'),
+                }}
+                formControlProps={{
+                  isInvalid: Boolean(errors.password),
+                }}
+                error={errors?.password}
+              />
+              <Input
+                inputProps={{
+                  id: 'passwordConfirm',
+                  type: 'password',
+                  placeholder: messageToString(
+                    { id: m('input.password_confirm.placeholder') },
+                    intl,
+                  ),
+                  ...register('passwordConfirm'),
+                }}
+                formControlProps={{
+                  isInvalid: Boolean(errors.passwordConfirm),
+                }}
+                error={errors?.passwordConfirm}
+              />
+            </VStack>
 
             <Button
               size="lg"

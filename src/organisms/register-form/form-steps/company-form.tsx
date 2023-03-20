@@ -14,8 +14,6 @@ import { InputLabel } from '@molecules/input-label';
 
 import { Divider, VStack } from '@chakra-ui/react';
 
-import classes from '../register-form.module.scss';
-
 import { useCompanyFormHook } from './hooks/company-form-hook';
 
 const m = messageIdConcat('register.company');
@@ -48,7 +46,7 @@ export const CompanyForm = ({ defaultData, onBackButtonClick }: Props) => {
         <Text type="text" message={{ id: m('sub_heading') }} fontSize="sm" />
       </VStack>
       <VStack direction="column" justify="center" align="center" width="100%">
-        <form onSubmit={handleSubmit()} className={classes.formWrapper}>
+        <form onSubmit={handleSubmit()}>
           <VStack spacing={6}>
             {/* ICO */}
             <VStack spacing="5px" width="100%">

@@ -6,7 +6,7 @@
       "@api/*": ["api/*"],
       "@utils/*": ["utils/*"],
       "@hooks/*": ["hooks/*"],
-      "@config*": ["config"],
+      "@config": ["config/config"],
 
       // global components
       "@atoms": ["atoms"],

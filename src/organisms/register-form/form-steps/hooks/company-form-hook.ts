@@ -7,12 +7,15 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { config } from '@config';
+
 import { SuggestionFormData } from '@api/address';
 import {
   CompanyFormData,
   CompleteCompanyFormData,
   createCompany,
 } from '@api/company';
+import { HttpStatusCode } from '@api/utils';
 
 import { yup } from '@utils/yup';
 import { messageToString } from '@utils/message';
@@ -27,11 +30,6 @@ type Inputs = CompleteCompanyFormData & {
 type HookParams = {
   defaultData?: CompanyFormData;
 };
-
-const MIN_NAME_LENGTH = 2;
-const MAX_NAME_LENGTH = 64;
-const MIN_PASSWORD_LENGTH = 6;
-const MAX_PASSWORD_LENGTH = 256;
 
 const m = messageIdConcat('register.company');
 
@@ -48,21 +46,21 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
       .string()
       .strict()
       .min(
-        MIN_NAME_LENGTH,
+        config.MIN_NAME_LENGTH,
         messageToString(
           {
             id: m('input.name.error.min'),
-            values: { length: MIN_NAME_LENGTH },
+            values: { length: config.MIN_NAME_LENGTH },
           },
           intl,
         ),
       )
       .max(
-        MAX_NAME_LENGTH,
+        config.MAX_NAME_LENGTH,
         messageToString(
           {
             id: m('input.name.error.max'),
-            values: { length: MAX_NAME_LENGTH },
+            values: { length: config.MAX_NAME_LENGTH },
           },
           intl,
         ),
@@ -76,21 +74,21 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
       .string()
       .strict()
       .min(
-        MIN_NAME_LENGTH,
+        config.MIN_NAME_LENGTH,
         messageToString(
           {
             id: m('input.name.error.min'),
-            values: { length: MIN_NAME_LENGTH },
+            values: { length: config.MIN_NAME_LENGTH },
           },
           intl,
         ),
       )
       .max(
-        MAX_NAME_LENGTH,
+        config.MAX_NAME_LENGTH,
         messageToString(
           {
             id: m('input.name.error.max'),
-            values: { length: MAX_NAME_LENGTH },
+            values: { length: config.MAX_NAME_LENGTH },
           },
           intl,
         ),
@@ -103,11 +101,11 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
     password: yup
       .string()
       .min(
-        MIN_PASSWORD_LENGTH,
+        config.MIN_PASSWORD_LENGTH,
         messageToString({ id: m('input.password.error.min') }, intl),
       )
       .max(
-        MAX_PASSWORD_LENGTH,
+        config.MAX_PASSWORD_LENGTH,
         messageToString({ id: m('input.password.error.max') }, intl),
       )
       .required(
@@ -161,7 +159,7 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
 
         router.push(`/register-done?email=${restData.email}`);
       } catch (e) {
-        if (e?.response?.status === 409) {
+        if (e?.response?.status === HttpStatusCode.CONFLICT) {
           setError(
             'ico',
             {

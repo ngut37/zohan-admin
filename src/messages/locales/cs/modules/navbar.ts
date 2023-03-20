@@ -5,5 +5,7 @@ export const navbarMessages: MessageObject = {
   'navbar.register': 'Registrovat',
   'navbar.logout': 'Odhlásit se',
 
+  // links
+  'navbar.link.staff': 'Zaměstnanci',
   'navbar.link.venues': 'Pobočky',
 };

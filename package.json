@@ -17,6 +17,7 @@
     "@hookform/resolvers": "2.8.2",
     "@types/jsonwebtoken": "8.5.5",
     "axios": "0.18.0",
+    "chakra-react-select": "^4.4.3",
     "clsx": "1.1.1",
     "framer-motion": "4.1.17",
     "intl": "1.2.5",

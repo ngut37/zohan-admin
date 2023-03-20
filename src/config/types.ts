@@ -1,4 +1,4 @@
-export type Config = Partial<{
+export type Config = {
   APP_ENV: EnvironmentName;
   PORT: number;
 
@@ -6,12 +6,18 @@ export type Config = Partial<{
   APP_URL: string;
 
   ACCESS_TOKEN_SECRET: string;
-}>;
+
+  // auth constrains
+  MIN_NAME_LENGTH: number;
+  MAX_NAME_LENGTH: number;
+  MIN_PASSWORD_LENGTH: number;
+  MAX_PASSWORD_LENGTH: number;
+};
 
 export type ConfigKeys = keyof Config;
 
 export type EnvironmentName = 'development' | 'preview' | 'test' | 'production';
 
-export type Environments = { [key in EnvironmentName]: Config } & {
+export type Environments = { [key in EnvironmentName]: Partial<Config> } & {
   [key: string]: Record<string, any>;
 };

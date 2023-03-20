@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 import { HiArrowSmLeft, HiPlus } from 'react-icons/hi';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { createVenueOrFail, CreateVenuePayload } from '@api/venues';
+import { createVenueOrFail, CreateVenueBody } from '@api/venues';
 import { SuggestionFormData } from '@api/address';
 
 import { yup } from '@utils/yup';
@@ -18,7 +18,7 @@ import { Button, Card, Text } from '@atoms';
 import { AddressSuggestionInput } from '@molecules/address-suggestion-input';
 import { InputLabel } from '@molecules/input-label';
 
-import { Divider, Flex, useToast, VStack } from '@chakra-ui/react';
+import { FormControl, Divider, Flex, useToast, VStack } from '@chakra-ui/react';
 
 const m = messageIdConcat('create.venue');
 
@@ -43,13 +43,13 @@ export const VenueCreateForm = () => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<CreateVenuePayload>({
+  } = useForm<CreateVenueBody>({
     mode: 'onSubmit',
     reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<CreateVenuePayload> = useCallback(
+  const onSubmit: SubmitHandler<CreateVenueBody> = useCallback(
     async (data) => {
       setSubmitting(true);
 
@@ -125,7 +125,7 @@ export const VenueCreateForm = () => {
           <Text type="heading" message={{ id: m('heading') }} size="lg" />
           <Text type="text" message={{ id: m('sub_heading') }} fontSize="sm" />
         </VStack>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl width="400px">
           <InputLabel message={{ id: m('input.ico.label') }} />
           <AddressSuggestionInput
             inputProps={{
@@ -147,8 +147,9 @@ export const VenueCreateForm = () => {
             width="100%"
             message={{ id: m('button.submit') }}
             isLoading={submitting}
+            onClick={handleSubmit(onSubmit)}
           />
-        </form>
+        </FormControl>
         <Divider orientation="horizontal" my="10px" />
         <Button
           leftIcon={<HiArrowSmLeft width="20px" />}

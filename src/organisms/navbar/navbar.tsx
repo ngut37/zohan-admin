@@ -57,6 +57,13 @@ export const Navbar = () => {
               message={{ text: 'Paleta' }}
             />
           </Link>
+          <Link href="/staff">
+            <Text
+              color="whitesmoke"
+              fontSize="sm"
+              message={{ id: m('link.staff') }}
+            />
+          </Link>
           <Link href="/venues">
             <Text
               color="whitesmoke"

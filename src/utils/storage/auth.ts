@@ -1,4 +1,4 @@
-import { config } from '@config/config';
+import { config } from '@config';
 
 import { verify, VerifyOptions } from 'jsonwebtoken';
 import Cookies from 'universal-cookie';
@@ -9,7 +9,7 @@ export type AccessTokenPayload = {};
 
 const cookies = new Cookies();
 
-export const STAFF_ROLES_ENUM = enumerate('admin', 'editor', 'reader');
+export const STAFF_ROLES_ENUM = enumerate('reader', 'editor', 'admin');
 
 export type StaffRole = keyof typeof STAFF_ROLES_ENUM;
 

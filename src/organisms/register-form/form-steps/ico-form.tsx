@@ -15,8 +15,6 @@ import { Button, Input, Text } from '@atoms';
 
 import { VStack } from '@chakra-ui/react';
 
-import classes from '../register-form.module.scss';
-
 const m = messageIdConcat('register.ico');
 
 type IcoInputs = {
@@ -89,10 +87,7 @@ export const IcoForm = ({ afterSubmit }: Props) => {
       <VStack mb="40px" spacing="5px">
         <Text type="heading" message={{ id: m('heading') }} size="lg" />
       </VStack>
-      <form
-        onSubmit={icoHandleSubmit(icoOnSubmit)}
-        className={classes.formWrapper}
-      >
+      <form onSubmit={icoHandleSubmit(icoOnSubmit)}>
         <VStack spacing="10px">
           <Input
             inputProps={{

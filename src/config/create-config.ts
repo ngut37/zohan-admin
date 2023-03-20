@@ -6,8 +6,8 @@ export const createConfig = (envs: Environments, defaultConfig: Config) => {
 
   // MERGE DEFAULT CONFIG
   let defaults: Config = {
-    APP_ENV,
     ...defaultConfig,
+    APP_ENV,
   };
 
   // INCLUDE APP ENV RELATED CONFIG

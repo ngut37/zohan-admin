@@ -22,5 +22,6 @@ export const venueListMessages: MessageObject = {
 
   // buttons
   'venues-list.item.drawer.button.submit': 'Uložit',
-  'venues-list.item.drawer.button.close': 'zavřít a zahodit',
+  'venues-list.item.drawer.button.close': 'zavřít',
+  'venues-list.item.drawer.button.close_and_abort': 'zavřít a zahodit',
 };

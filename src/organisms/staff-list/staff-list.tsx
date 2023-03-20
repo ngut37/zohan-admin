@@ -4,42 +4,43 @@ import { HiPlus } from 'react-icons/hi';
 import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
 
-import { getAllVenuesOrFail, Venue } from '@api/venues';
+import { getAllStaffOrFail, Staff } from '@api/staff';
 
 import { messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';
 
 import { Button } from '@atoms';
 
-import {
-  VenueListItem,
-  VenueListItemSkeleton,
-} from '@molecules/venue-list-item';
 import { NoContentInfo } from '@molecules/no-content-info';
+import {
+  StaffListItem,
+  StaffListItemSkeleton,
+} from '@molecules/staff-list-item/staff-list-item';
 
 import { Flex, Stack, useToast } from '@chakra-ui/react';
 
-const m = messageIdConcat('venues-list');
+const m = messageIdConcat('staff-list');
 
-export const VenueList = () => {
+export const StaffList = () => {
   const intl = useIntl();
   const toast = useToast();
   const router = useRouter();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [venues, setVenues] = useState<Venue[]>([]);
+  const [staff, setStaff] = useState<Staff[]>([]);
 
   useEffect(() => {
     (async () => {
-      await fetchAndSetVenues();
+      await fetchAndSetStaff();
     })();
   }, []);
 
-  const fetchAndSetVenues = useCallback(async () => {
+  const fetchAndSetStaff = useCallback(async () => {
+    setLoading(true);
     try {
-      const fetchedVenuesResult = await getAllVenuesOrFail();
+      const fetchedVenuesResult = await getAllStaffOrFail();
 
-      setVenues(fetchedVenuesResult.venues);
+      setStaff(fetchedVenuesResult.staff);
     } catch (error) {
       toast({
         description: messageToString({ id: 'error.api' }, intl),
@@ -50,34 +51,36 @@ export const VenueList = () => {
     } finally {
       setLoading(false);
     }
-  }, [setVenues, toast, setLoading]);
+  }, [setStaff, toast, setLoading]);
 
   const content = useMemo(() => {
     if (loading) {
       return (
         <>
-          <VenueListItemSkeleton color="dark" />
-          <VenueListItemSkeleton color="light-dark" />
-          <VenueListItemSkeleton color="light" />
+          <StaffListItemSkeleton color="dark" />
+          <StaffListItemSkeleton color="light-dark" />
+          <StaffListItemSkeleton color="light" />
         </>
       );
     }
 
-    if (!venues.length) {
+    if (!staff.length) {
       return <NoContentInfo />;
     }
 
-    return venues.map((venue) => (
-      <VenueListItem
-        key={venue._id}
-        {...venue}
-        onAfterSubmit={fetchAndSetVenues}
-      />
+    return staff.map((staff) => (
+      <>
+        <StaffListItem
+          key={staff._id}
+          {...staff}
+          onAfterSubmit={fetchAndSetStaff}
+        />
+      </>
     ));
-  }, [loading, venues]);
+  }, [loading, staff]);
 
   const onCreateButtonClick = () => {
-    router.push('/venues/create', undefined, { shallow: true });
+    router.push('/staff/create', undefined, { shallow: true });
   };
 
   return (

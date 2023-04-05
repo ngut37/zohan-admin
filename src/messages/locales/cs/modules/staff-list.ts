@@ -18,10 +18,10 @@ export const staffListMessages: MessageObject = {
   'staff-list.item.drawer.input.name.label': 'Celé jméno',
   'staff-list.item.drawer.input.email.label': 'Email',
   'staff-list.item.drawer.input.role.label': 'Role',
-  'staff-list.item.drawer.input.venues.label': 'Pobočky',
+  'staff-list.item.drawer.input.venue.label': 'Pobočka',
 
   // placeholders
-  'staff-list.item.drawer.input.venues.placeholder': 'Vyberte pobočky',
+  'staff-list.item.drawer.input.venue.placeholder': 'Vyberte pobočku',
   'staff-list.item.drawer.input.staff_name.placeholder': 'Jan Srna',
   'staff-list.item.drawer.input.email.placeholder': 'jan.srna@email.cz',
 
@@ -31,5 +31,5 @@ export const staffListMessages: MessageObject = {
 
   // errors
   'staff-list.item.input.email.error.conflict':
-    'Učet s touto emailovou adresou již existuje',
+    'Zaměstnanec s touto emailovou adresou již existuje',
 };

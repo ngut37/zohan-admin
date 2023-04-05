@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { HiArrowSmLeft, HiPlus } from 'react-icons/hi';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { MultiValue, Select } from 'chakra-react-select';
+import { Select, SingleValue } from 'chakra-react-select';
 import { MdInfo } from 'react-icons/md';
 
 import { config } from '@config';
@@ -38,13 +38,13 @@ import {
 
 import classes from './staff-create-form.module.scss';
 
-type Options = MultiValue<{ value: string; label: string }>;
+type Option = SingleValue<{ value: string; label: string }>;
 
 const m = messageIdConcat('create.staff');
 
 export const StaffCreateForm = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [venues, setVenues] = useState<Venue[]>([]);
+  const [venueOptions, setVenueOptions] = useState<Venue[]>([]);
 
   const intl = useIntl();
   const toast = useToast();
@@ -94,7 +94,7 @@ export const StaffCreateForm = () => {
         messageToString({ id: m('input.role.error.required') }, intl),
       )
       .required(messageToString({ id: m('input.role.error.required') }, intl)),
-    venues: yup.array(yup.string()),
+    venue: yup.string(),
   });
 
   const {
@@ -114,7 +114,7 @@ export const StaffCreateForm = () => {
     (async () => {
       try {
         const { venues } = await getAllVenuesOrFail();
-        setVenues(venues);
+        setVenueOptions(venues);
       } catch (error) {
         toast({
           description: messageToString({ id: 'error.api' }, intl),
@@ -179,17 +179,19 @@ export const StaffCreateForm = () => {
     trigger('role');
   };
 
-  const onVenueMultiSelectChange = (options: Options) => {
-    setValue(
-      'venues',
-      options.map((option) => option.value),
-    );
+  const onVenueMultiSelectChange = (option: Option) => {
+    if (option?.value) {
+      setValue('venue', option.value);
+    }
   };
 
-  const options = useMemo<Options>(
+  const options = useMemo<Option[]>(
     () =>
-      venues.map((venue) => ({ value: venue._id, label: venue.stringAddress })),
-    [venues],
+      venueOptions.map((venue) => ({
+        value: venue._id,
+        label: venue.stringAddress,
+      })),
+    [venueOptions],
   );
 
   return (
@@ -286,9 +288,9 @@ export const StaffCreateForm = () => {
               </FormControl>
             </VStack>
 
-            {/* VENUES */}
+            {/* VENUE */}
             <VStack spacing="5px" width="100%">
-              <InputLabel message={{ id: m('input.venues.label') }} optional />
+              <InputLabel message={{ id: m('input.venue.label') }} optional />
               <Select
                 className={classes.multiSelectContainer}
                 options={options}
@@ -297,7 +299,6 @@ export const StaffCreateForm = () => {
                 hideSelectedOptions={false}
                 onChange={onVenueMultiSelectChange}
                 colorScheme="teal"
-                isMulti
               />
             </VStack>
             <Button

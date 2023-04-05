@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { HiArrowSmLeft } from 'react-icons/hi';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
-import { GroupBase, MultiValue, OptionBase, Select } from 'chakra-react-select';
+import { Select, SingleValue } from 'chakra-react-select';
 
 import { config } from '@config';
 
@@ -49,10 +49,7 @@ import classes from './staff-list-item.module.scss';
 
 const m = messageIdConcat('staff-list.item');
 
-interface Option extends OptionBase {
-  label: string;
-  value: string;
-}
+type Option = SingleValue<{ value: string; label: string }>;
 
 type Props = Staff & { onAfterSubmit?: () => Promise<void> };
 
@@ -61,19 +58,19 @@ export const StaffListItem = ({
   email,
   name,
   role,
-  venues: initialVenues,
+  venue: initialVenue,
   onAfterSubmit,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [submitting, setSubmitting] = useState(false);
-  const [venues, setVenues] = useState<Venue[]>([]);
+  const [venueOptions, setVenueOptions] = useState<Venue[]>([]);
 
   useEffect(() => {
     (async () => {
       try {
         const { venues } = await getAllVenuesOrFail();
-        setVenues(venues);
+        setVenueOptions(venues);
       } catch (error) {
         toast({
           description: messageToString({ id: 'error.api' }, intl),
@@ -128,7 +125,7 @@ export const StaffListItem = ({
       .string()
       .oneOf(Object.keys(STAFF_ROLES_ENUM))
       .required(messageToString({ id: m('input.role.error.required') }, intl)),
-    venues: yup.array(yup.string()),
+    venue: yup.string(),
   });
 
   const {
@@ -145,7 +142,7 @@ export const StaffListItem = ({
       name,
       email,
       role,
-      venues: initialVenues.map((venue) => venue._id),
+      venue: initialVenue._id,
     },
   });
 
@@ -197,18 +194,17 @@ export const StaffListItem = ({
 
   const options = useMemo<Option[]>(
     () =>
-      venues.map((venue) => ({
+      venueOptions.map((venue) => ({
         value: venue._id,
         label: venue.stringAddress,
       })),
-    [venues],
+    [venueOptions],
   );
 
-  const onVenueMultiSelectChange = (options: MultiValue<Option>) => {
-    setValue(
-      'venues',
-      options.map((option) => option.value),
-    );
+  const onVenueMultiSelectChange = (option: Option) => {
+    if (option?.value) {
+      setValue('venue', option.value);
+    }
   };
 
   const onButtonClick = () => {
@@ -362,24 +358,24 @@ export const StaffListItem = ({
                     </FormErrorMessage>
                   )}
                 </FormControl>
-                <InputLabel message={{ id: m('drawer.input.venues.label') }} />
-                <Select<Option, true, GroupBase<Option>>
+                <InputLabel message={{ id: m('drawer.input.venue.label') }} />
+                <Select
                   className={classes.multiSelectContainer}
-                  defaultValue={initialVenues.map((venue) => {
-                    return { label: venue.stringAddress, value: venue._id };
-                  })}
+                  options={options as { label: string; value: string }[]} // type hack
+                  defaultValue={{
+                    label: initialVenue.stringAddress,
+                    value: initialVenue._id,
+                  }}
                   placeholder={messageToString(
                     {
-                      id: m('drawer.input.venues.placeholder'),
+                      id: m('drawer.input.venue.placeholder'),
                     },
                     intl,
                   )}
-                  options={options}
                   closeMenuOnSelect={false}
                   hideSelectedOptions={false}
                   onChange={onVenueMultiSelectChange}
                   colorScheme="teal"
-                  isMulti
                 />
               </VStack>
             </form>

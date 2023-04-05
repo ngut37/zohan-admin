@@ -9,7 +9,7 @@ export const staffCreateMessages: MessageObject = {
   'create.staff.input.staff_name.label': 'Jméno',
   'create.staff.input.email.label': 'Email',
   'create.staff.input.role.label': 'Oprávnění',
-  'create.staff.input.venues.label': 'Pobočky',
+  'create.staff.input.venue.label': 'Pobočka',
 
   // placeholders
   'create.staff.input.staff_name.placeholder': 'Jan Srna',
@@ -35,10 +35,10 @@ export const staffCreateMessages: MessageObject = {
   'create.staff.input.email.error.format':
     'Emailová adresa není ve správném tvaru',
   'create.staff.input.email.error.conflict':
-    'Učet s touto emailovou adresou již existuje',
+    'Zaměstnanec s touto emailovou adresou již existuje',
   'create.staff.input.role.error.required':
     'Vyberte prosím oprávnění zaměstnance',
 
   // toasts
-  'create.staff.toast.success': 'Uživatel {name} byl úspěšně vytvořen.',
+  'create.staff.toast.success': 'Zaměstnanec {name} byl úspěšně vytvořen.',
 };

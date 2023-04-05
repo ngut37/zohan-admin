@@ -65,7 +65,7 @@ export const registerMessages: MessageObject = {
   'register.company.input.email.error.required':
     'Emailová adresa nemůže být prázdná',
   'register.company.input.email.error.conflict':
-    'Učet s touto emailovou adresou již existuje',
+    'Účet s touto emailovou adresou již existuje',
   'register.company.input.password.error.required': 'Heslo nemůžse být prázdné',
   'register.company.input.password.error.min':
     'Heslo musí obsahovat nejméně 6 znaků',

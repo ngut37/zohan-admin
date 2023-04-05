@@ -54,7 +54,7 @@ export type Staff = {
   _id: string;
   name: string;
   email: string;
-  venues: Venue[];
+  venue: Venue;
   role: StaffRole;
 };
 
@@ -75,7 +75,7 @@ export type CreateStaffBody = {
   email: string;
   name: string;
   role: StaffRole;
-  venues: string[];
+  venue: string;
 };
 
 export const createStaffOrFail = async (body: CreateStaffBody) => {

@@ -61,11 +61,11 @@ export const registerMessages: MessageObject = {
     'Doplňte prosím název společnosti.',
   'register.company.input.address.error': 'Zadejte prosím platnou adresu sídla',
   'register.company.input.email.error.format':
-    'E-mailová adresa není ve správném tvaru',
+    'Emailová adresa není ve správném tvaru',
   'register.company.input.email.error.required':
-    'E-mailová adresa nemůže být prázdná',
+    'Emailová adresa nemůže být prázdná',
   'register.company.input.email.error.conflict':
-    'Učet s touto e-mailovou adresou již existuje',
+    'Učet s touto emailovou adresou již existuje',
   'register.company.input.password.error.required': 'Heslo nemůžse být prázdné',
   'register.company.input.password.error.min':
     'Heslo musí obsahovat nejméně 6 znaků',

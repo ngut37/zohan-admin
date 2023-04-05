@@ -6,11 +6,11 @@ export const loginMessages: MessageObject = {
   'login.hero.subtitle':
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc at porttitor leo.',
   /* INPUT PLACEHOLDERS */
-  'login.input.email.placeholder': 'E-mailová adresa',
+  'login.input.email.placeholder': 'Emailová adresa',
   'login.input.password.placeholder': 'Heslo',
   /* ERRORS */
-  'login.input.email.error.format': 'E-mailová adresa není ve správném tvaru',
-  'login.input.email.error.required': 'E-mailová adresa nemůže být prázdná',
+  'login.input.email.error.format': 'Emailová adresa není ve správném tvaru',
+  'login.input.email.error.required': 'Emailová adresa nemůže být prázdná',
   'login.input.password.error.required': 'Heslo nemůže být prázdné',
   /* TOASTS */
   'login.toast.login_error': 'Chybně zadané heslo nebo emailová adresa.',

@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-import { config } from '@config/config';
+import { config } from '@config';
 
 import { getAccessToken } from '@utils/storage/auth';
 
@@ -36,6 +36,6 @@ protectedApiClient.request = async (
     return result;
   } catch (err: any) {
     console.error(err);
-    return;
+    throw err;
   }
 };

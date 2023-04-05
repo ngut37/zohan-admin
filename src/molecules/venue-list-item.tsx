@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { HiArrowSmLeft } from 'react-icons/hi';
 
-import { editVenueOrFail, EditVenuePayload, Venue } from '@api/venues';
+import { editVenueOrFail, EditVenueBody, Venue } from '@api/venues';
 import { SuggestionFormData } from '@api/address';
 
 import { messageIdConcat } from '@utils/message-id-concat';
@@ -29,6 +29,7 @@ import {
   DrawerBody,
   DrawerFooter,
   useToast,
+  VStack,
 } from '@chakra-ui/react';
 
 import { AddressSuggestionInput } from './address-suggestion-input';
@@ -39,7 +40,7 @@ const m = messageIdConcat('venues-list.item');
 type Props = Venue & { onAfterSubmit?: () => Promise<void> };
 
 export const VenueListItem = ({
-  id,
+  _id: id,
   stringAddress,
   region,
   district,
@@ -68,13 +69,13 @@ export const VenueListItem = ({
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<EditVenuePayload>({
+  } = useForm<EditVenueBody>({
     mode: 'onSubmit',
     reValidateMode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<EditVenuePayload> = useCallback(
+  const onSubmit: SubmitHandler<EditVenueBody> = useCallback(
     async (data) => {
       setSubmitting(true);
 
@@ -209,19 +210,21 @@ export const VenueListItem = ({
 
           <DrawerBody>
             <form>
-              <InputLabel message={{ id: m('drawer.input.ico.label') }} />
-              <AddressSuggestionInput
-                inputProps={{
-                  id: 'address',
-                  autoComplete: 'off',
-                }}
-                formControlProps={{
-                  isInvalid: Boolean(errors.stringAddress),
-                }}
-                error={errors.stringAddress}
-                onDropdownClick={onAddressDropdownItemClickHandler}
-                onInputChange={onAddressInputChangeHandler}
-              />
+              <VStack spacing="10px">
+                <InputLabel message={{ id: m('drawer.input.ico.label') }} />
+                <AddressSuggestionInput
+                  inputProps={{
+                    id: 'address',
+                    autoComplete: 'off',
+                  }}
+                  formControlProps={{
+                    isInvalid: Boolean(errors.stringAddress),
+                  }}
+                  error={errors.stringAddress}
+                  onDropdownClick={onAddressDropdownItemClickHandler}
+                  onInputChange={onAddressInputChangeHandler}
+                />
+              </VStack>
             </form>
           </DrawerBody>
 

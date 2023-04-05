@@ -1,5 +1,8 @@
-import { apiClient } from '@api/api-client';
+import { apiClient, protectedApiClient } from '@api/api-client';
 import { ResponseResult } from '@api/types';
+import { Venue } from '@api/venues';
+
+import { StaffRole } from '@utils/storage/auth';
 
 type LoginBody = {
   email: string;
@@ -45,4 +48,54 @@ export const refreshToken = async () => {
   } catch {
     return undefined;
   }
+};
+
+export type Staff = {
+  _id: string;
+  name: string;
+  email: string;
+  venues: Venue[];
+  role: StaffRole;
+};
+
+type GetAllStaffData = { staff: Staff[] };
+
+export const getAllStaffOrFail = async () => {
+  const response = await protectedApiClient.request<
+    ResponseResult<GetAllStaffData>
+  >({
+    url: '/staff',
+    method: 'get',
+  });
+
+  return response?.data.data;
+};
+
+export type CreateStaffBody = {
+  email: string;
+  name: string;
+  role: StaffRole;
+  venues: string[];
+};
+
+export const createStaffOrFail = async (body: CreateStaffBody) => {
+  const response = await protectedApiClient.request<ResponseResult<Staff>>({
+    url: '/staff/create',
+    method: 'post',
+    data: body,
+  });
+
+  return response.data.data;
+};
+
+export type EditStaffBody = Partial<CreateStaffBody>;
+
+export const editStaffOrFail = async (id: string, body: EditStaffBody) => {
+  const response = await protectedApiClient.request<ResponseResult<Staff>>({
+    url: `/staff/${id}/edit`,
+    method: 'post',
+    data: body,
+  });
+
+  return response?.data.data;
 };

@@ -24,6 +24,15 @@ export const getAllVenuesOrFail = async () => {
   return response.data.data;
 };
 
+export const getVenueByIdOrFail = async (venueId: string) => {
+  const response = await protectedApiClient.request<ResponseResult<Venue>>({
+    url: `/venues/${venueId}`,
+    method: 'get',
+  });
+
+  return response.data.data;
+};
+
 export type CreateVenueBody = {
   stringAddress: string;
   regionString: string;

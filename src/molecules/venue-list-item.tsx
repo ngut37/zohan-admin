@@ -1,39 +1,14 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 
-import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { HiArrowSmLeft } from 'react-icons/hi';
 
-import { editVenueOrFail, EditVenueBody, Venue } from '@api/venues';
-import { SuggestionFormData } from '@api/address';
+import { Venue } from '@api/venues';
 
 import { messageIdConcat } from '@utils/message-id-concat';
-import { yup } from '@utils/yup';
-import { messageToString } from '@utils/message';
 
 import { Button, Text } from '@atoms';
 
-import {
-  Flex,
-  Skeleton,
-  Stack,
-  Image,
-  useDisclosure,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerHeader,
-  DrawerBody,
-  DrawerFooter,
-  useToast,
-  VStack,
-} from '@chakra-ui/react';
-
-import { AddressSuggestionInput } from './address-suggestion-input';
-import { InputLabel } from './input-label';
+import { Flex, Skeleton, Stack, Image } from '@chakra-ui/react';
 
 const m = messageIdConcat('venues-list.item');
 
@@ -45,96 +20,8 @@ export const VenueListItem = ({
   region,
   district,
   momc,
-  onAfterSubmit,
 }: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [submitting, setSubmitting] = useState(false);
-
-  const intl = useIntl();
-  const toast = useToast();
   const router = useRouter();
-
-  const schema = yup.object().shape({
-    stringAddress: yup
-      .string()
-      .required(messageToString({ id: m('input.address.required') }, intl)),
-    regionString: yup.string().required(),
-    districtString: yup.string().required(),
-    quarterString: yup.string(),
-    coordinates: yup.array(yup.number()).length(2),
-  });
-
-  const {
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<EditVenueBody>({
-    mode: 'onSubmit',
-    reValidateMode: 'onBlur',
-    resolver: yupResolver(schema),
-  });
-
-  const onSubmit: SubmitHandler<EditVenueBody> = useCallback(
-    async (data) => {
-      setSubmitting(true);
-
-      try {
-        await editVenueOrFail(id, data);
-
-        router.push('/venues', undefined, { shallow: true });
-
-        toast({
-          description: messageToString({ id: m('toast.success') }, intl),
-          status: 'info',
-          duration: 10000,
-          isClosable: true,
-        });
-        onClose();
-        onAfterSubmit && (await onAfterSubmit());
-      } catch (e) {
-        toast({
-          description: messageToString({ id: 'error.api' }, intl),
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      } finally {
-        setSubmitting(false);
-      }
-    },
-    [intl, toast],
-  );
-
-  const onAddressInputChangeHandler = useCallback(() => {
-    setValue('stringAddress', '');
-    setValue('regionString', '');
-    setValue('districtString', '');
-    setValue('quarterString', undefined);
-    setValue('coordinates', [0, 0]);
-  }, [setValue]);
-
-  const onAddressDropdownItemClickHandler = useCallback(
-    (suggestion: SuggestionFormData) => {
-      const {
-        stringAddress,
-        regionString,
-        districtString,
-        quarterString,
-        coordinates,
-      } = suggestion;
-      setValue('stringAddress', stringAddress);
-      setValue('regionString', regionString);
-      setValue('districtString', districtString);
-      setValue('quarterString', quarterString);
-      setValue('coordinates', coordinates);
-    },
-    [setValue],
-  );
-
-  const onButtonClick = () => {
-    onOpen();
-  };
 
   return (
     <>
@@ -190,65 +77,12 @@ export const VenueListItem = ({
         </Stack>
         <Button
           message={{ id: m('button.edit') }}
-          onClick={onButtonClick}
+          onClick={() => {
+            router.push(`/venues/${id}`, undefined, { shallow: true });
+          }}
           marginRight="40px"
         />
       </Flex>
-      <Drawer
-        isOpen={isOpen}
-        placement="right"
-        size="sm"
-        onClose={onClose}
-        closeOnOverlayClick={false}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>
-            <Text message={{ id: m('drawer.heading') }} />
-          </DrawerHeader>
-
-          <DrawerBody>
-            <form>
-              <VStack spacing="10px">
-                <InputLabel message={{ id: m('drawer.input.ico.label') }} />
-                <AddressSuggestionInput
-                  inputProps={{
-                    id: 'address',
-                    autoComplete: 'off',
-                  }}
-                  formControlProps={{
-                    isInvalid: Boolean(errors.stringAddress),
-                  }}
-                  error={errors.stringAddress}
-                  onDropdownClick={onAddressDropdownItemClickHandler}
-                  onInputChange={onAddressInputChangeHandler}
-                />
-              </VStack>
-            </form>
-          </DrawerBody>
-
-          <DrawerFooter
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Button
-              leftIcon={<HiArrowSmLeft width="20px" />}
-              message={{ id: m('drawer.button.close') }}
-              variant="link"
-              onClick={onClose}
-            ></Button>
-            <Button
-              width="200px"
-              size="lg"
-              message={{ id: m('drawer.button.submit') }}
-              onClick={handleSubmit(onSubmit)}
-              isLoading={submitting}
-            ></Button>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
     </>
   );
 };

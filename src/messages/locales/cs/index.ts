@@ -7,6 +7,7 @@ import { venueListMessages } from './modules/venue-list';
 import { venueCreateMessages } from './modules/venue-create';
 import { staffListMessages } from './modules/staff-list';
 import { staffCreateMessages } from './modules/create-staff';
+import { venueEditMessages } from './modules/venue-edit';
 
 export const cs = {
   ...globalMessages,
@@ -16,6 +17,7 @@ export const cs = {
   ...loginMessages,
   ...venueListMessages,
   ...venueCreateMessages,
+  ...venueEditMessages,
   ...staffListMessages,
   ...staffCreateMessages,
 };

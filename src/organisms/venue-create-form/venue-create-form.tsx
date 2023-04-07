@@ -20,7 +20,7 @@ import { InputLabel } from '@molecules/input-label';
 
 import { FormControl, Divider, Flex, useToast, VStack } from '@chakra-ui/react';
 
-const m = messageIdConcat('create.venue');
+const m = messageIdConcat('venue.create');
 
 export const VenueCreateForm = () => {
   const [submitting, setSubmitting] = useState(false);

@@ -2,20 +2,20 @@ import { MessageObject } from '../../../types';
 
 export const venueCreateMessages: MessageObject = {
   // headings
-  'create.venue.heading': 'Vytvořte pobočku',
-  'create.venue.sub_heading': 'Zadejte adresu pobočky',
+  'venue.create.heading': 'Vytvořte pobočku',
+  'venue.create.sub_heading': 'Zadejte adresu pobočky',
 
   // labels
-  'create.venue.input.ico.label': 'Adresa',
+  'venue.create.input.ico.label': 'Adresa',
 
   // buttons
-  'create.venue.button.submit': 'Vytvořit',
-  'create.venue.button.back': 'zpět',
+  'venue.create.button.submit': 'Vytvořit',
+  'venue.create.button.back': 'zpět',
 
   // errors
-  'create.venue.input.address.required': 'Vyberte prosím adresu',
+  'venue.create.input.address.required': 'Vyberte prosím adresu',
 
   // toasts
-  'create.venue.toast.success':
+  'venue.create.toast.success':
     'Pobočka na adrese "{address}" byla úspěsně vytvořena.',
 };

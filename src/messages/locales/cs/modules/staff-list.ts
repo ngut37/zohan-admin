@@ -10,7 +10,7 @@ export const staffListMessages: MessageObject = {
   // toasts
   'staff-list.item.toast.success': 'Zaměstnanec byl úspěsně upraven.',
 
-  // DRAWER
+  /* ITEM DRAWER */
   // headings
   'staff-list.item.drawer.heading': 'Upravit zaměstnance',
 
@@ -24,10 +24,6 @@ export const staffListMessages: MessageObject = {
   'staff-list.item.drawer.input.venue.placeholder': 'Vyberte pobočku',
   'staff-list.item.drawer.input.staff_name.placeholder': 'Jan Srna',
   'staff-list.item.drawer.input.email.placeholder': 'jan.srna@email.cz',
-
-  // buttons
-  'staff-list.item.drawer.button.submit': 'Uložit',
-  'staff-list.item.drawer.button.close': 'zavřít',
 
   // errors
   'staff-list.item.input.email.error.conflict':

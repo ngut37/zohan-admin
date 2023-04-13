@@ -12,6 +12,7 @@ export type Config = {
   MAX_NAME_LENGTH: number;
   MIN_PASSWORD_LENGTH: number;
   MAX_PASSWORD_LENGTH: number;
+  SERVICE_LENGTH_CHUNK_SIZE_IN_MINUTES: number;
 };
 
 export type ConfigKeys = keyof Config;

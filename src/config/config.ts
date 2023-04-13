@@ -11,6 +11,7 @@ const defaultConfig: Config = {
   MAX_NAME_LENGTH: 64,
   MIN_PASSWORD_LENGTH: 6,
   MAX_PASSWORD_LENGTH: 256,
+  SERVICE_LENGTH_CHUNK_SIZE_IN_MINUTES: 15,
 };
 
 export const config = createConfig(

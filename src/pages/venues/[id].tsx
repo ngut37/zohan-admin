@@ -7,7 +7,7 @@ import { Root } from '@modules/root';
 
 export default function VenuePage() {
   return (
-    <Root>
+    <Root protectedPage>
       <VenueEditForm />
     </Root>
   );

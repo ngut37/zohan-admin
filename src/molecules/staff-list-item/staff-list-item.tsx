@@ -389,18 +389,18 @@ export const StaffListItem = ({
             <Button
               leftIcon={<HiArrowSmLeft width="20px" />}
               message={{
-                id: m('drawer.button.close'),
+                id: 'button.close',
               }}
               variant="link"
               onClick={onClose}
-            ></Button>
+            />
             <Button
               width="200px"
               size="lg"
-              message={{ id: m('drawer.button.submit') }}
+              message={{ id: 'button.save' }}
               onClick={handleSubmit(onSubmit)}
               isLoading={submitting}
-            ></Button>
+            />
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

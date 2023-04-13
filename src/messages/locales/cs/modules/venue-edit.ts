@@ -1,17 +1,46 @@
 import { MessageObject } from '../../../types';
 
 export const venueEditMessages: MessageObject = {
-  // labels
-  'venue.edit.input.address.label': 'Adresa',
-
-  // buttons
-  'venue.edit.button.back': 'zpět',
-  'venue.edit.button.submit': 'Uložit',
-
-  // errors
-  'venue.edit.input.address.required': 'Vyberte prosím adresu',
-
   // toasts
   'venue.edit.toast.success':
     'Pobočka na adrese "{address}" byla úspěsně uložena.',
+
+  // tabs
+  'venue.edit.tab.information': 'Základní informace',
+  'venue.edit.tab.staff': 'Zaměstnanci',
+  'venue.edit.tab.services': 'Nabízené služby',
+
+  /* INFORMATION TAB */
+  // labels
+  'venue.edit.information_tab.input.address.label': 'Adresa',
+  'venue.edit.information_tab.input.address_region_district.label':
+    'Vybraný region a okres',
+
+  // errors
+  'venue.edit.information_tab.input.address.required': 'Vyberte prosím adresu',
+
+  /* STAFF TAB */
+  'venue.edit.staff_tab.work_in_progress': '🔧 tato sekce je ve vývoji',
+
+  /* SERVICES TAB */
+  // labels
+  'venue.edit.services_tab.input.services.label': 'Vyberte ze seznamu',
+  'venue.edit.services_tab.input.length.label': 'Délka (násobky čtvrthodin)',
+  'venue.edit.services_tab.input.price.label': 'Cena (Kč)',
+  'venue.edit.services_tab.input.staff.label': 'Zaměstnanci',
+
+  // placeholders
+  'venue.edit.services_tab.input.length.placeholder':
+    'délka po čtvrthodinách (15, 30, 45, 60, 75, 90, ...)',
+  'venue.edit.services_tab.input.price.placeholder': 'cena v Kč',
+
+  // errors
+  'venue.edit.services_tab.input.length.required':
+    'Vyplňte prosím kladnou délku',
+  'venue.edit.services_tab.input.length.divisible':
+    'Délka musí být násobkem čtvrthodiny (15, 30, 45, 60, ...)',
+  'venue.edit.services_tab.input.price.required': 'Vyplňte prosím kladnou cenu',
+
+  // toasts
+  'venue.edit.services_tab.toast.success': 'Služby byly úspěšně uloženy',
 };

@@ -20,22 +20,22 @@ export const Navbar = () => {
   const authLinks = useMemo(() => {
     if (!auth)
       return (
-        <>
+        <HStack spacing="20px">
           <Link href="/login">
             <Text
               color="whitesmoke"
-              fontSize="sm"
+              fontSize="md"
               message={{ id: 'navbar.login' }}
             />
           </Link>
           <Link href="/register">
             <Text
               color="whitesmoke"
-              fontSize="sm"
+              fontSize="md"
               message={{ id: 'navbar.register' }}
             />
           </Link>
-        </>
+        </HStack>
       );
     else {
       const { name } = auth || {};
@@ -50,34 +50,37 @@ export const Navbar = () => {
       // );
       return (
         <>
-          <Link href="/">
-            <Text
-              color="whitesmoke"
-              fontSize="sm"
-              message={{ text: 'Paleta' }}
-            />
-          </Link>
-          <Link href="/staff">
-            <Text
-              color="whitesmoke"
-              fontSize="sm"
-              message={{ id: m('link.staff') }}
-            />
-          </Link>
-          <Link href="/venues">
-            <Text
-              color="whitesmoke"
-              fontSize="sm"
-              message={{ id: m('link.venues') }}
-            />
-          </Link>
-          <Text fontWeight={600} color="white" message={{ text: name }} />
-          <Button
-            rightIcon={<HiOutlineLogout color="whitesmoke" />}
-            variant="solid"
-            onClick={logout}
-            message={{ id: 'navbar.logout' }}
-          ></Button>
+          <HStack spacing="20px">
+            <Link href="/staff">
+              <Text
+                color="whitesmoke"
+                fontSize="md"
+                message={{ id: m('link.staff') }}
+                transition="border-bottom 0.2s"
+                border="1px solid transparent"
+                _hover={{ borderBottom: '1px solid whitesmoke' }}
+              />
+            </Link>
+            <Link href="/venues">
+              <Text
+                color="whitesmoke"
+                fontSize="md"
+                message={{ id: m('link.venues') }}
+                transition="border-bottom 0.2s"
+                border="1px solid transparent"
+                _hover={{ borderBottom: '1px solid whitesmoke' }}
+              />
+            </Link>
+          </HStack>
+          <HStack>
+            <Text color="white" message={{ text: name }} />
+            <Button
+              rightIcon={<HiOutlineLogout color="whitesmoke" />}
+              variant="solid"
+              onClick={logout}
+              message={{ id: 'navbar.logout' }}
+            ></Button>
+          </HStack>
         </>
       );
     }
@@ -91,22 +94,22 @@ export const Navbar = () => {
       justify="space-between"
       px={[4, 7]}
     >
-      <Flex width={600} justify="space-between" align="center">
-        <Link href="/">
-          <Text
-            type="heading"
-            message={{ id: 'brand_name' }}
-            size="md"
-            color="whitesmoke"
-          />
-        </Link>
-      </Flex>
       <HStack
-        minWidth={[180, 200]}
+        width="100%"
         spacing="20px"
         align="center"
-        justifyContent="flex-end"
+        justifyContent="space-between"
       >
+        <Flex align="center">
+          <Link href="/">
+            <Text
+              type="heading"
+              message={{ id: 'brand_name' }}
+              size="md"
+              color="whitesmoke"
+            />
+          </Link>
+        </Flex>
         {authLinks}
       </HStack>
     </Flex>

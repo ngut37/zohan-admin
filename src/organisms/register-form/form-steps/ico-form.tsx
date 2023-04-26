@@ -4,7 +4,7 @@ import { useIntl } from 'react-intl';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { CompanyFormData, fetchCompanyByIco } from '@api/company';
+import { CompanyFormData, fetchCompanyByIco } from '@api/companies';
 import { HttpStatusCode, getResponseStatusCode } from '@api/utils';
 
 import { messageIdConcat } from '@utils/message-id-concat';

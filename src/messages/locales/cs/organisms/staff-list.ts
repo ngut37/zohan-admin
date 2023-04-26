@@ -26,6 +26,23 @@ export const staffListMessages: MessageObject = {
   'staff-list.item.drawer.input.email.placeholder': 'jan.srna@email.cz',
 
   // errors
+  'staff-list.item.input.name.error.required': 'Jméno nemůže být prázdné',
+  'staff-list.item.input.name.error.min': `Jméno musí obsahovat nejméně {length} {length, plural, 
+      one {znak}
+      few {znaky}
+      other {znaků}
+    }`,
+  'staff-list.item.input.name.error.max': `Jméno přesahuje maximální délku {length} {length, plural, 
+    one {znak}
+    few {znaky}
+    other {znaků}
+  }`,
+  'staff-list.item.input.email.error.required':
+    'Emailová adresa nemůže být prázdná',
+  'staff-list.item.input.email.error.format':
+    'Emailová adresa není ve správném tvaru',
   'staff-list.item.input.email.error.conflict':
     'Zaměstnanec s touto emailovou adresou již existuje',
+  'staff-list.item.input.role.error.required':
+    'Vyberte prosím oprávnění zaměstnance',
 };

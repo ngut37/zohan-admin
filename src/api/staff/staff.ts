@@ -58,12 +58,8 @@ export type Staff = {
   role: StaffRole;
 };
 
-type GetAllStaffData = { staff: Staff[] };
-
 export const getAllStaffOrFail = async () => {
-  const response = await protectedApiClient.request<
-    ResponseResult<GetAllStaffData>
-  >({
+  const response = await protectedApiClient.request<ResponseResult<Staff[]>>({
     url: '/staff',
     method: 'get',
   });

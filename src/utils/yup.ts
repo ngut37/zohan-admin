@@ -44,8 +44,34 @@ Yup.addMethod(
   'phoneNumber',
   function (
     locale: PhoneTypes[] | PhoneTypes = Object.keys(phones) as PhoneTypes[],
+    optional?: boolean,
     message?,
   ) {
+    if (optional) {
+      return this.test('phone-number', message, (value: string | undefined) => {
+        const trimmedValue = value?.replace(/\s|-|\(|\)/g, '');
+        if (trimmedValue) {
+          if (Array.isArray(locale)) {
+            return locale.some((key) => {
+              const phoneRegex = phones[key as PhoneTypes];
+              if (key === 'cs-CZ' || key === 'sk-SK') {
+                const isNumbersUnique = validateNumberUniqueness(trimmedValue);
+                return phoneRegex.test(trimmedValue) && isNumbersUnique;
+              }
+              return phoneRegex.test(trimmedValue);
+            });
+          } else {
+            if (locale === 'cs-CZ' || locale === 'sk-SK') {
+              const isNumbersUnique = validateNumberUniqueness(trimmedValue);
+              return phones[locale].test(trimmedValue) && isNumbersUnique;
+            }
+            return phones[locale].test(trimmedValue);
+          }
+        }
+        return true;
+      });
+    }
+
     return this.test('phone-number', message, (value: string | undefined) => {
       const trimmedValue = value?.replace(/\s|-|\(|\)/g, '');
       if (trimmedValue) {
@@ -75,6 +101,7 @@ declare module 'yup' {
   interface StringSchema {
     phoneNumber(
       locale?: PhoneTypes[] | PhoneTypes,
+      optional?: boolean,
       message?: Message | string,
     ): StringSchema;
     ico(message?: Message | string): StringSchema;

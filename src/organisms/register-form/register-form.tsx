@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { CompanyFormData } from '@api/company';
+import { CompanyFormData } from '@api/companies';
 
 import { Card } from '@atoms';
 

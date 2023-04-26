@@ -11,9 +11,10 @@ import {
 
 export type ButtonProps = ChakraButtonProps & {
   message: Message;
+  ref?: React.Ref<HTMLButtonElement>;
 };
 
-export const Button = ({ message, ...buttonProps }: ButtonProps) => {
+export const Button = ({ message, ref, ...buttonProps }: ButtonProps) => {
   const intl = useIntl();
   const content = useMemo(
     () => messageToString(message, intl),
@@ -21,7 +22,7 @@ export const Button = ({ message, ...buttonProps }: ButtonProps) => {
   );
 
   return (
-    <ChakraButton colorScheme="teal" {...buttonProps}>
+    <ChakraButton colorScheme="teal" ref={ref} {...buttonProps}>
       {content}
     </ChakraButton>
   );

@@ -149,16 +149,25 @@ export const ServicesTab = ({ venueId }: Props) => {
   // fetch existing services and set them to form values
   const { fetch: fetchServices, requestComplete: requestCompleteServices } =
     useApi(async () => {
-      const services = await getServices(venueId);
-      services.forEach(({ _id, type, name, venue, length, price, staff }) => {
-        setValue(`${name}.id`, _id);
-        setValue(`${name}.type`, type as ServiceType);
-        setValue(`${name}.name`, name);
-        setValue(`${name}.venue`, venue);
-        setValue(`${name}.length`, length);
-        setValue(`${name}.price`, price);
-        setValue(`${name}.staff`, staff);
-      });
+      try {
+        const services = await getServices(venueId);
+        services.forEach(({ _id, type, name, venue, length, price, staff }) => {
+          setValue(`${name}.id`, _id);
+          setValue(`${name}.type`, type as ServiceType);
+          setValue(`${name}.name`, name);
+          setValue(`${name}.venue`, venue);
+          setValue(`${name}.length`, length);
+          setValue(`${name}.price`, price);
+          setValue(`${name}.staff`, staff);
+        });
+      } catch (error) {
+        toast({
+          description: messageToString({ id: 'error.api' }, intl),
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        });
+      }
     });
 
   const { fetch: fetchStaff, requestComplete: requestCompleteStaff } = useApi(

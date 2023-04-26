@@ -14,7 +14,7 @@ import {
   CompanyFormData,
   CompleteCompanyFormData,
   createCompany,
-} from '@api/company';
+} from '@api/companies';
 import { HttpStatusCode } from '@api/utils';
 
 import { yup } from '@utils/yup';

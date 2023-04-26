@@ -20,6 +20,7 @@ export const staffCreateMessages: MessageObject = {
   'create.staff.button.back': 'zpět',
 
   // errors
+  'create.staff.input.name.error.required': 'Jméno nemůže být prázdné',
   'create.staff.input.name.error.min': `Jméno musí obsahovat nejméně {length} {length, plural, 
     one {znak}
     few {znaky}

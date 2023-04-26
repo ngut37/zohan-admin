@@ -69,7 +69,7 @@ export const StaffListItem = ({
   useEffect(() => {
     (async () => {
       try {
-        const { venues } = await getAllVenuesOrFail();
+        const venues = await getAllVenuesOrFail();
         setVenueOptions(venues);
       } catch (error) {
         toast({

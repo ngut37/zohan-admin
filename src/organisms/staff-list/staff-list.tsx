@@ -40,7 +40,7 @@ export const StaffList = () => {
     try {
       const fetchedVenuesResult = await getAllStaffOrFail();
 
-      setStaff(fetchedVenuesResult.staff);
+      setStaff(fetchedVenuesResult);
     } catch (error) {
       toast({
         description: messageToString({ id: 'error.api' }, intl),
@@ -69,13 +69,11 @@ export const StaffList = () => {
     }
 
     return staff.map((staff) => (
-      <>
-        <StaffListItem
-          key={staff._id}
-          {...staff}
-          onAfterSubmit={fetchAndSetStaff}
-        />
-      </>
+      <StaffListItem
+        key={staff._id}
+        {...staff}
+        onAfterSubmit={fetchAndSetStaff}
+      />
     ));
   }, [loading, staff]);
 

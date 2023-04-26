@@ -37,9 +37,9 @@ export const VenueList = () => {
 
   const fetchAndSetVenues = useCallback(async () => {
     try {
-      const fetchedVenuesResult = await getAllVenuesOrFail();
+      const venues = await getAllVenuesOrFail();
 
-      setVenues(fetchedVenuesResult.venues);
+      setVenues(venues);
     } catch (error) {
       toast({
         description: messageToString({ id: 'error.api' }, intl),

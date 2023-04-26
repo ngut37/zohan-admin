@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 
 import { IntlProvider } from 'react-intl';
 
@@ -17,8 +17,12 @@ if (isServer) {
 
 type Props = PropsWithChildren<{}>;
 
-export const MessagesProvider = ({ children }: Props) => (
-  <IntlProvider locale="cs" messages={cs}>
-    {children}
-  </IntlProvider>
-);
+export const MessagesProvider = ({ children }: Props) => {
+  const [locale, _setLocale] = useState<string>('cs');
+
+  return (
+    <IntlProvider locale={locale} messages={cs}>
+      {children}
+    </IntlProvider>
+  );
+};

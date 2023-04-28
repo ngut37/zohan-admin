@@ -1,8 +1,12 @@
 import { MessageObject } from '../../types';
 
 export const globalMessages: MessageObject = {
-  brand_name: 'ZOHAN - administrace',
+  brand_name: 'ZOHAR - administrace',
   lorem: 'The quick brown fox jumps over the lazy dog.',
+
+  // UNITS
+  'unit.price_with_currency': '{price} {currency}',
+  'unit.duration_with_minutes': '{duration} min',
 
   // GENDERS
   'gender.male': 'Muž',
@@ -26,7 +30,16 @@ export const globalMessages: MessageObject = {
   // BUTTONS
   'button.back': 'zpět',
   'button.close': 'zavřít',
-  'button.save': 'Uložit',
+  'button.save': 'uložit',
+  'button.create': 'vytvořit',
+  'button.cancel': 'zrušit',
+  'button.delete': 'smazat',
+  'button.edit': 'upravit',
+  'button.prev': 'předchozí',
+  'button.next': 'další',
+  'button.today': 'dnes',
+  'button.confirm_delete': 'potvrdit smazání',
+  'button.create_booking': 'vytvořit rezervaci',
 
   // input label
   'input.label.optional': 'nepovinné',
@@ -54,4 +67,46 @@ export const globalMessages: MessageObject = {
   'service_name.massage_turkish': 'Turecká masáž',
   'service_name.spa_wellness_jacuzzi': 'Wellness jacuzzi',
   'service_name.spa_sauna': 'Sauna',
+
+  // months
+  'month.january': 'Leden',
+  'month.february': 'Únor',
+  'month.march': 'Březen',
+  'month.april': 'Duben',
+  'month.may': 'Květen',
+  'month.june': 'Červen',
+  'month.july': 'Červenec',
+  'month.august': 'Srpen',
+  'month.september': 'Září',
+  'month.october': 'Říjen',
+  'month.november': 'Listopad',
+  'month.december': 'Prosinec',
+  'month.0': 'Leden',
+  'month.1': 'Únor',
+  'month.2': 'Březen',
+  'month.3': 'Duben',
+  'month.4': 'Květen',
+  'month.5': 'Červen',
+  'month.6': 'Červenec',
+  'month.7': 'Srpen',
+  'month.8': 'Září',
+  'month.9': 'Říjen',
+  'month.10': 'Listopad',
+  'month.11': 'Prosinec',
+
+  // days
+  'day.monday': 'Pondělí',
+  'day.tuesday': 'Úterý',
+  'day.wednesday': 'Středa',
+  'day.thursday': 'Čtvrtek',
+  'day.friday': 'Pátek',
+  'day.saturday': 'Sobota',
+  'day.sunday': 'Neděle',
+  'day.0': 'Pondělí',
+  'day.1': 'Úterý',
+  'day.2': 'Středa',
+  'day.3': 'Čtvrtek',
+  'day.4': 'Pátek',
+  'day.5': 'Sobota',
+  'day.6': 'Neděle',
 };

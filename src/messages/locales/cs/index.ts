@@ -1,16 +1,23 @@
 import { globalMessages } from './global';
-import { navbarMessages } from './modules/navbar';
-import { registerMessages } from './modules/register';
-import { loginMessages } from './modules/login';
-import { registerDoneMessages } from './modules/register-done';
-import { venueListMessages } from './modules/venue-list';
-import { venueCreateMessages } from './modules/venue-create';
-import { staffListMessages } from './modules/staff-list';
-import { staffCreateMessages } from './modules/create-staff';
-import { venueEditMessages } from './modules/venue-edit';
+import { navbarMessages } from './organisms/navbar';
+import { registerMessages } from './organisms/register';
+import { loginMessages } from './organisms/login';
+import { registerDoneMessages } from './organisms/register-done';
+import { venueListMessages } from './organisms/venue-list';
+import { venueCreateMessages } from './organisms/venue-create';
+import { staffListMessages } from './organisms/staff-list';
+import { staffCreateMessages } from './organisms/create-staff';
+import { venueEditMessages } from './organisms/venue-edit';
+import { dashboardMessages } from './organisms/dashboard';
+import { dateTimePicker } from './molecules/date-time-picker';
 
 export const cs = {
   ...globalMessages,
+
+  // molecules
+  ...dateTimePicker,
+
+  // organisms
   ...navbarMessages,
   ...registerMessages,
   ...registerDoneMessages,
@@ -20,4 +27,5 @@ export const cs = {
   ...venueEditMessages,
   ...staffListMessages,
   ...staffCreateMessages,
+  ...dashboardMessages,
 };

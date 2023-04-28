@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { useIntl } from 'react-intl';
 
-import { CompanyFormData } from '@api/company';
+import { CompanyFormData } from '@api/companies';
 
 import { messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';

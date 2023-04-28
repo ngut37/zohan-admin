@@ -11,14 +11,8 @@ export type Venue = {
   momc: string;
 };
 
-type GetAllVenuesData = {
-  venues: Venue[];
-};
-
 export const getAllVenuesOrFail = async () => {
-  const response = await protectedApiClient.request<
-    ResponseResult<GetAllVenuesData>
-  >({
+  const response = await protectedApiClient.request<ResponseResult<Venue[]>>({
     url: '/venues',
     method: 'get',
   });
@@ -44,9 +38,7 @@ export type CreateVenueBody = {
 };
 
 export const createVenueOrFail = async (body: CreateVenueBody) => {
-  const response = await protectedApiClient.request<
-    ResponseResult<GetAllVenuesData>
-  >({
+  const response = await protectedApiClient.request<ResponseResult<Venue>>({
     url: '/venues/create',
     method: 'post',
     data: body,
@@ -58,9 +50,7 @@ export const createVenueOrFail = async (body: CreateVenueBody) => {
 export type EditVenueBody = CreateVenueBody;
 
 export const editVenueOrFail = async (id: string, body: EditVenueBody) => {
-  const response = await protectedApiClient.request<
-    ResponseResult<GetAllVenuesData>
-  >({
+  const response = await protectedApiClient.request<ResponseResult<Venue>>({
     url: `/venues/${id}/edit`,
     method: 'post',
     data: body,

@@ -49,7 +49,7 @@ import classes from './staff-list-item.module.scss';
 
 const m = messageIdConcat('staff-list.item');
 
-type Option = SingleValue<{ value: string; label: string }>;
+type Option = SingleValue<{ value?: string; label?: string }>;
 
 type Props = Staff & { onAfterSubmit?: () => Promise<void> };
 
@@ -142,7 +142,7 @@ export const StaffListItem = ({
       name,
       email,
       role,
-      venue: initialVenue._id,
+      venue: initialVenue?._id,
     },
   });
 
@@ -363,8 +363,8 @@ export const StaffListItem = ({
                   className={classes.multiSelectContainer}
                   options={options as { label: string; value: string }[]} // type hack
                   defaultValue={{
-                    label: initialVenue.stringAddress,
-                    value: initialVenue._id,
+                    label: initialVenue?.stringAddress,
+                    value: initialVenue?._id,
                   }}
                   placeholder={messageToString(
                     {

@@ -54,7 +54,7 @@ export type Staff = {
   _id: string;
   name: string;
   email: string;
-  venue: Venue;
+  venue?: Venue;
   role: StaffRole;
 };
 

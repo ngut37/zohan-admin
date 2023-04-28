@@ -441,7 +441,7 @@ export const BookingEditModal = () => {
                     }}
                   >
                     {availableStaff.map((staff) => {
-                      if (staff.venue._id !== selectedVenueId) {
+                      if (staff.venue?._id !== selectedVenueId) {
                         return null;
                       }
 

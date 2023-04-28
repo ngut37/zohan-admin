@@ -54,9 +54,11 @@ export const VenueCreateForm = () => {
       setSubmitting(true);
 
       try {
-        await createVenueOrFail(data);
+        const createdVenue = await createVenueOrFail(data);
 
-        router.push('/venues', undefined, { shallow: true });
+        router.push(`/venues/${createdVenue._id}`, undefined, {
+          shallow: true,
+        });
 
         toast({
           description: messageToString(

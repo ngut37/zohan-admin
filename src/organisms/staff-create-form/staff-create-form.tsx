@@ -305,7 +305,6 @@ export const StaffCreateForm = () => {
               leftIcon={<HiPlus />}
               size="lg"
               onClick={handleSubmit(onSubmit)}
-              // onClick={() => console.log(errors)}
               marginTop="20px"
               width="150px"
               message={{ id: m('button.submit') }}

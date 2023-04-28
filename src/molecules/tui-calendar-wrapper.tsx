@@ -39,6 +39,7 @@ const TUICalendarWrapper = () => {
     bookings,
     setModalOpen,
     setCreateModalOpen,
+    selectedVenue,
     setSelectedVenue,
     setModalData,
   } = useDashboard();
@@ -139,9 +140,27 @@ const TUICalendarWrapper = () => {
   }, [availableStaff, availableVenues]);
 
   const venueSelect = useMemo(() => {
-    if (!availableVenues.length) {
-      return null;
-    }
+    const venueSelect = availableVenues.length ? (
+      <>
+        <InputLabel message={{ id: m('input.venue.label') }} />
+        <Select
+          onChange={(e) => {
+            const selectedVenue = availableVenues.find(
+              (venue) => venue._id === e.target.value,
+            );
+            if (selectedVenue) {
+              setSelectedVenue(selectedVenue);
+            }
+          }}
+        >
+          {availableVenues.map((venue) => (
+            <option key={venue._id} value={venue._id}>
+              {venue.stringAddress}
+            </option>
+          ))}
+        </Select>
+      </>
+    ) : null;
 
     return (
       <HStack
@@ -150,25 +169,7 @@ const TUICalendarWrapper = () => {
         paddingY="15px"
         justifyContent="space-between"
       >
-        <VStack width="500px">
-          <InputLabel message={{ id: m('input.venue.label') }} />
-          <Select
-            onChange={(e) => {
-              const selectedVenue = availableVenues.find(
-                (venue) => venue._id === e.target.value,
-              );
-              if (selectedVenue) {
-                setSelectedVenue(selectedVenue);
-              }
-            }}
-          >
-            {availableVenues.map((venue) => (
-              <option key={venue._id} value={venue._id}>
-                {venue.stringAddress}
-              </option>
-            ))}
-          </Select>
-        </VStack>
+        <VStack width="500px">{venueSelect}</VStack>
         <VStack>
           <InputLabel
             message={{ id: m('input.view_type.label') }}
@@ -220,6 +221,7 @@ const TUICalendarWrapper = () => {
           onClick={() => {
             setCreateModalOpen(true);
           }}
+          disabled={!selectedVenue}
         />
         <HStack>
           <Text

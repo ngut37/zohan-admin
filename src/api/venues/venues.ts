@@ -84,3 +84,15 @@ export const getStaff = async (venueId: string) => {
 
   return response.data.data;
 };
+
+export const deleteVenueByIdOrFail = async (id: string) => {
+  try {
+    await protectedApiClient.request({
+      url: `/venues/${id}`,
+      method: 'delete',
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

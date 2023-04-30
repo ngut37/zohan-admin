@@ -149,37 +149,41 @@ export const DashboardProvider = ({ children }: Props) => {
 
       return bookings;
     };
-    fetchBookings().then((bookings) => {
-      const mappedBookingsToEvents: EventObject[] = bookings.map((booking) => {
-        const serviceName = messageToString(
-          {
-            id: `service_name.${booking.service.name}`,
+    fetchBookings()
+      .then((bookings) => {
+        const mappedBookingsToEvents: EventObject[] = bookings.map(
+          (booking) => {
+            const serviceName = messageToString(
+              {
+                id: `service_name.${booking.service.name}`,
+              },
+              intl,
+            );
+
+            const customerName =
+              booking.existingCustomer?.name || booking.customCustomer?.name;
+
+            const concatenatedTitle = `${serviceName} - ${customerName}`;
+
+            return {
+              id: booking._id,
+              calendarId: booking.staff,
+              title: concatenatedTitle,
+              category: 'time',
+              start: booking.start,
+              end: booking.end,
+              raw: {
+                service: booking.service,
+                staff: booking.staff,
+                existingCustomerData: booking.existingCustomer,
+                customCustomer: booking.customCustomer,
+              },
+            };
           },
-          intl,
         );
-
-        const customerName =
-          booking.existingCustomer?.name || booking.customCustomer?.name;
-
-        const concatenatedTitle = `${serviceName} - ${customerName}`;
-
-        return {
-          id: booking._id,
-          calendarId: booking.staff,
-          title: concatenatedTitle,
-          category: 'time',
-          start: booking.start,
-          end: booking.end,
-          raw: {
-            service: booking.service,
-            staff: booking.staff,
-            existingCustomerData: booking.existingCustomer,
-            customCustomer: booking.customCustomer,
-          },
-        };
-      });
-      setBookings(mappedBookingsToEvents);
-    });
+        setBookings(mappedBookingsToEvents);
+      })
+      .catch((_error) => {});
   }, [selectedVenue, bookingDateRange]);
 
   useDebouncedEffect(

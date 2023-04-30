@@ -1,10 +1,19 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
+import { useRouter } from 'next/router';
+import { HiOutlineTrash } from 'react-icons/hi';
 
 import {
+  deleteVenueByIdOrFail,
   EditVenueBody,
   editVenueOrFail,
   getVenueByIdOrFail,
@@ -22,7 +31,20 @@ import { Text, Button } from '@atoms';
 import { InputLabel } from '@molecules/input-label';
 import { AddressSuggestionInput } from '@molecules/address-suggestion-input';
 
-import { Flex, Spinner, useToast, VStack } from '@chakra-ui/react';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Flex,
+  HStack,
+  Spinner,
+  useDisclosure,
+  useToast,
+  VStack,
+} from '@chakra-ui/react';
 
 import { colors } from '@styles';
 
@@ -35,6 +57,14 @@ type Props = {
 export const InformationTab = ({ venueId }: Props) => {
   const intl = useIntl();
   const toast = useToast();
+  const router = useRouter();
+  const {
+    isOpen: isDisclosureOpen,
+    onOpen: onDisclosureOpen,
+    onClose: onDisclosureClose,
+  } = useDisclosure();
+
+  const cancelDeleteRef = useRef<HTMLButtonElement>(null);
 
   const [suggestion, setSuggestion] = useState<
     SuggestionFormData | undefined
@@ -143,6 +173,60 @@ export const InformationTab = ({ venueId }: Props) => {
     [setValue],
   );
 
+  const deleteVenueAlertDialog = useMemo(() => {
+    return (
+      <AlertDialog
+        isCentered
+        isOpen={isDisclosureOpen}
+        leastDestructiveRef={cancelDeleteRef}
+        onClose={onDisclosureClose}
+        closeOnOverlayClick={false}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              {messageToString({ id: m('delete_confirmation.title') }, intl)}
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              {messageToString({ id: m('delete_confirmation.subtitle') }, intl)}
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button
+                ref={cancelDeleteRef}
+                onClick={onDisclosureClose}
+                message={{ id: 'button.cancel' }}
+                variant="outline"
+              />
+              <Button
+                colorScheme="red"
+                onClick={async () => {
+                  await deleteVenueByIdOrFail(venueId);
+                  onDisclosureClose();
+
+                  router.push('/venues', undefined, { shallow: true });
+
+                  toast({
+                    description: messageToString(
+                      { id: m('delete_confirmation.toast.success') },
+                      intl,
+                    ),
+                    status: 'info',
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                }}
+                ml={3}
+                message={{ id: 'button.confirm_delete' }}
+              />
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    );
+  }, [isDisclosureOpen, onDisclosureClose, intl, venueId]);
+
   if (!requestComplete) {
     return (
       <Flex width="100%" height="200px" justify="center" align="center">
@@ -159,6 +243,7 @@ export const InformationTab = ({ venueId }: Props) => {
 
   return (
     <>
+      {deleteVenueAlertDialog}
       <VStack alignItems="flex-start" spacing="10px" width="450px">
         <InputLabel message={{ id: m('input.address.label') }} />
         <AddressSuggestionInput
@@ -198,14 +283,26 @@ export const InformationTab = ({ venueId }: Props) => {
           fontSize="sm"
           color="gray.700"
         />
-        <Button
-          width="100px"
-          marginTop="50px !important"
-          size="md"
-          message={{ id: 'button.save' }}
-          onClick={handleSubmit(onSubmit)}
-          isLoading={submitting}
-        />
+        <HStack justifyContent="space-between">
+          <Button
+            leftIcon={<HiOutlineTrash width="20px" />}
+            marginTop="50px !important"
+            variant="outline"
+            size="lg"
+            colorScheme="red"
+            message={{ id: 'button.delete' }}
+            onClick={onDisclosureOpen}
+            isLoading={submitting}
+          />
+          <Button
+            width="150px"
+            marginTop="50px !important"
+            size="lg"
+            message={{ id: 'button.save' }}
+            onClick={handleSubmit(onSubmit)}
+            isLoading={submitting}
+          />
+        </HStack>
       </VStack>
     </>
   );

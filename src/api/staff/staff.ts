@@ -95,3 +95,15 @@ export const editStaffOrFail = async (id: string, body: EditStaffBody) => {
 
   return response?.data.data;
 };
+
+export const deleteStaffOrFail = async (id: string) => {
+  try {
+    await protectedApiClient.request({
+      url: `/staff/${id}`,
+      method: 'delete',
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

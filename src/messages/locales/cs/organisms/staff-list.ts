@@ -45,4 +45,10 @@ export const staffListMessages: MessageObject = {
     'Zaměstnanec s touto emailovou adresou již existuje',
   'staff-list.item.input.role.error.required':
     'Vyberte prosím oprávnění zaměstnance',
+
+  /* ALERT DIALOG */
+  'staff-list.delete_confirmation.title': 'Smazat zaměstnance',
+  'staff-list.delete_confirmation.subtitle':
+    'Opravdu chcete smazat zaměstnance? Smazání zaměstnance smaže i jeho existující rezervace!',
+  'staff-list.delete_confirmation.toast.success': 'Zaměstnanec byl smazán.',
 };

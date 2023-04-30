@@ -165,8 +165,8 @@ export const StaffListItem = ({
         });
         onClose();
         onAfterSubmit && (await onAfterSubmit());
-      } catch (e) {
-        if (e?.response?.status === HttpStatusCode.CONFLICT) {
+      } catch (error) {
+        if (error?.response?.status === HttpStatusCode.CONFLICT) {
           setError(
             'email',
             {

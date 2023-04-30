@@ -45,7 +45,7 @@ export const AddressSuggestionInput = ({
         const resultAddresses = await suggestOrFail(element.target.value);
 
         setSuggestions(resultAddresses);
-      } catch (e) {
+      } catch (error) {
         if (!toastErrorPushed) {
           toast({
             description: messageToString({ id: 'error.api' }, intl),
@@ -165,6 +165,7 @@ export const AddressSuggestionInput = ({
     );
   }, [
     inputProps,
+    inputProps.error,
     suggestions,
     setSuggestions,
     onInputChange,

@@ -1,7 +1,7 @@
 import { MessageObject } from '../../types';
 
 export const globalMessages: MessageObject = {
-  brand_name: 'ZOHAR - administrace',
+  brand_name: 'ZOHAN - administrace',
   lorem: 'The quick brown fox jumps over the lazy dog.',
 
   // UNITS

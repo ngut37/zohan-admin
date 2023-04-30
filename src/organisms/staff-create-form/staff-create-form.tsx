@@ -146,9 +146,9 @@ export const StaffCreateForm = () => {
           duration: 10000,
           isClosable: true,
         });
-      } catch (e) {
-        console.error(e);
-        if (e?.response?.status === HttpStatusCode.CONFLICT) {
+      } catch (error) {
+        console.error(error);
+        if (error?.response?.status === HttpStatusCode.CONFLICT) {
           setError(
             'email',
             {

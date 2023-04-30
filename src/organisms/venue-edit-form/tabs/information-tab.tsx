@@ -101,8 +101,8 @@ export const InformationTab = ({ venueId }: Props) => {
           duration: 10000,
           isClosable: true,
         });
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.error(error);
         toast({
           description: messageToString({ id: 'error.api' }, intl),
           status: 'error',

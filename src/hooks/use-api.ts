@@ -19,8 +19,8 @@ export function useApi<T>(
       const result = await apiFunction(arg);
       setRequestResult(result);
       setRequestComplete(true);
-    } catch (e) {
-      setError(e);
+    } catch (error) {
+      setError(error);
       setRequestComplete(true);
     }
   };

@@ -2,7 +2,6 @@ import React, {
   PropsWithChildren,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 
@@ -18,10 +17,6 @@ import {
   Staff,
 } from '@utils/storage/auth';
 
-import { Flex, Spinner } from '@chakra-ui/react';
-
-import { colors } from '@styles';
-
 import { AuthContext } from './auth-context';
 
 type Props = PropsWithChildren<{ protectedPage?: boolean }>;
@@ -33,6 +28,7 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
 
   const authenticate = useCallback(async () => {
     if (!protectedPage) {
+      // A not a protected page -> no need to authenticate
       return;
     }
 
@@ -48,8 +44,9 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
       if (!refreshedAccessToken) {
         // B_1 refresh token is not valid/expired -> reroute to login page
         removeAccessToken();
+        await logoutOrFail();
         setAuthState(undefined);
-        router.push('./login');
+        router.push('/login');
       } else {
         // B_2 persist new access token in localstorage
         saveAccessTokenToken(refreshedAccessToken);
@@ -57,7 +54,7 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
       }
     }
 
-    // A access token is valid or was revalidated -> use it
+    // C access token is valid -> set auth state
     if (data) {
       setAuthState(data);
     }
@@ -67,16 +64,16 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
   const logout = useCallback(async () => {
     setLoading(true);
     try {
-      await logoutOrFail();
       removeAccessToken();
+      await logoutOrFail();
       setAuthState(undefined);
-      router.push('./login');
+      router.push('/login');
     } catch {
       console.error('Logout API failed.');
     } finally {
       setLoading(false);
     }
-  }, [setAuthState, router]);
+  }, [setAuthState, router, setLoading]);
 
   useEffect(() => {
     (async () => {
@@ -90,29 +87,11 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
     })();
   }, []);
 
-  const content = useMemo(
-    () =>
-      loading ? (
-        <Flex width="100%" height="100vh" justify="center" align="center">
-          <Spinner
-            thickness="4px"
-            speed="0.85s"
-            emptyColor={colors.white.hex()}
-            color={colors.teal_500.hex()}
-            size="xl"
-          />
-        </Flex>
-      ) : (
-        children
-      ),
-    [loading],
-  );
-
   return (
     <AuthContext.Provider
       value={{ auth, authenticate, logout, loading, setLoading }}
     >
-      {content}
+      {children}
     </AuthContext.Provider>
   );
 };

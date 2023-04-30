@@ -66,10 +66,12 @@ export const IcoForm = ({ afterSubmit }: Props) => {
         }
 
         afterSubmit && afterSubmit(companyFormData);
-      } catch (e) {
-        console.error(e);
+      } catch (error) {
+        console.error(error);
 
-        if (getResponseStatusCode(e.response) === HttpStatusCode.NOT_FOUND) {
+        if (
+          getResponseStatusCode(error.response) === HttpStatusCode.NOT_FOUND
+        ) {
           setError('ico', {
             message: messageToString({ id: m('input.error.not_found') }, intl),
           });

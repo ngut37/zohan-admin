@@ -72,7 +72,7 @@ export const VenueCreateForm = () => {
           duration: 10000,
           isClosable: true,
         });
-      } catch (e) {
+      } catch (error) {
         toast({
           description: messageToString({ id: 'error.api' }, intl),
           status: 'error',

@@ -1,5 +1,3 @@
-import {} from 'react';
-
 import { useCallback, useState } from 'react';
 
 import { useIntl } from 'react-intl';
@@ -66,9 +64,24 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
         ),
       )
       .required(messageToString({ id: m('input.name.error.required') }, intl)),
-    stringAddress: yup.string().required(),
-    regionString: yup.string().required(),
-    districtString: yup.string().required(),
+    stringAddress: yup
+      .string()
+      .required(
+        messageToString({ id: m('input.string_address.error.required') }, intl),
+      ),
+    regionString: yup
+      .string()
+      .required(
+        messageToString({ id: m('input.region_string.error.required') }, intl),
+      ),
+    districtString: yup
+      .string()
+      .required(
+        messageToString(
+          { id: m('input.district_string.error.required') },
+          intl,
+        ),
+      ),
     quarterString: yup.string(),
     staffName: yup
       .string()
@@ -77,7 +90,7 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
         config.MIN_NAME_LENGTH,
         messageToString(
           {
-            id: m('input.name.error.min'),
+            id: m('input.staff_name.error.min'),
             values: { length: config.MIN_NAME_LENGTH },
           },
           intl,
@@ -87,13 +100,15 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
         config.MAX_NAME_LENGTH,
         messageToString(
           {
-            id: m('input.name.error.max'),
+            id: m('input.staff_name.error.max'),
             values: { length: config.MAX_NAME_LENGTH },
           },
           intl,
         ),
       )
-      .required(messageToString({ id: m('input.name.error.required') }, intl)),
+      .required(
+        messageToString({ id: m('input.staff_name.error.required') }, intl),
+      ),
     email: yup
       .string()
       .email(messageToString({ id: m('input.email.error.format') }, intl))
@@ -130,6 +145,7 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
     formState: { errors },
     setError,
     setValue,
+    clearErrors,
   } = useForm<Inputs>({
     mode: 'onSubmit',
     defaultValues: defaultData,
@@ -158,8 +174,8 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
         });
 
         router.push(`/register-done?email=${restData.email}`);
-      } catch (e) {
-        if (e?.response?.status === HttpStatusCode.CONFLICT) {
+      } catch (error) {
+        if (error?.response?.status === HttpStatusCode.CONFLICT) {
           setError(
             'ico',
             {
@@ -195,6 +211,7 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
 
   const onAddressDropdownItemClickHandler = useCallback(
     (suggestion: SuggestionFormData) => {
+      clearErrors('stringAddress');
       const {
         stringAddress,
         regionString,
@@ -213,7 +230,7 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
 
   return {
     register,
-    handleSubmit: () => handleSubmit(onSubmit),
+    handleSubmit: handleSubmit(onSubmit),
     errors,
     onAddressInputChangeHandler,
     onAddressDropdownItemClickHandler,

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { HiOutlineLogout } from 'react-icons/hi';
+import { useRouter } from 'next/router';
+import { HiOutlineLogout, HiOutlineUserCircle } from 'react-icons/hi';
 
 import { messageIdConcat } from '@utils/message-id-concat';
 
@@ -16,6 +17,7 @@ const m = messageIdConcat('navbar');
 
 export const Navbar = () => {
   const { auth, logout } = useAuth();
+  const router = useRouter();
 
   const authLinks = useMemo(() => {
     if (!auth)
@@ -48,31 +50,42 @@ export const Navbar = () => {
       // ) : (
       //   <HiOutlineUserCircle width="20px" color={colors.whitesmoke.hex()} />
       // );
+      const isStaff = router.route.includes('/staff');
+      const isVenue = router.route.includes('/venues');
+
+      const userAvatar = (
+        <HiOutlineUserCircle width="20px" color={colors.whitesmoke.hex()} />
+      );
       return (
         <>
           <HStack spacing="20px">
-            <Link href="/staff">
-              <Text
-                color="whitesmoke"
-                fontSize="md"
-                message={{ id: m('link.staff') }}
-                transition="border-bottom 0.2s"
-                border="1px solid transparent"
-                _hover={{ borderBottom: '1px solid whitesmoke' }}
-              />
-            </Link>
-            <Link href="/venues">
+            <Button onClick={() => router.push('/venues')} variant="link">
               <Text
                 color="whitesmoke"
                 fontSize="md"
                 message={{ id: m('link.venues') }}
                 transition="border-bottom 0.2s"
-                border="1px solid transparent"
+                borderBottom={`1px solid ${
+                  isVenue ? 'whitesmoke' : 'transparent'
+                }`}
                 _hover={{ borderBottom: '1px solid whitesmoke' }}
               />
-            </Link>
+            </Button>
+            <Button onClick={() => router.push('/staff')} variant="link">
+              <Text
+                color="whitesmoke"
+                fontSize="md"
+                message={{ id: m('link.staff') }}
+                transition="border-bottom 0.2s"
+                borderBottom={`1px solid ${
+                  isStaff ? 'whitesmoke' : 'transparent'
+                }`}
+                _hover={{ borderBottom: '1px solid whitesmoke' }}
+              />
+            </Button>
           </HStack>
           <HStack>
+            {userAvatar}
             <Text color="white" message={{ text: name }} />
             <Button
               rightIcon={<HiOutlineLogout color="whitesmoke" />}
@@ -84,7 +97,7 @@ export const Navbar = () => {
         </>
       );
     }
-  }, [auth]);
+  }, [router, auth]);
 
   return (
     <Flex

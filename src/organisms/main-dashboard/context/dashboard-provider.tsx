@@ -59,7 +59,7 @@ export const DashboardProvider = ({ children }: Props) => {
         phone: yup
           .string()
           .phoneNumber(
-            undefined,
+            ['cs-CZ', 'sk-SK'],
             true,
             messageToString(
               { id: m('input.custom_customer.phone.invalid') },
@@ -109,21 +109,25 @@ export const DashboardProvider = ({ children }: Props) => {
       const venues = await getAllVenuesOrFail();
       return venues;
     };
-    fetchVenues().then((venues) => {
-      setAvailableVenues(venues);
-      if (venues.length) {
-        setSelectedVenue(venues[0]);
-      }
-    });
+    fetchVenues()
+      .then((venues) => {
+        setAvailableVenues(venues);
+        if (venues.length) {
+          setSelectedVenue(venues[0]);
+        }
+      })
+      .catch((_error) => {});
 
     // get staff
     const fetchStaff = async () => {
       const staff = await getAllStaffOrFail();
       return staff;
     };
-    fetchStaff().then((staff) => {
-      setAvailableStaff(staff);
-    });
+    fetchStaff()
+      .then((staff) => {
+        setAvailableStaff(staff);
+      })
+      .catch((_error) => {});
   }, []);
 
   useEffect(() => {

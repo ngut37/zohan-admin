@@ -4,6 +4,7 @@ import { useIntl } from 'react-intl';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { HiArrowSmLeft } from 'react-icons/hi';
+import { HiUser } from 'react-icons/hi2';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
 import { Select, SingleValue } from 'chakra-react-select';
 
@@ -24,7 +25,6 @@ import {
   Flex,
   Skeleton,
   Stack,
-  Image,
   useDisclosure,
   Drawer,
   DrawerOverlay,
@@ -42,6 +42,8 @@ import {
   VStack,
   HStack,
 } from '@chakra-ui/react';
+
+import { colors } from '@styles';
 
 import { InputLabel } from '../input-label';
 
@@ -227,18 +229,17 @@ export const StaffListItem = ({
       >
         <Flex
           justifySelf="flex-start"
+          justifyContent="center"
+          alignItems="center"
+          backgroundColor="gray.50"
+          height="170px"
           width="33%"
           overflow="hidden"
-          boxShadow="lg"
+          boxShadow="md"
           overflowX="hidden"
           overflowY="hidden"
         >
-          <Image
-            width="100%"
-            objectFit="cover"
-            src="https://100k-faces.glitch.me/random-image"
-            alt="placeholder"
-          />
+          <HiUser size="80px" color={colors.teal_300.hex()} opacity="0.6" />
         </Flex>
         <Stack
           spacing="5px"

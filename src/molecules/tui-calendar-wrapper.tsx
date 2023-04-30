@@ -8,6 +8,7 @@ import React, {
 
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 import { useIntl } from 'react-intl';
+import { format } from 'date-fns';
 import ToastUIReactCalendar from '@toast-ui/react-calendar';
 import { ExternalEventTypes, Options } from '@toast-ui/calendar';
 import { HiArrowNarrowLeft, HiArrowNarrowRight, HiPlus } from 'react-icons/hi';
@@ -32,6 +33,7 @@ const VIEW_TYPES: Options['defaultView'][] = ['day', 'week', 'month'];
 
 const TUICalendarWrapper = () => {
   const intl = useIntl();
+
   const {
     availableVenues,
     availableStaff,
@@ -61,6 +63,43 @@ const TUICalendarWrapper = () => {
 
     return calendarRefInstance;
   }, [calendarRef]);
+
+  useEffect(() => {
+    const calendarRefInstance = getCalendarRefInstance();
+
+    calendarRefInstance.setOptions({
+      template: {
+        alldayTitle() {
+          return `
+                <span class="toastui-calendar-left-content toastui-calendar-template-alldayTitle" style="width: 70px;text-align: right;height: 60px;">
+                ${messageToString({ id: m('calendar.all_day.title') }, intl)}
+                </span>`;
+        },
+        timegridDisplayPrimaryTime({ time }) {
+          const date = time.getTime();
+          const formattedTime = format(date, 'HH:mm');
+
+          return formattedTime;
+        },
+        monthMoreTitleDate(moreTitle) {
+          const date = new Date(moreTitle.ymd);
+          const formattedDate = format(date, 'dd.MM.yyyy');
+          const dayOfWeek = messageToString(
+            { id: `day.${date.getDay() - 1}` },
+            intl,
+          );
+
+          return `<span>${formattedDate} - ${dayOfWeek}</span>`;
+        },
+        monthGridHeaderExceed(hiddenEvents) {
+          return `<span>${messageToString(
+            { id: 'countable.next', values: { count: hiddenEvents } },
+            intl,
+          )}</span>`;
+        },
+      },
+    });
+  }, [calendarRef, intl]);
 
   useEffect(() => {
     if (!availableStaff.length) {
@@ -225,11 +264,13 @@ const TUICalendarWrapper = () => {
         />
         <HStack>
           <Text
+            fontSize="2xl"
             message={{
               id: `month.${currentDate.getMonth()}`,
             }}
           />
           <Text
+            fontSize="2xl"
             message={{
               text: currentDate.getFullYear().toString(),
             }}
@@ -300,6 +341,7 @@ const TUICalendarWrapper = () => {
       {calendarControls}
       <Box width="100%" paddingX="100px" paddingTop="30px">
         <ToastUIReactCalendar
+          height="700px"
           ref={calendarRef}
           usageStatistics={false}
           week={{

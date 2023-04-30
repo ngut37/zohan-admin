@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useRouter } from 'next/router';
+import { HiBuildingStorefront } from 'react-icons/hi2';
 
 import { Venue } from '@api/venues';
 
@@ -8,7 +9,9 @@ import { messageIdConcat } from '@utils/message-id-concat';
 
 import { Button, Text } from '@atoms';
 
-import { Flex, Skeleton, Stack, Image } from '@chakra-ui/react';
+import { Flex, Skeleton, Stack } from '@chakra-ui/react';
+
+import { colors } from '@styles';
 
 const m = messageIdConcat('venues-list.item');
 
@@ -39,17 +42,20 @@ export const VenueListItem = ({
       >
         <Flex
           justifySelf="flex-start"
+          justifyContent="center"
+          alignItems="center"
+          backgroundColor="gray.50"
+          height="170px"
           width="33%"
           overflow="hidden"
-          boxShadow="lg"
+          boxShadow="md"
           overflowX="hidden"
           overflowY="hidden"
         >
-          <Image
-            width="100%"
-            objectFit="cover"
-            src="https://www.businessanimals.cz/wp-content/uploads/2017/05/fff.jpg"
-            alt="placeholder"
+          <HiBuildingStorefront
+            size="80px"
+            color={colors.teal_300.hex()}
+            opacity="0.6"
           />
         </Flex>
         <Stack

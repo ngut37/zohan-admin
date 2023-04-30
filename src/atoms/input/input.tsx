@@ -32,13 +32,14 @@ export const Input = React.forwardRef(
   }: InputProps) => {
     const inputGroupChildren = inputGroupPropsWithChildren?.children;
     return (
-      <FormControl {...formControlProps}>
-        <InputGroup {...inputGroupPropsWithChildren}>
+      <FormControl {...formControlProps} width="100%">
+        <InputGroup {...inputGroupPropsWithChildren} width="100%">
           {inputGroupChildren}
           <ChakraInput
             focusBorderColor={colors.teal_500.hex()}
             bg={colors.white.hex()}
             {...inputProps}
+            width="100%"
           />
         </InputGroup>
         {error && (

@@ -1,7 +1,7 @@
 import { MessageObject } from '../../types';
 
 export const globalMessages: MessageObject = {
-  brand_name: 'ZOHAR - administrace',
+  brand_name: 'ZOHAN - administrace',
   lorem: 'The quick brown fox jumps over the lazy dog.',
 
   // UNITS
@@ -27,6 +27,12 @@ export const globalMessages: MessageObject = {
   // ERRORS
   'error.api': 'Došlo k chybě, zkuste to prosím později.',
 
+  'countable.next': `{count} {count, plural, 
+    one {další}
+    few {další}
+    other {dalších}
+  }`,
+
   // BUTTONS
   'button.back': 'zpět',
   'button.close': 'zavřít',
@@ -38,6 +44,7 @@ export const globalMessages: MessageObject = {
   'button.prev': 'předchozí',
   'button.next': 'další',
   'button.today': 'dnes',
+  'button.more': 'více',
   'button.confirm_delete': 'potvrdit smazání',
   'button.create_booking': 'vytvořit rezervaci',
 

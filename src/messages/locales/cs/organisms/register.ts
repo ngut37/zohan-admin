@@ -29,8 +29,8 @@ export const registerMessages: MessageObject = {
   'register.company.input.ico.label': 'IČO',
   'register.company.input.name.label': 'Název společnosti',
   'register.company.input.address.label': 'Sídlo',
-  'register.company.input.staff_name.label': 'Jméno',
-  'register.company.input.email.label': 'Emailová adresa',
+  'register.company.input.staff_name.label': 'Jméno administrátora',
+  'register.company.input.email.label': 'Emailová adresa administrátora',
   'register.company.input.password.label': 'Heslo',
   'register.company.input.password_confirm.label': 'Heslo znovu',
 
@@ -60,6 +60,20 @@ export const registerMessages: MessageObject = {
   'register.company.input.name.error.required':
     'Doplňte prosím název společnosti.',
   'register.company.input.address.error': 'Zadejte prosím platnou adresu sídla',
+  'register.company.input.string_address.error.required':
+    'Zadejte prosím adresu',
+  'register.company.input.staff_name.error.min': `Jméno administrátora musí obsahovat nejméně {length} {length, plural, 
+    one {znak}
+    few {znaky}
+    other {znaků}
+  }`,
+  'register.company.input.staff_name.error.max': `Jméno administrátora přesahuje maximální délku {length} {length, plural, 
+    one {znak}
+    few {znaky}
+      other {znaků}
+    }`,
+  'register.company.input.staff_name.error.required':
+    'Doplňte prosím jméno administrátora.',
   'register.company.input.email.error.format':
     'Emailová adresa není ve správném tvaru',
   'register.company.input.email.error.required':

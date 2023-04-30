@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useRouter } from 'next/router';
-import { HiArrowSmLeft } from 'react-icons/hi';
+import { HiArrowSmLeft, HiOutlineOfficeBuilding } from 'react-icons/hi';
 import { useIntl } from 'react-intl';
 
 import { messageIdConcat } from '@utils/message-id-concat';
@@ -13,13 +13,14 @@ import {
   Flex,
   VStack,
   HStack,
-  Image,
   Tabs,
   TabList,
   Tab,
   TabPanels,
   TabPanel,
 } from '@chakra-ui/react';
+
+import { colors } from '@styles';
 
 import { InformationTab } from './tabs/information-tab';
 import { StaffTab } from './tabs/staff-tab';
@@ -52,12 +53,18 @@ export const VenueEditForm = () => {
             variant="link"
             onClick={() => router.back()}
           />
-          <Flex borderRadius="md" overflow="hidden">
-            <Image
-              width="100%"
-              objectFit="cover"
-              src="https://www.businessanimals.cz/wp-content/uploads/2017/05/fff.jpg"
-              alt="placeholder"
+          <Flex
+            borderRadius="md"
+            overflow="hidden"
+            justifyContent="center"
+            alignItems="center"
+            backgroundColor="gray.50"
+            height="170px"
+          >
+            <HiOutlineOfficeBuilding
+              size="80px"
+              color={colors.teal_300.hex()}
+              opacity="0.6"
             />
           </Flex>
         </Flex>

@@ -11,6 +11,8 @@ export const dashboardMessages: MessageObject = {
   'dashboard.input.view_type.week': 'týdenní',
   'dashboard.input.view_type.month': 'měsíční',
 
+  'dashboard.calendar.all_day.title': 'celý den',
+
   /* DASHBOARD HOOK FORM CONTEXT */
   'dashboard.input.custom_customer.name.required': 'Vyplňte jméno zákazníka',
   'dashboard.input.custom_customer.email.invalid': 'Neplatný email zákazníka',

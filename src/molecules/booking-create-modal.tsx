@@ -95,7 +95,7 @@ export const BookingCreateModal = () => {
             .nullable()
             .optional()
             .phoneNumber(
-              undefined,
+              ['cs-CZ', 'sk-SK'],
               true,
               messageToString(
                 { id: m('input.custom_customer.phone.invalid') },

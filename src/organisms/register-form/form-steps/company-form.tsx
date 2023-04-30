@@ -12,7 +12,7 @@ import { Button, Input, Text } from '@atoms';
 import { AddressSuggestionInput } from '@molecules/address-suggestion-input';
 import { InputLabel } from '@molecules/input-label';
 
-import { Divider, VStack } from '@chakra-ui/react';
+import { Divider, FormControl, VStack } from '@chakra-ui/react';
 
 import { useCompanyFormHook } from './hooks/company-form-hook';
 
@@ -46,8 +46,8 @@ export const CompanyForm = ({ defaultData, onBackButtonClick }: Props) => {
         <Text type="text" message={{ id: m('sub_heading') }} fontSize="sm" />
       </VStack>
       <VStack direction="column" justify="center" align="center" width="100%">
-        <form onSubmit={handleSubmit()}>
-          <VStack spacing={6}>
+        <FormControl>
+          <VStack spacing={6} width="100%">
             {/* ICO */}
             <VStack spacing="5px" width="100%">
               <InputLabel message={{ id: m('input.ico.label') }} />
@@ -180,16 +180,16 @@ export const CompanyForm = ({ defaultData, onBackButtonClick }: Props) => {
                 error={errors?.passwordConfirm}
               />
             </VStack>
-
-            <Button
-              size="lg"
-              type="submit"
-              width="100%"
-              message={{ id: m('button.submit') }}
-              isLoading={submitting}
-            />
           </VStack>
-        </form>
+          <Button
+            size="lg"
+            marginTop="40px"
+            width="100%"
+            message={{ id: m('button.submit') }}
+            onClick={handleSubmit}
+            isLoading={submitting}
+          />
+        </FormControl>
       </VStack>
       {onBackButtonClick && (
         <>

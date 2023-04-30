@@ -36,13 +36,13 @@ export const logoutOrFail = async () => {
 
 export const refreshToken = async () => {
   try {
-    const response = await apiClient.request<ResponseResult<AuthorizationData>>(
-      {
-        url: '/staff/refresh-token',
-        method: 'GET',
-        withCredentials: true,
-      },
-    );
+    const response = await protectedApiClient.request<
+      ResponseResult<AuthorizationData>
+    >({
+      url: '/staff/refresh-token',
+      method: 'GET',
+      withCredentials: true,
+    });
 
     return response.data.data;
   } catch {

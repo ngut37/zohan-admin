@@ -34,8 +34,8 @@ protectedApiClient.request = async (
     const result = await originalRequest(requestConfig);
 
     return result;
-  } catch (err: any) {
-    console.error(err);
-    throw err;
+  } catch (error: any) {
+    console.error(error);
+    throw error;
   }
 };

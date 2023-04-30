@@ -74,10 +74,10 @@ export const LoginForm = () => {
 
       saveAccessTokenToken(accessToken);
       router.push('/');
-    } catch (e) {
+    } catch (error) {
       if (
-        e.response &&
-        getResponseStatusCode(e.response) === HttpStatusCode.UNAUTHORIZED
+        error.response &&
+        getResponseStatusCode(error.response) === HttpStatusCode.UNAUTHORIZED
       ) {
         toast({
           description: messageToString({ id: m('toast.login_error') }, intl),

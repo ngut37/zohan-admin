@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { HiPlus } from 'react-icons/hi';
 import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
 
-import { getAllStaffOrFail, Staff } from '@api/staff';
+import { deleteStaffOrFail, getAllStaffOrFail, Staff } from '@api/staff';
 
 import { messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';
@@ -17,7 +23,18 @@ import {
   StaffListItemSkeleton,
 } from '@molecules/staff-list-item/staff-list-item';
 
-import { Flex, Stack, useToast } from '@chakra-ui/react';
+import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  Flex,
+  Stack,
+  useDisclosure,
+  useToast,
+} from '@chakra-ui/react';
 
 const m = messageIdConcat('staff-list');
 
@@ -25,9 +42,25 @@ export const StaffList = () => {
   const intl = useIntl();
   const toast = useToast();
   const router = useRouter();
+  const {
+    isOpen: isDisclosureOpen,
+    onOpen: onDisclosureOpen,
+    onClose: onDisclosureClose,
+  } = useDisclosure();
+
+  const cancelDeleteRef = useRef<HTMLButtonElement>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [staff, setStaff] = useState<Staff[]>([]);
+  const [dialogStaffId, setDialogStaffId] = useState<string>('');
+
+  const extendedOnDisclosureOpen = useCallback(
+    (staffId: string) => {
+      setDialogStaffId(staffId);
+      onDisclosureOpen();
+    },
+    [onDisclosureOpen, setDialogStaffId],
+  );
 
   useEffect(() => {
     (async () => {
@@ -73,6 +106,7 @@ export const StaffList = () => {
         key={staff._id}
         {...staff}
         onAfterSubmit={fetchAndSetStaff}
+        onDelete={extendedOnDisclosureOpen}
       />
     ));
   }, [loading, staff]);
@@ -80,6 +114,59 @@ export const StaffList = () => {
   const onCreateButtonClick = () => {
     router.push('/staff/create', undefined, { shallow: true });
   };
+
+  const deleteStaffAlertDialog = useMemo(() => {
+    return (
+      <AlertDialog
+        isCentered
+        isOpen={isDisclosureOpen}
+        leastDestructiveRef={cancelDeleteRef}
+        onClose={onDisclosureClose}
+        closeOnOverlayClick={false}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              {messageToString({ id: m('delete_confirmation.title') }, intl)}
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              {messageToString({ id: m('delete_confirmation.subtitle') }, intl)}
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button
+                ref={cancelDeleteRef}
+                onClick={onDisclosureClose}
+                message={{ id: 'button.cancel' }}
+                variant="outline"
+              />
+              <Button
+                colorScheme="red"
+                onClick={async () => {
+                  await deleteStaffOrFail(dialogStaffId);
+                  await fetchAndSetStaff();
+                  onDisclosureClose();
+
+                  toast({
+                    description: messageToString(
+                      { id: m('delete_confirmation.toast.success') },
+                      intl,
+                    ),
+                    status: 'info',
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                }}
+                ml={3}
+                message={{ id: 'button.confirm_delete' }}
+              />
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    );
+  }, [isDisclosureOpen, onDisclosureClose, intl, dialogStaffId]);
 
   return (
     <Flex
@@ -90,6 +177,7 @@ export const StaffList = () => {
       paddingX="300px"
       paddingY="50px"
     >
+      {deleteStaffAlertDialog}
       <Stack width="100%" maxWidth="780px" minWidth="780px" spacing="30px">
         <Flex width="100%" height="60px" direction="row-reverse">
           <Button

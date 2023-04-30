@@ -43,4 +43,11 @@ export const venueEditMessages: MessageObject = {
 
   // toasts
   'venue.edit.services_tab.toast.success': 'Služby byly úspěšně uloženy',
+
+  /* DELETE ALERT DIALOG */
+  'venue.edit.information_tab.delete_confirmation.title': 'Smazat pobočku',
+  'venue.edit.information_tab.delete_confirmation.subtitle':
+    'Opravdu chcete smazat pobočku? Smazání pobočky neodstraní zaměstnance, ale služby ano.',
+  'venue.edit.information_tab.delete_confirmation.toast.success':
+    'Pobočka byla smazána.',
 };

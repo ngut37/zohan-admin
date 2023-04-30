@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { HiArrowSmLeft } from 'react-icons/hi';
+import { HiArrowSmLeft, HiOutlineTrash } from 'react-icons/hi';
 import { HiUser } from 'react-icons/hi2';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
 import { Select, SingleValue } from 'chakra-react-select';
@@ -53,7 +53,10 @@ const m = messageIdConcat('staff-list.item');
 
 type Option = SingleValue<{ value?: string; label?: string }>;
 
-type Props = Staff & { onAfterSubmit?: () => Promise<void> };
+type Props = Staff & {
+  onAfterSubmit?: () => Promise<void>;
+  onDelete?: (staffId: string) => void;
+};
 
 export const StaffListItem = ({
   _id,
@@ -62,6 +65,7 @@ export const StaffListItem = ({
   role,
   venue: initialVenue,
   onAfterSubmit,
+  onDelete,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -191,7 +195,7 @@ export const StaffListItem = ({
         setSubmitting(false);
       }
     },
-    [intl, toast],
+    [intl, toast, onAfterSubmit, onClose],
   );
 
   const options = useMemo<Option[]>(
@@ -396,7 +400,26 @@ export const StaffListItem = ({
               onClick={onClose}
             />
             <Button
-              width="200px"
+              leftIcon={<HiOutlineTrash width="20px" />}
+              width="120px"
+              message={{
+                id: 'button.delete',
+              }}
+              size="lg"
+              colorScheme="red"
+              variant="outline"
+              onClick={async () => {
+                if (onDelete && _id) {
+                  onDelete(_id);
+                }
+
+                if (onAfterSubmit) {
+                  await onAfterSubmit();
+                }
+              }}
+            />
+            <Button
+              width="140px"
               size="lg"
               message={{ id: 'button.save' }}
               onClick={handleSubmit(onSubmit)}

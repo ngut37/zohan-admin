@@ -100,4 +100,18 @@ export const dashboardMessages: MessageObject = {
     'Neplatný email zákazníka',
   'dashboard.booking_create_modal.input.custom_customer.phone.invalid':
     'Neplatný telefon zákazníka',
+
+  /* ONBOARDING MODAL */
+  // heading
+  'dashboard.onboarding_modal.title':
+    'Vítejte v aplikaci ZOHAN - administrační rozhraní',
+  'dashboard.onboarding_modal.subtitle':
+    'Pro správné nastavení aplikace je potřeba provést následující kroky:',
+  'dashboard.onboarding_modal.step.1': 'V sekci Pobočky vytvořte pobočku',
+  'dashboard.onboarding_modal.step.2':
+    'V sekci Zaměstnanci vytvořte zaměstnance',
+  'dashboard.onboarding_modal.step.3':
+    'V editaci pobočky vytvořte služby a přiřaďte k nim zaměstnance',
+  'dashboard.onboarding_modal.step.4':
+    'Na hlavní stránce se vám aktivuje funkčnost rezevarčního kalendáře',
 };

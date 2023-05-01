@@ -45,8 +45,10 @@ export const globalMessages: MessageObject = {
   'button.next': 'další',
   'button.today': 'dnes',
   'button.more': 'více',
+  'button.understood': 'rozumím',
   'button.confirm_delete': 'potvrdit smazání',
   'button.create_booking': 'vytvořit rezervaci',
+  'button.open_onboarding_modal': 'JAK ZAČÍT?',
 
   // input label
   'input.label.optional': 'nepovinné',

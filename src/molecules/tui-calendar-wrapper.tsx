@@ -11,21 +11,38 @@ import { useIntl } from 'react-intl';
 import { format } from 'date-fns';
 import ToastUIReactCalendar from '@toast-ui/react-calendar';
 import { ExternalEventTypes, Options } from '@toast-ui/calendar';
-import { HiArrowNarrowLeft, HiArrowNarrowRight, HiPlus } from 'react-icons/hi';
+import {
+  HiArrowNarrowLeft,
+  HiArrowNarrowRight,
+  HiInformationCircle,
+  HiPlus,
+} from 'react-icons/hi';
 
 import { Service } from '@api/services';
 
 import { getColorCombinationByIndex } from '@utils/text-background-color-combinations';
 import { messageIdConcat } from '@utils/message-id-concat';
 import { messageToString } from '@utils/message';
+import {
+  getDisableOnboardingPopup,
+  saveDisableOnboardingPopup,
+} from '@utils/storage/disable-onboarding-popup';
 
 import { Button, Text } from '@atoms';
 
 import { useDashboard } from '@organisms/main-dashboard/context/dashboard-context';
 
-import { Box, Divider, HStack, Select, VStack } from '@chakra-ui/react';
+import {
+  Box,
+  Divider,
+  HStack,
+  Select,
+  useDisclosure,
+  VStack,
+} from '@chakra-ui/react';
 
 import { InputLabel } from './input-label';
+import { OnboardingModal } from './onboarding-modal';
 
 const m = messageIdConcat('dashboard');
 
@@ -33,6 +50,7 @@ const VIEW_TYPES: Options['defaultView'][] = ['day', 'week', 'month'];
 
 const TUICalendarWrapper = () => {
   const intl = useIntl();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {
     availableVenues,
@@ -64,6 +82,16 @@ const TUICalendarWrapper = () => {
     return calendarRefInstance;
   }, [calendarRef]);
 
+  // open onboarding modal based on local storage value
+  useEffect(() => {
+    const disableOnboardingModal = getDisableOnboardingPopup();
+
+    if (!disableOnboardingModal) {
+      onOpen();
+    }
+  }, [localStorage, onOpen]);
+
+  // set calendar options
   useEffect(() => {
     const calendarRefInstance = getCalendarRefInstance();
 
@@ -247,6 +275,25 @@ const TUICalendarWrapper = () => {
   ]);
 
   const calendarControls = useMemo(() => {
+    const ctaButton = selectedVenue ? (
+      <Button
+        message={{ id: 'button.create_booking' }}
+        leftIcon={<HiPlus />}
+        onClick={() => {
+          setCreateModalOpen(true);
+        }}
+      />
+    ) : (
+      <Button
+        size="lg"
+        message={{ id: 'button.open_onboarding_modal' }}
+        leftIcon={<HiInformationCircle />}
+        onClick={() => {
+          onOpen();
+        }}
+      />
+    );
+
     return (
       <HStack
         width="100%"
@@ -254,14 +301,7 @@ const TUICalendarWrapper = () => {
         paddingY="15px"
         justifyContent="space-between"
       >
-        <Button
-          message={{ id: 'button.create_booking' }}
-          leftIcon={<HiPlus />}
-          onClick={() => {
-            setCreateModalOpen(true);
-          }}
-          disabled={!selectedVenue}
-        />
+        {ctaButton}
         <HStack>
           <Text
             fontSize="2xl"
@@ -328,15 +368,24 @@ const TUICalendarWrapper = () => {
       </HStack>
     );
   }, [
+    selectedVenue,
     calendarRef,
     currentDate,
     setCurrentDate,
     setBookingDateRange,
     getCalendarRefInstance,
+    onOpen,
   ]);
 
   return (
     <VStack width="100%">
+      <OnboardingModal
+        isOpen={isOpen}
+        onClose={() => {
+          saveDisableOnboardingPopup(true);
+          onClose();
+        }}
+      />
       {venueSelect}
       {calendarControls}
       <Box width="100%" paddingX="100px" paddingTop="30px">

@@ -1,0 +1,24 @@
+.datePicker {
+  position: relative;
+  display: block;
+
+  width: 100%;
+  height: 2.5rem;
+
+  border: 1px solid;
+  border-radius: 0.375em;
+  padding: 16px;
+  border-color: #cbd5e0;
+
+  outline: 2px solid transparent;
+
+  &:focus {
+    border-color: #3182ce;
+    box-shadow: 0 0 0 1px #3182ce;
+  }
+}
+
+.disabled {
+  color: #a0aec0 !important;
+  cursor: not-allowed;
+}

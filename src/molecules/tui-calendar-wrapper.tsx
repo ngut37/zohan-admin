@@ -136,10 +136,7 @@ const TUICalendarWrapper = () => {
 
     const calendars: Options['calendars'] = availableStaff.map(
       (staff, index) => {
-        const staffName = messageToString(
-          { id: `staff_name.${staff.name}` },
-          intl,
-        );
+        const staffName = messageToString({ text: staff.name }, intl);
 
         const { text, background } = getColorCombinationByIndex(index);
 

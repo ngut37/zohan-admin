@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { useRouter } from 'next/router';
-import { HiArrowSmLeft, HiOutlineOfficeBuilding } from 'react-icons/hi';
+import { HiArrowSmLeft } from 'react-icons/hi';
+import { HiBuildingStorefront } from 'react-icons/hi2';
 import { useIntl } from 'react-intl';
 
 import { messageIdConcat } from '@utils/message-id-concat';
@@ -32,7 +33,9 @@ export const VenueEditForm = () => {
   const intl = useIntl();
   const router = useRouter();
 
-  const { id: venueId } = router.query;
+  const venueId = useMemo(() => {
+    return router.query.id as string;
+  }, [router.query.id]);
 
   return (
     <VStack w="100%" justifyContent="center" my="70px">
@@ -59,9 +62,9 @@ export const VenueEditForm = () => {
             justifyContent="center"
             alignItems="center"
             backgroundColor="gray.50"
-            height="170px"
+            height="300px"
           >
-            <HiOutlineOfficeBuilding
+            <HiBuildingStorefront
               size="80px"
               color={colors.teal_300.hex()}
               opacity="0.6"

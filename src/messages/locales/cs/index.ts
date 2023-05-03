@@ -10,12 +10,14 @@ import { staffCreateMessages } from './organisms/create-staff';
 import { venueEditMessages } from './organisms/venue-edit';
 import { dashboardMessages } from './organisms/dashboard';
 import { dateTimePicker } from './molecules/date-time-picker';
+import { timeOnlyPicker } from './molecules/time-only-picker';
 
 export const cs = {
   ...globalMessages,
 
   // molecules
   ...dateTimePicker,
+  ...timeOnlyPicker,
 
   // organisms
   ...navbarMessages,

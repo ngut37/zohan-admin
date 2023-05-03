@@ -1,7 +1,7 @@
 import { protectedApiClient } from '@api/api-client';
 import { Service } from '@api/services';
 import { Staff } from '@api/staff';
-import { ResponseResult } from '@api/types';
+import { ResponseResult, WeeklyBusinessHours } from '@api/types';
 
 export type Venue = {
   _id: string;
@@ -9,6 +9,8 @@ export type Venue = {
   region: string;
   district: string;
   momc: string;
+  coordinates: [number, number];
+  businessHours: WeeklyBusinessHours;
 };
 
 export const getAllVenuesOrFail = async () => {
@@ -47,7 +49,9 @@ export const createVenueOrFail = async (body: CreateVenueBody) => {
   return response.data.data;
 };
 
-export type EditVenueBody = CreateVenueBody;
+export type EditVenueBody = CreateVenueBody & {
+  businessHours: WeeklyBusinessHours;
+};
 
 export const editVenueOrFail = async (id: string, body: EditVenueBody) => {
   const response = await protectedApiClient.request<ResponseResult<Venue>>({

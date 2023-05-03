@@ -9,16 +9,25 @@ import React, {
 import { useIntl } from 'react-intl';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { addMinutes } from 'date-fns';
+import {
+  addMinutes,
+  setHours,
+  differenceInMinutes,
+  getDay,
+  isBefore,
+  isAfter,
+} from 'date-fns';
 
 import { Service } from '@api/services';
 import { Staff } from '@api/staff';
 import { createBooking } from '@api/bookings';
 import { getServices } from '@api/venues';
+import { BusinessHoursInterval } from '@api/types';
 
 import { yup } from '@utils/yup';
 import { messageIdConcat } from '@utils/message-id-concat';
 import { messageToString } from '@utils/message';
+import { getDayName } from '@utils/map-day-index-to-day';
 
 import { Text, Input, Button } from '@atoms';
 
@@ -312,7 +321,7 @@ export const BookingCreateModal = () => {
                 <VStack width="100%">
                   <InputLabel message={{ id: m('input.venue.label') }} />
                   <Select
-                    defaultValue={selectedVenueId}
+                    value={selectedVenueId}
                     onChange={(e) => {
                       setValue('venueId', e.target.value);
                       setSelectedVenueId(e.target.value);
@@ -345,7 +354,7 @@ export const BookingCreateModal = () => {
                 <VStack width="100%">
                   <InputLabel message={{ id: m('input.staff.label') }} />
                   <Select
-                    defaultValue={selectedStaff?._id}
+                    value={selectedStaff?._id}
                     placeholder={messageToString(
                       { id: m('input.staff.placeholder') },
                       intl,
@@ -420,7 +429,7 @@ export const BookingCreateModal = () => {
                         addMinutes(start, selectedService.length),
                       );
                     }}
-                    defaultValue={selectedService?._id}
+                    value={selectedService?._id}
                   >
                     {availableServices.map((service) => {
                       if (
@@ -494,6 +503,121 @@ export const BookingCreateModal = () => {
                       setSelectedStartDate(startDateTime);
                       setValue('start', startDateTime);
                       setValue('end', endDateTime);
+                    }}
+                    filterDate={(date) => {
+                      if (!selectedService) return false;
+                      if (!selectedVenue) return false;
+
+                      const dayName = getDayName(getDay(date));
+
+                      if (!selectedVenue.businessHours[dayName]) return false;
+
+                      const serviceLength = selectedService.length;
+
+                      const openingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.minute,
+                        ),
+                      );
+
+                      const closingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.minute,
+                        ),
+                      );
+
+                      const businessOpeningTimeInMinutes = differenceInMinutes(
+                        closingDateTime,
+                        openingDateTime,
+                      );
+
+                      return serviceLength <= businessOpeningTimeInMinutes;
+                    }}
+                    filterTime={(date) => {
+                      if (!selectedService) return false;
+                      if (!selectedVenue) return false;
+
+                      const dayName = getDayName(getDay(date));
+
+                      if (!selectedVenue.businessHours[dayName]) return false;
+
+                      const serviceLength = selectedService.length;
+
+                      const openingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.minute,
+                        ),
+                      );
+
+                      const closingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.minute,
+                        ),
+                      );
+
+                      const closingDateTimeWithBookingLength = addMinutes(
+                        closingDateTime,
+                        -serviceLength,
+                      );
+
+                      const dateIsBeforeOpeningTime = isBefore(
+                        date,
+                        openingDateTime,
+                      );
+
+                      const dateIsAfterClosingTimeWithBookingLength = isAfter(
+                        date,
+                        closingDateTimeWithBookingLength,
+                      );
+
+                      return (
+                        !dateIsBeforeOpeningTime &&
+                        !dateIsAfterClosingTimeWithBookingLength
+                      );
                     }}
                   />
                 </VStack>

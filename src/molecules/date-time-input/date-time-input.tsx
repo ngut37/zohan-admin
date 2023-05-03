@@ -19,6 +19,8 @@ type Props = {
   disabled?: boolean;
   placeholder?: string;
   onChange?: (date: Date | undefined) => void;
+  filterDate?: (date: Date) => boolean;
+  filterTime?: (date: Date) => boolean;
 };
 
 export const DateTimeInput = ({
@@ -27,6 +29,8 @@ export const DateTimeInput = ({
   disabled,
   placeholder,
   onChange,
+  filterDate,
+  filterTime,
 }: Props) => {
   const intl = useIntl();
 
@@ -89,6 +93,9 @@ export const DateTimeInput = ({
           },
         },
       ]}
+      // filters
+      filterDate={filterDate}
+      filterTime={filterTime}
     />
   );
 };

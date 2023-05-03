@@ -11,13 +11,22 @@ export const venueEditMessages: MessageObject = {
   'venue.edit.tab.services': 'Nabízené služby',
 
   /* INFORMATION TAB */
+  // titles
+  'venue.edit.information_tab.input.business_hours.title': 'Otevírací doba',
+
   // labels
   'venue.edit.information_tab.input.address.label': 'Adresa',
   'venue.edit.information_tab.input.address_region_district.label':
     'Vybraný region a okres',
+  'venue.edit.information_tab.input.business_hours.label':
+    'Vyberte otevírací dobu pobocky',
+  'venue.edit.information_tab.input.opening_time.label': 'Otevírací doba',
+  'venue.edit.information_tab.input.closing_time.label': 'Zavírací doba',
 
   // errors
   'venue.edit.information_tab.input.address.required': 'Vyberte prosím adresu',
+  'venue.edit.information_tab.input.business_hours.error':
+    'Otevírací doby obsahují chyby ve dnech:',
 
   /* STAFF TAB */
   'venue.edit.staff_tab.work_in_progress': '🔧 tato sekce je ve vývoji',
@@ -33,6 +42,8 @@ export const venueEditMessages: MessageObject = {
   'venue.edit.services_tab.input.length.placeholder':
     'délka po čtvrthodinách (15, 30, 45, 60, 75, 90, ...)',
   'venue.edit.services_tab.input.price.placeholder': 'cena v Kč',
+  'venue.edit.services_tab.input.staff.no_options':
+    'k pobočce nejsou zařazení zaměstnanci',
 
   // errors
   'venue.edit.services_tab.input.length.required':

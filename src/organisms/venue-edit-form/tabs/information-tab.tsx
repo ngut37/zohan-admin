@@ -11,7 +11,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
 import { HiOutlineTrash } from 'react-icons/hi';
+import { MdInfo } from 'react-icons/md';
+import { setHours } from 'date-fns';
 
+import {
+  BusinessHoursInterval,
+  Day,
+  DAYS,
+  WeeklyBusinessHours,
+} from '@api/types';
 import {
   deleteVenueByIdOrFail,
   EditVenueBody,
@@ -30,6 +38,8 @@ import { Text, Button } from '@atoms';
 
 import { InputLabel } from '@molecules/input-label';
 import { AddressSuggestionInput } from '@molecules/address-suggestion-input';
+import { TimeOnlyInput } from '@molecules/time-only-input';
+import { CollapsibleCheckbox } from '@molecules/collapsible-checkbox';
 
 import {
   AlertDialog,
@@ -38,6 +48,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Box,
+  Divider,
   Flex,
   HStack,
   Spinner,
@@ -54,6 +66,8 @@ type Props = {
   venueId: string;
 };
 
+const now = new Date();
+
 export const InformationTab = ({ venueId }: Props) => {
   const intl = useIntl();
   const toast = useToast();
@@ -65,11 +79,14 @@ export const InformationTab = ({ venueId }: Props) => {
   } = useDisclosure();
 
   const cancelDeleteRef = useRef<HTMLButtonElement>(null);
+  const businessHoursErrorMessageRef = useRef<HTMLDivElement>(null);
 
   const [suggestion, setSuggestion] = useState<
     SuggestionFormData | undefined
   >();
   const [submitting, setSubmitting] = useState(false);
+  const [weeklyBusinessHours, setWeeklyBusinessHours] =
+    useState<WeeklyBusinessHours>({});
 
   const { requestComplete, fetch, requestResult } = useApi(async () => {
     return await getVenueByIdOrFail(venueId as string);
@@ -81,6 +98,69 @@ export const InformationTab = ({ venueId }: Props) => {
     }
   }, [venueId]);
 
+  const businessHoursSchema = yup
+    .object()
+    .nullable(true)
+    .test(
+      'defined-business-hours',
+      'Opening and closing times are required',
+      function (value) {
+        if (!value) {
+          // Return true if the value is null, undefined or empty
+          return true;
+        }
+
+        const openingTimeSchema = yup.object({
+          hour: yup.number().integer().max(23).required(),
+          minute: yup.number().integer().max(59).required(),
+        });
+
+        const closingTimeSchema = yup.object({
+          hour: yup.number().integer().max(23).required(),
+          minute: yup.number().integer().max(59).required(),
+        });
+
+        const schema = yup.object({
+          openingTime: openingTimeSchema.required(),
+          closingTime: closingTimeSchema
+            .required()
+            .test(
+              'is-after-opening-time',
+              'Closing time must be after opening time',
+              function (closingTime) {
+                const { openingTime } = this.parent;
+                if (!openingTime || !closingTime) {
+                  // Return true if the values are null, undefined or empty
+                  return true;
+                }
+                const openingTimeDate = new Date(
+                  0,
+                  0,
+                  0,
+                  openingTime.hour,
+                  openingTime.minute,
+                );
+                const closingTimeDate = new Date(
+                  0,
+                  0,
+                  0,
+                  closingTime.hour,
+                  closingTime.minute,
+                );
+                return closingTimeDate > openingTimeDate;
+              },
+            ),
+        });
+
+        try {
+          schema.validateSync(value);
+          return true;
+        } catch (err) {
+          return false;
+        }
+      },
+    );
+
   const schema = yup.object().shape({
     stringAddress: yup
       .string()
@@ -89,21 +169,48 @@ export const InformationTab = ({ venueId }: Props) => {
     districtString: yup.string().required(),
     quarterString: yup.string(),
     coordinates: yup.array(yup.number()).length(2),
+    businessHours: yup.object().shape({
+      [DAYS.mon]: businessHoursSchema,
+      [DAYS.tue]: businessHoursSchema,
+      [DAYS.wed]: businessHoursSchema,
+      [DAYS.thu]: businessHoursSchema,
+      [DAYS.fri]: businessHoursSchema,
+      [DAYS.sat]: businessHoursSchema,
+      [DAYS.sun]: businessHoursSchema,
+    }),
   });
 
   const {
     handleSubmit,
     setValue,
+    getValues,
+    resetField,
     formState: { errors },
   } = useForm<EditVenueBody>({
     mode: 'onSubmit',
-    reValidateMode: 'onBlur',
+    reValidateMode: 'onChange',
     resolver: yupResolver(schema),
   });
+
   useEffect(() => {
-    // set default string address on load
+    if (Object.keys(errors.businessHours ?? {}).length) {
+      businessHoursErrorMessageRef.current?.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+  }, [errors.businessHours]);
+
+  // set default string address and business hours on venue fetched
+  useEffect(() => {
     if (requestResult) {
       setValue('stringAddress', requestResult.stringAddress);
+      setValue('regionString', requestResult.region);
+      setValue('districtString', requestResult.district);
+      setValue('quarterString', requestResult.momc);
+      setValue('coordinates', requestResult.coordinates);
+
+      setValue('businessHours', requestResult.businessHours);
+      setWeeklyBusinessHours(requestResult.businessHours);
     }
   }, [requestResult]);
 
@@ -143,7 +250,7 @@ export const InformationTab = ({ venueId }: Props) => {
         setSubmitting(false);
       }
     },
-    [intl, toast],
+    [intl, toast, venueId],
   );
 
   const onAddressInputChangeHandler = useCallback(() => {
@@ -227,6 +334,150 @@ export const InformationTab = ({ venueId }: Props) => {
     );
   }, [isDisclosureOpen, onDisclosureClose, intl, venueId]);
 
+  const businessHoursForm = useMemo(() => {
+    return (
+      <VStack spacing="20px" alignItems="flex-start">
+        {Object.keys(DAYS).map((day, i) => {
+          const openingTime = weeklyBusinessHours[day as Day]?.openingTime;
+          const closingTime = weeklyBusinessHours[day as Day]?.closingTime;
+
+          const openingTimeDate = openingTime
+            ? new Date(
+                setHours(now, openingTime.hour).setMinutes(openingTime.minute),
+              )
+            : undefined;
+          const closingTimeDate = closingTime
+            ? new Date(
+                setHours(now, closingTime.hour).setMinutes(closingTime.minute),
+              )
+            : undefined;
+
+          return (
+            <CollapsibleCheckbox
+              key={i}
+              message={{ id: `day.${day}` }}
+              onOpen={() => {
+                setValue(`businessHours.${day as Day}`, {} as any);
+              }}
+              onClose={() => {
+                setWeeklyBusinessHours((prev) => {
+                  const currentWeeklyBusinessHours = {
+                    ...prev,
+                  };
+
+                  currentWeeklyBusinessHours[day as Day] = undefined;
+
+                  return currentWeeklyBusinessHours;
+                });
+                setValue(`businessHours.${day as Day}`, undefined as any);
+              }}
+              isOpen={Boolean(weeklyBusinessHours[day as Day])}
+            >
+              <VStack width="100%" justifyContent="center">
+                <HStack width="100%">
+                  <InputLabel message={{ id: m('input.opening_time.label') }} />
+                  <TimeOnlyInput
+                    overrideDate={openingTimeDate}
+                    onChange={(date) => {
+                      if (!date) {
+                        return;
+                      }
+
+                      const openingTime: BusinessHoursInterval['openingTime'] =
+                        {
+                          hour: date.getHours(),
+                          minute: date.getMinutes(),
+                        };
+
+                      setWeeklyBusinessHours((prev) => {
+                        const currentWeeklyBusinessHours = {
+                          ...prev,
+                        };
+
+                        currentWeeklyBusinessHours[day as Day] = {
+                          ...currentWeeklyBusinessHours[day as Day],
+                          openingTime,
+                        } as BusinessHoursInterval;
+
+                        return currentWeeklyBusinessHours;
+                      });
+
+                      setValue(
+                        `businessHours.${day as Day}.openingTime`,
+                        openingTime,
+                      );
+                    }}
+                  />
+                </HStack>
+                <HStack width="100%">
+                  <InputLabel message={{ id: m('input.closing_time.label') }} />
+                  <TimeOnlyInput
+                    overrideDate={closingTimeDate}
+                    onChange={(date) => {
+                      if (!date) {
+                        return;
+                      }
+
+                      const closingTime: BusinessHoursInterval['closingTime'] =
+                        {
+                          hour: date.getHours(),
+                          minute: date.getMinutes(),
+                        };
+
+                      setWeeklyBusinessHours((prev) => {
+                        const currentWeeklyBusinessHours = {
+                          ...prev,
+                        };
+
+                        currentWeeklyBusinessHours[day as Day] = {
+                          ...currentWeeklyBusinessHours[day as Day],
+                          closingTime,
+                        } as BusinessHoursInterval;
+
+                        return currentWeeklyBusinessHours;
+                      });
+
+                      setValue(
+                        `businessHours.${day as Day}.closingTime`,
+                        closingTime,
+                      );
+                    }}
+                  />
+                </HStack>
+              </VStack>
+            </CollapsibleCheckbox>
+          );
+        })}
+      </VStack>
+    );
+  }, [errors, weeklyBusinessHours, setValue, getValues, resetField]);
+
+  const businessHoursErrorMessage = useMemo(() => {
+    if (
+      !Object.keys(errors.businessHours ?? {}).length ||
+      !errors.businessHours
+    ) {
+      return null;
+    }
+
+    return (
+      <VStack color="red" justifyContent="flex-start" alignItems="flex-start">
+        <HStack ref={businessHoursErrorMessageRef}>
+          <Box marginRight="5px">
+            <MdInfo fontSize="17px" />
+          </Box>
+          <Text
+            message={{ id: m('input.business_hours.error') }}
+            fontSize="lg"
+          />
+        </HStack>
+        {Object.keys(errors.businessHours).map((day, i) => (
+          <Text key={i} message={{ id: `day.${day}` }} fontSize="md" />
+        ))}
+      </VStack>
+    );
+  }, [errors.businessHours, businessHoursErrorMessageRef]);
+
   if (!requestComplete) {
     return (
       <Flex width="100%" height="200px" justify="center" align="center">
@@ -245,6 +496,7 @@ export const InformationTab = ({ venueId }: Props) => {
     <>
       {deleteVenueAlertDialog}
       <VStack alignItems="flex-start" spacing="10px" width="450px">
+        {/* ADDRESS */}
         <InputLabel message={{ id: m('input.address.label') }} />
         <AddressSuggestionInput
           defaultAddress={requestResult?.stringAddress}
@@ -283,6 +535,18 @@ export const InformationTab = ({ venueId }: Props) => {
           fontSize="sm"
           color="gray.700"
         />
+
+        <Divider />
+
+        {/* BUSINESS HOURS */}
+        <Text message={{ id: m('input.business_hours.title') }} fontSize="lg" />
+        <InputLabel
+          message={{ id: m('input.business_hours.label') }}
+          paddingBottom="10px"
+        />
+        {businessHoursForm}
+        {businessHoursErrorMessage}
+
         <HStack justifyContent="space-between">
           <Button
             leftIcon={<HiOutlineTrash width="20px" />}

@@ -28,7 +28,7 @@ import { useApi } from '@hooks/use-api';
 import { Button, Input, Text } from '@atoms';
 
 import { InputLabel } from '@molecules/input-label';
-import { ServiceDropdown } from '@molecules/service-dropdown';
+import { CollapsibleCheckbox } from '@molecules/collapsible-checkbox';
 
 import {
   Divider,
@@ -198,7 +198,7 @@ export const ServicesTab = ({ venueId }: Props) => {
             }));
 
             return (
-              <ServiceDropdown
+              <CollapsibleCheckbox
                 key={index}
                 message={{ id: `service_name.${service}` }}
                 onOpen={() => {
@@ -211,6 +211,7 @@ export const ServicesTab = ({ venueId }: Props) => {
                   trigger(service); // trigger validation to remove errors
                 }}
                 isOpen={Boolean(getValues(`${service}.name`))}
+                unmountOnExit
               >
                 <VStack marginBottom="10px" zIndex="dropdown">
                   {/* LENGTH */}
@@ -284,6 +285,9 @@ export const ServicesTab = ({ venueId }: Props) => {
                     />
                     <Select<Option, true, GroupBase<Option>>
                       className={classes.multiSelectContainer}
+                      noOptionsMessage={() => (
+                        <Text message={{ id: m('input.staff.no_options') }} />
+                      )}
                       options={staffOptions}
                       placeholder=""
                       closeMenuOnSelect={false}
@@ -315,7 +319,7 @@ export const ServicesTab = ({ venueId }: Props) => {
                     />
                   </HStack>
                 </VStack>
-              </ServiceDropdown>
+              </CollapsibleCheckbox>
             );
           })}
         </VStack>

@@ -17,13 +17,15 @@ type Props = PropsWithChildren<{
   isOpen?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
+  unmountOnExit?: boolean;
 }>;
 
-export const ServiceDropdown = ({
+export const CollapsibleCheckbox = ({
   message,
   isOpen,
   onOpen,
   onClose,
+  unmountOnExit,
   children,
 }: Props) => {
   const {
@@ -57,7 +59,11 @@ export const ServiceDropdown = ({
         />
         <Text message={message} />
       </HStack>
-      <Collapse in={isOpenDisclosure} animateOpacity unmountOnExit>
+      <Collapse
+        in={isOpenDisclosure}
+        animateOpacity
+        unmountOnExit={unmountOnExit}
+      >
         {children}
       </Collapse>
     </VStack>

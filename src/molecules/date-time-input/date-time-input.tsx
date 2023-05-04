@@ -19,6 +19,8 @@ type Props = {
   disabled?: boolean;
   placeholder?: string;
   onChange?: (date: Date | undefined) => void;
+  onMonthChange?: (date: Date) => void;
+  onCalendarOpen?: () => void;
   filterDate?: (date: Date) => boolean;
   filterTime?: (date: Date) => boolean;
 };
@@ -29,6 +31,8 @@ export const DateTimeInput = ({
   disabled,
   placeholder,
   onChange,
+  onMonthChange,
+  onCalendarOpen,
   filterDate,
   filterTime,
 }: Props) => {
@@ -61,6 +65,8 @@ export const DateTimeInput = ({
     <DatePicker
       className={clsx(classes.datePicker, disabled && classes.disabled)}
       onChange={(date) => setDateTimeWrapper(date ?? undefined)}
+      onMonthChange={onMonthChange}
+      onCalendarOpen={onCalendarOpen}
       locale={locales[intl.locale as keyof typeof locales]}
       // input options
       selected={dateOverridden ? overrideDate : dateTime}

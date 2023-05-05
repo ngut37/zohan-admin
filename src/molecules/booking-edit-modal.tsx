@@ -7,20 +7,37 @@ import React, {
 } from 'react';
 
 import { useIntl } from 'react-intl';
-import { addMinutes } from 'date-fns';
+import {
+  addMinutes,
+  startOfMonth,
+  endOfMonth,
+  setHours,
+  differenceInMinutes,
+  getDay,
+  isBefore,
+  isAfter,
+} from 'date-fns';
 
 import { Service } from '@api/services';
-import { Staff } from '@api/staff';
+import { getBookingsByStaffOrFail, Staff } from '@api/staff';
 import {
+  Booking,
   createBooking,
   CreateBookingParams,
   deleteBookingById,
   editBookingById,
 } from '@api/bookings';
 import { getServices } from '@api/venues';
+import { BusinessHoursInterval } from '@api/types';
 
 import { messageIdConcat } from '@utils/message-id-concat';
 import { messageToString } from '@utils/message';
+import {
+  looseIsDateAfter,
+  looseIsDateBefore,
+  looseIsDateEqual,
+} from '@utils/non-strict-date-comparator';
+import { getDayName } from '@utils/map-day-index-to-day';
 
 import { Text, Input, Button } from '@atoms';
 
@@ -69,6 +86,7 @@ export const BookingEditModal = () => {
     availableStaff,
     modalData,
     modalOpen,
+    selectedVenue,
     clearModalData,
     setModalOpen,
     refetchBookings,
@@ -91,6 +109,52 @@ export const BookingEditModal = () => {
   const [selectedStartDate, setSelectedStartDate] = useState<Date | undefined>(
     modalData?.start ? new Date(modalData.start) : undefined,
   );
+
+  const [staffBookingsByMonth, setStaffBookingsByMonth] = useState<Booking[]>(
+    [],
+  );
+
+  const fetchBookingsForStaff = useCallback(
+    async (date: Date) => {
+      if (!selectedStaff) {
+        return;
+      }
+
+      try {
+        const staffBookings = await getBookingsByStaffOrFail({
+          id: selectedStaff._id,
+          start: startOfMonth(date),
+          end: endOfMonth(date),
+        });
+
+        // exclude current booking from list
+        const filteredStaffBookings = staffBookings.filter(
+          (booking) => booking._id !== modalData?._id,
+        );
+
+        setStaffBookingsByMonth(filteredStaffBookings);
+      } catch (error) {
+        toast({
+          description: messageToString({ id: 'error.api' }, intl),
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        });
+      }
+    },
+    [intl, selectedStaff, toast],
+  );
+
+  useEffect(() => {
+    (async () => {
+      if (!selectedStaff) {
+        setStaffBookingsByMonth([]);
+        return;
+      }
+
+      await fetchBookingsForStaff(new Date());
+    })();
+  }, [selectedStaff]);
 
   // fetch services for venue on venue change
   useEffect(() => {
@@ -553,6 +617,13 @@ export const BookingEditModal = () => {
                       intl,
                     )}
                     overrideDate={selectedStartDate}
+                    onMonthChange={(date) => {
+                      if (!selectedStaff) return;
+
+                      (async () => {
+                        await fetchBookingsForStaff(date);
+                      })();
+                    }}
                     onChange={(date) => {
                       if (!date) return;
                       if (!selectedService) return;
@@ -564,6 +635,194 @@ export const BookingEditModal = () => {
                       setSelectedStartDate(startDateTime);
                       setValue('start', startDateTime);
                       setValue('end', endDateTime);
+                    }}
+                    filterDate={(date) => {
+                      if (!selectedService) return false;
+                      if (!selectedVenue) return false;
+
+                      const dayName = getDayName(getDay(date));
+
+                      if (!selectedVenue.businessHours[dayName]) return false;
+
+                      const serviceLength = selectedService.length;
+
+                      const openingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.minute,
+                        ),
+                      );
+
+                      const closingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.minute,
+                        ),
+                      );
+
+                      const businessOpeningTimeInMinutes = differenceInMinutes(
+                        closingDateTime,
+                        openingDateTime,
+                      );
+
+                      return serviceLength <= businessOpeningTimeInMinutes;
+                    }}
+                    filterTime={(date) => {
+                      if (!selectedService) return false;
+                      if (!selectedVenue) return false;
+
+                      const dayName = getDayName(getDay(date));
+
+                      if (!selectedVenue.businessHours[dayName]) return false;
+
+                      const serviceLength = selectedService.length;
+
+                      const openingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.minute,
+                        ),
+                      );
+
+                      const closingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.minute,
+                        ),
+                      );
+
+                      const closingDateTimeWithBookingLength = addMinutes(
+                        closingDateTime,
+                        -serviceLength,
+                      );
+
+                      const dateIsBeforeOpeningTime = isBefore(
+                        date,
+                        openingDateTime,
+                      );
+
+                      const dateIsAfterClosingTimeWithBookingLength = isAfter(
+                        date,
+                        closingDateTimeWithBookingLength,
+                      );
+
+                      if (
+                        dateIsBeforeOpeningTime ||
+                        dateIsAfterClosingTimeWithBookingLength
+                      ) {
+                        return false;
+                      }
+
+                      // validate existing bookings collision
+                      return !staffBookingsByMonth.some((booking) => {
+                        const bookingStartDateTime = new Date(booking.start);
+                        const bookingEndDateTime = new Date(booking.end);
+
+                        const dateIsAfterBooking = looseIsDateAfter(
+                          date,
+                          bookingStartDateTime,
+                        );
+
+                        const dateIsEqualBooking = looseIsDateEqual(
+                          date,
+                          bookingStartDateTime,
+                        );
+
+                        const dateIsBeforeBooking = looseIsDateBefore(
+                          date,
+                          bookingEndDateTime,
+                        );
+
+                        if (
+                          (dateIsAfterBooking || dateIsEqualBooking) &&
+                          dateIsBeforeBooking
+                        ) {
+                          return true;
+                        }
+
+                        const dateWithServiceLength = addMinutes(
+                          date,
+                          serviceLength,
+                        );
+
+                        const dateIsEqualBookingWithServiceLength =
+                          looseIsDateEqual(
+                            dateWithServiceLength,
+                            bookingStartDateTime,
+                          );
+
+                        if (dateIsEqualBookingWithServiceLength) {
+                          return false;
+                        }
+
+                        const dateIsAfterBookingWithServiceLength =
+                          looseIsDateAfter(
+                            dateWithServiceLength,
+                            bookingStartDateTime,
+                          );
+
+                        const dateIsBeforeBookingWithServiceLength =
+                          looseIsDateBefore(
+                            dateWithServiceLength,
+                            bookingEndDateTime,
+                          );
+
+                        if (
+                          dateIsAfterBookingWithServiceLength &&
+                          dateIsBeforeBookingWithServiceLength
+                        ) {
+                          return true;
+                        }
+
+                        if (
+                          dateIsBeforeBooking &&
+                          dateIsAfterBookingWithServiceLength
+                        ) {
+                          return true;
+                        }
+
+                        return false;
+                      });
                     }}
                   />
                 </VStack>

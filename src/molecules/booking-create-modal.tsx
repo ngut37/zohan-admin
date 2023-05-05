@@ -16,11 +16,13 @@ import {
   getDay,
   isBefore,
   isAfter,
+  startOfMonth,
+  endOfMonth,
 } from 'date-fns';
 
 import { Service } from '@api/services';
-import { Staff } from '@api/staff';
-import { createBooking } from '@api/bookings';
+import { getBookingsByStaffOrFail, Staff } from '@api/staff';
+import { Booking, createBooking } from '@api/bookings';
 import { getServices } from '@api/venues';
 import { BusinessHoursInterval } from '@api/types';
 
@@ -28,6 +30,11 @@ import { yup } from '@utils/yup';
 import { messageIdConcat } from '@utils/message-id-concat';
 import { messageToString } from '@utils/message';
 import { getDayName } from '@utils/map-day-index-to-day';
+import {
+  looseIsDateAfter,
+  looseIsDateBefore,
+  looseIsDateEqual,
+} from '@utils/non-strict-date-comparator';
 
 import { Text, Input, Button } from '@atoms';
 
@@ -154,6 +161,47 @@ export const BookingCreateModal = () => {
   const [selectedStartDate, setSelectedStartDate] = useState<
     Date | undefined
   >();
+
+  const [staffBookingsByMonth, setStaffBookingsByMonth] = useState<Booking[]>(
+    [],
+  );
+
+  const fetchBookingsForStaff = useCallback(
+    async (date: Date) => {
+      if (!selectedStaff) {
+        return;
+      }
+
+      try {
+        const staffBookings = await getBookingsByStaffOrFail({
+          id: selectedStaff._id,
+          start: startOfMonth(date),
+          end: endOfMonth(date),
+        });
+
+        setStaffBookingsByMonth(staffBookings);
+      } catch (error) {
+        toast({
+          description: messageToString({ id: 'error.api' }, intl),
+          status: 'error',
+          duration: 10000,
+          isClosable: true,
+        });
+      }
+    },
+    [intl, selectedStaff, toast],
+  );
+
+  useEffect(() => {
+    (async () => {
+      if (!selectedStaff) {
+        setStaffBookingsByMonth([]);
+        return;
+      }
+
+      await fetchBookingsForStaff(new Date());
+    })();
+  }, [selectedStaff]);
 
   useEffect(() => {
     if (selectedVenue) {
@@ -492,6 +540,13 @@ export const BookingCreateModal = () => {
                       intl,
                     )}
                     overrideDate={selectedStartDate}
+                    onMonthChange={(date) => {
+                      if (!selectedStaff) return;
+
+                      (async () => {
+                        await fetchBookingsForStaff(date);
+                      })();
+                    }}
                     onChange={(date) => {
                       if (!date) return;
                       if (!selectedService) return;
@@ -614,10 +669,83 @@ export const BookingCreateModal = () => {
                         closingDateTimeWithBookingLength,
                       );
 
-                      return (
-                        !dateIsBeforeOpeningTime &&
-                        !dateIsAfterClosingTimeWithBookingLength
-                      );
+                      if (
+                        dateIsBeforeOpeningTime ||
+                        dateIsAfterClosingTimeWithBookingLength
+                      ) {
+                        return false;
+                      }
+
+                      // validate existing bookings collision
+                      return !staffBookingsByMonth.some((booking) => {
+                        const bookingStartDateTime = new Date(booking.start);
+                        const bookingEndDateTime = new Date(booking.end);
+
+                        const dateIsAfterBooking = looseIsDateAfter(
+                          date,
+                          bookingStartDateTime,
+                        );
+
+                        const dateIsEqualBooking = looseIsDateEqual(
+                          date,
+                          bookingStartDateTime,
+                        );
+
+                        const dateIsBeforeBooking = looseIsDateBefore(
+                          date,
+                          bookingEndDateTime,
+                        );
+
+                        if (
+                          (dateIsAfterBooking || dateIsEqualBooking) &&
+                          dateIsBeforeBooking
+                        ) {
+                          return true;
+                        }
+
+                        const dateWithServiceLength = addMinutes(
+                          date,
+                          serviceLength,
+                        );
+
+                        const dateIsEqualBookingWithServiceLength =
+                          looseIsDateEqual(
+                            dateWithServiceLength,
+                            bookingStartDateTime,
+                          );
+
+                        if (dateIsEqualBookingWithServiceLength) {
+                          return false;
+                        }
+
+                        const dateIsAfterBookingWithServiceLength =
+                          looseIsDateAfter(
+                            dateWithServiceLength,
+                            bookingStartDateTime,
+                          );
+
+                        const dateIsBeforeBookingWithServiceLength =
+                          looseIsDateBefore(
+                            dateWithServiceLength,
+                            bookingEndDateTime,
+                          );
+
+                        if (
+                          dateIsAfterBookingWithServiceLength &&
+                          dateIsBeforeBookingWithServiceLength
+                        ) {
+                          return true;
+                        }
+
+                        if (
+                          dateIsBeforeBooking &&
+                          dateIsAfterBookingWithServiceLength
+                        ) {
+                          return true;
+                        }
+
+                        return false;
+                      });
                     }}
                   />
                 </VStack>

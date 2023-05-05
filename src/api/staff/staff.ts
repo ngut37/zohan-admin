@@ -1,4 +1,5 @@
 import { apiClient, protectedApiClient } from '@api/api-client';
+import { Booking } from '@api/bookings';
 import { ResponseResult } from '@api/types';
 import { Venue } from '@api/venues';
 
@@ -106,4 +107,27 @@ export const deleteStaffOrFail = async (id: string) => {
     console.error(error);
     throw error;
   }
+};
+
+type GetBookingsByStaffQuery = {
+  start: Date;
+  end: Date;
+  id: string;
+};
+
+export const getBookingsByStaffOrFail = async ({
+  id,
+  start,
+  end,
+}: GetBookingsByStaffQuery) => {
+  const response = await protectedApiClient.request<ResponseResult<Booking[]>>({
+    url: `/staff/${id}/bookings`,
+    method: 'get',
+    params: {
+      start: start.toISOString(),
+      end: end.toISOString(),
+    },
+  });
+
+  return response?.data.data;
 };

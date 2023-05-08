@@ -30,6 +30,8 @@ import { Button, Input, Text } from '@atoms';
 import { InputLabel } from '@molecules/input-label';
 import { CollapsibleCheckbox } from '@molecules/collapsible-checkbox';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import {
   Divider,
   Flex,
@@ -57,6 +59,7 @@ type Props = {
 export const ServicesTab = ({ venueId }: Props) => {
   const intl = useIntl();
   const toast = useToast();
+  const { auth } = useAuth();
 
   const [submitting, setSubmitting] = useState(false);
   const [staff, setStaff] = useState<Staff[]>([]);
@@ -365,9 +368,10 @@ export const ServicesTab = ({ venueId }: Props) => {
       >
         {servicesComponents}
         <Button
+          disabled={auth?.role === 'reader'}
           width="100px"
           marginTop="15px !important"
-          size="md"
+          size="lg"
           message={{ id: 'button.save' }}
           onClick={handleSubmit(onSubmit)}
           isLoading={submitting}

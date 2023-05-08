@@ -1,9 +1,10 @@
 import { createContext, Dispatch, SetStateAction, useContext } from 'react';
 
-import { Staff } from '@utils/storage/auth';
+import { Staff, StaffRole } from '@utils/storage/auth';
 
 export type AuthContextType = {
   auth: Staff | undefined;
+  hasOneOfRoles: (roles: StaffRole[]) => boolean;
   authenticate: () => Promise<void>;
   logout: () => Promise<void>;
   loading: boolean;
@@ -19,6 +20,7 @@ export const useAuth = () => useContext(AuthContext);
 // set defaults here
 export const AuthContext = createContext<AuthContextType>({
   auth: undefined,
+  hasOneOfRoles: () => false,
   authenticate: async () => {},
   logout: async () => {},
   loading: false,

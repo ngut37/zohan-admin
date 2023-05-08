@@ -21,6 +21,8 @@ import { StaffRole, STAFF_ROLES_ENUM } from '@utils/storage/auth';
 
 import { Button, Input, Text, Tooltip } from '@atoms';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import {
   Flex,
   Skeleton,
@@ -68,6 +70,7 @@ export const StaffListItem = ({
   onDelete,
 }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { auth } = useAuth();
 
   const [submitting, setSubmitting] = useState(false);
   const [venueOptions, setVenueOptions] = useState<Venue[]>([]);
@@ -263,7 +266,9 @@ export const StaffListItem = ({
           <Text message={{ text: email }} fontSize="md" color="gray.600" />
         </Stack>
         <Button
-          message={{ id: m('button.edit') }}
+          message={{
+            id: `button.${auth?.role === 'reader' ? 'view' : 'edit'}`,
+          }}
           onClick={onButtonClick}
           marginRight="40px"
         />
@@ -400,6 +405,7 @@ export const StaffListItem = ({
               onClick={onClose}
             />
             <Button
+              disabled={auth?.role === 'reader'}
               leftIcon={<HiOutlineTrash width="20px" />}
               width="120px"
               message={{
@@ -419,6 +425,7 @@ export const StaffListItem = ({
               }}
             />
             <Button
+              disabled={auth?.role === 'reader'}
               width="140px"
               size="lg"
               message={{ id: 'button.save' }}

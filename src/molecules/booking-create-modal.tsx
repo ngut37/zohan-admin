@@ -40,6 +40,8 @@ import { Text, Input, Button } from '@atoms';
 
 import { useDashboard } from '@organisms/main-dashboard/context/dashboard-context';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import {
   Modal,
   ModalOverlay,
@@ -77,6 +79,7 @@ const m = messageIdConcat('dashboard.booking_create_modal');
 export const BookingCreateModal = () => {
   const intl = useIntl();
   const toast = useToast();
+  const { auth } = useAuth();
 
   const schema = useMemo(() => {
     return yup.object().shape({
@@ -773,6 +776,7 @@ export const BookingCreateModal = () => {
               onClick={onClose}
             />
             <Button
+              disabled={auth?.role === 'reader'}
               message={{ id: 'button.create' }}
               onClick={handleSubmit(onSubmit)}
               isLoading={submitting}

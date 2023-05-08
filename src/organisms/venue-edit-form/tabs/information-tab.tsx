@@ -41,6 +41,8 @@ import { AddressSuggestionInput } from '@molecules/address-suggestion-input';
 import { TimeOnlyInput } from '@molecules/time-only-input';
 import { CollapsibleCheckbox } from '@molecules/collapsible-checkbox';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import {
   AlertDialog,
   AlertDialogBody,
@@ -72,6 +74,7 @@ export const InformationTab = ({ venueId }: Props) => {
   const intl = useIntl();
   const toast = useToast();
   const router = useRouter();
+  const { auth } = useAuth();
   const {
     isOpen: isDisclosureOpen,
     onOpen: onDisclosureOpen,
@@ -307,6 +310,7 @@ export const InformationTab = ({ venueId }: Props) => {
                 variant="outline"
               />
               <Button
+                disabled={auth?.role === 'reader'}
                 colorScheme="red"
                 onClick={async () => {
                   await deleteVenueByIdOrFail(venueId);
@@ -549,6 +553,7 @@ export const InformationTab = ({ venueId }: Props) => {
 
         <HStack justifyContent="space-between">
           <Button
+            disabled={auth?.role === 'reader'}
             leftIcon={<HiOutlineTrash width="20px" />}
             marginTop="50px !important"
             variant="outline"
@@ -559,6 +564,7 @@ export const InformationTab = ({ venueId }: Props) => {
             isLoading={submitting}
           />
           <Button
+            disabled={auth?.role === 'reader'}
             width="150px"
             marginTop="50px !important"
             size="lg"

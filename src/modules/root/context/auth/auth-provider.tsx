@@ -15,6 +15,7 @@ import {
   removeAccessToken,
   saveAccessTokenToken,
   Staff,
+  StaffRole,
 } from '@utils/storage/auth';
 
 import { AuthContext } from './auth-context';
@@ -62,6 +63,16 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
     return;
   }, [setAuthState, router]);
 
+  const hasOneOfRoles = useCallback(
+    (roles: StaffRole[]) => {
+      if (!auth) {
+        return false;
+      }
+      return roles.includes(auth.role);
+    },
+    [auth],
+  );
+
   const logout = useCallback(async () => {
     setLoading(true);
     try {
@@ -90,7 +101,7 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
 
   return (
     <AuthContext.Provider
-      value={{ auth, authenticate, logout, loading, setLoading }}
+      value={{ auth, hasOneOfRoles, authenticate, logout, loading, setLoading }}
     >
       {children}
     </AuthContext.Provider>

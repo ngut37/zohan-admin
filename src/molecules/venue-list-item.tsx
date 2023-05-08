@@ -5,15 +5,13 @@ import { HiBuildingStorefront } from 'react-icons/hi2';
 
 import { Venue } from '@api/venues';
 
-import { messageIdConcat } from '@utils/message-id-concat';
-
 import { Button, Text } from '@atoms';
+
+import { useAuth } from '@modules/root/context/auth';
 
 import { Flex, Skeleton, Stack } from '@chakra-ui/react';
 
 import { colors } from '@styles';
-
-const m = messageIdConcat('venues-list.item');
 
 type Props = Venue & { onAfterSubmit?: () => Promise<void> };
 
@@ -25,6 +23,7 @@ export const VenueListItem = ({
   momc,
 }: Props) => {
   const router = useRouter();
+  const { auth } = useAuth();
 
   return (
     <>
@@ -82,7 +81,9 @@ export const VenueListItem = ({
           />
         </Stack>
         <Button
-          message={{ id: m('button.edit') }}
+          message={{
+            id: `button.${auth?.role === 'reader' ? 'view' : 'edit'}`,
+          }}
           onClick={() => {
             router.push(`/venues/${id}`, undefined, { shallow: true });
           }}

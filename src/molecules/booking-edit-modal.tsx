@@ -46,6 +46,8 @@ import {
   BookingModalFormValues,
 } from '@organisms/main-dashboard/context/dashboard-context';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import {
   Modal,
   ModalOverlay,
@@ -77,6 +79,7 @@ const m = messageIdConcat('dashboard.booking_edit_modal');
 export const BookingEditModal = () => {
   const intl = useIntl();
   const toast = useToast();
+  const { auth } = useAuth();
 
   const { isOpen, onOpen, onClose: onDisclosureClose } = useDisclosure();
   const cancelDeleteRef = useRef<HTMLButtonElement>(null);
@@ -289,6 +292,7 @@ export const BookingEditModal = () => {
     return (
       <>
         <Button
+          disabled={auth?.role === 'reader'}
           colorScheme="red"
           onClick={onOpen}
           size="lg"
@@ -324,6 +328,7 @@ export const BookingEditModal = () => {
                   variant="outline"
                 />
                 <Button
+                  disabled={auth?.role === 'reader'}
                   colorScheme="red"
                   onClick={async () => {
                     await onDelete();
@@ -852,6 +857,7 @@ export const BookingEditModal = () => {
             <HStack>
               {deleteBookingAlertDialog}
               <Button
+                disabled={auth?.role === 'reader'}
                 message={{ id: 'button.save' }}
                 onClick={handleSubmit(onSubmit)}
                 isLoading={submitting}

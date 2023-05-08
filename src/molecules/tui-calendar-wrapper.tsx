@@ -32,6 +32,8 @@ import { Button, Text } from '@atoms';
 
 import { useDashboard } from '@organisms/main-dashboard/context/dashboard-context';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import {
   Box,
   Divider,
@@ -51,6 +53,7 @@ const VIEW_TYPES: Options['defaultView'][] = ['day', 'week', 'month'];
 const TUICalendarWrapper = () => {
   const intl = useIntl();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { auth } = useAuth();
 
   const {
     availableVenues,
@@ -274,6 +277,7 @@ const TUICalendarWrapper = () => {
   const calendarControls = useMemo(() => {
     const ctaButton = selectedVenue ? (
       <Button
+        disabled={auth?.role === 'reader'}
         message={{ id: 'button.create_booking' }}
         leftIcon={<HiPlus />}
         onClick={() => {
@@ -281,14 +285,24 @@ const TUICalendarWrapper = () => {
         }}
       />
     ) : (
-      <Button
-        size="lg"
-        message={{ id: 'button.open_onboarding_modal' }}
-        leftIcon={<HiInformationCircle />}
-        onClick={() => {
-          onOpen();
-        }}
-      />
+      <>
+        <Button
+          disabled
+          message={{ id: 'button.create_booking' }}
+          leftIcon={<HiPlus />}
+          onClick={() => {
+            setCreateModalOpen(true);
+          }}
+        />
+        <Button
+          size="lg"
+          message={{ id: 'button.open_onboarding_modal' }}
+          leftIcon={<HiInformationCircle />}
+          onClick={() => {
+            onOpen();
+          }}
+        />
+      </>
     );
 
     return (

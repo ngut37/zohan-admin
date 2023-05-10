@@ -45,7 +45,7 @@ export type Service = {
   type: ServiceType;
   name: ServiceName;
   venue: string;
-  staff: string[];
+  staff?: string[];
   length: number;
   price: number;
   createdAt: string;

@@ -10,7 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
-import { HiOutlineTrash } from 'react-icons/hi';
+import { HiCheck, HiOutlineTrash } from 'react-icons/hi';
 import { MdInfo } from 'react-icons/md';
 import { setHours } from 'date-fns';
 
@@ -310,7 +310,7 @@ export const InformationTab = ({ venueId }: Props) => {
                 variant="outline"
               />
               <Button
-                disabled={auth?.role === 'reader'}
+                disabled={auth?.role !== 'admin'}
                 colorScheme="red"
                 onClick={async () => {
                   await deleteVenueByIdOrFail(venueId);
@@ -553,7 +553,7 @@ export const InformationTab = ({ venueId }: Props) => {
 
         <HStack justifyContent="space-between">
           <Button
-            disabled={auth?.role === 'reader'}
+            disabled={auth?.role !== 'admin'}
             leftIcon={<HiOutlineTrash width="20px" />}
             marginTop="50px !important"
             variant="outline"
@@ -564,7 +564,8 @@ export const InformationTab = ({ venueId }: Props) => {
             isLoading={submitting}
           />
           <Button
-            disabled={auth?.role === 'reader'}
+            leftIcon={<HiCheck />}
+            disabled={auth?.role !== 'admin'}
             width="150px"
             marginTop="50px !important"
             size="lg"

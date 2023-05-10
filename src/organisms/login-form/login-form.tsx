@@ -2,7 +2,12 @@ import React, { useMemo, useState } from 'react';
 
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { HiOutlineAtSymbol, HiOutlineLockClosed } from 'react-icons/hi';
+import {
+  HiOutlineAtSymbol,
+  HiOutlineLockClosed,
+  HiOutlineLogin,
+  HiOutlineUserAdd,
+} from 'react-icons/hi';
 
 import { yupResolver } from '@hookform/resolvers/yup';
 
@@ -147,6 +152,7 @@ export const LoginForm = () => {
             error={errors?.password}
           />
           <Button
+            leftIcon={<HiOutlineLogin />}
             size="lg"
             type="submit"
             width="100%"
@@ -180,8 +186,8 @@ export const LoginForm = () => {
           <Divider orientation="horizontal" my="10px" />
           <Link href="/register">
             <Button
+              leftIcon={<HiOutlineUserAdd />}
               variant="ghost"
-              type="submit"
               message={{ id: m('link.register') }}
             />
           </Link>

@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { useIntl } from 'react-intl';
+import { HiCheck } from 'react-icons/hi';
 
 import { CompanyFormData } from '@api/companies';
 
@@ -46,7 +47,7 @@ export const CompanyForm = ({ defaultData, onBackButtonClick }: Props) => {
         <Text type="text" message={{ id: m('sub_heading') }} fontSize="sm" />
       </VStack>
       <VStack direction="column" justify="center" align="center" width="100%">
-        <FormControl>
+        <FormControl aria-autocomplete="none">
           <VStack spacing={6} width="100%">
             {/* ICO */}
             <VStack spacing="5px" width="100%">
@@ -76,6 +77,8 @@ export const CompanyForm = ({ defaultData, onBackButtonClick }: Props) => {
               <InputLabel message={{ id: m('input.name.label') }} />
               <Input
                 inputProps={{
+                  role: 'presentation',
+                  autoComplete: 'off',
                   id: 'name',
                   placeholder: messageToString(
                     { id: m('input.name.placeholder') },
@@ -95,6 +98,8 @@ export const CompanyForm = ({ defaultData, onBackButtonClick }: Props) => {
               <InputLabel message={{ id: m('input.address.label') }} />
               <AddressSuggestionInput
                 inputProps={{
+                  role: 'presentation',
+                  autoComplete: 'off',
                   id: 'address',
                 }}
                 formControlProps={{
@@ -182,6 +187,7 @@ export const CompanyForm = ({ defaultData, onBackButtonClick }: Props) => {
             </VStack>
           </VStack>
           <Button
+            leftIcon={<HiCheck />}
             size="lg"
             marginTop="40px"
             width="100%"

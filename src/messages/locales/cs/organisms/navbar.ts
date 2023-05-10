@@ -1,11 +1,12 @@
 import { MessageObject } from '../../../types';
 
 export const navbarMessages: MessageObject = {
-  'navbar.login': 'Přihlásit',
-  'navbar.register': 'Registrovat',
-  'navbar.logout': 'Odhlásit se',
+  'navbar.login': 'přihlásit',
+  'navbar.register': 'registrovat',
+  'navbar.logout': 'odhlásit se',
 
   // links
-  'navbar.link.staff': 'Zaměstnanci',
-  'navbar.link.venues': 'Pobočky',
+  'navbar.link.calendar': 'rezervace',
+  'navbar.link.staff': 'zaměstnanci',
+  'navbar.link.venues': 'pobočky',
 };

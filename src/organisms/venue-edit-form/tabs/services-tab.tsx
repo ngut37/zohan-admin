@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import { GroupBase, MultiValue, OptionBase, Select } from 'chakra-react-select';
+import { HiCheck } from 'react-icons/hi';
 
 import { config } from '@config';
 
@@ -161,7 +162,9 @@ export const ServicesTab = ({ venueId }: Props) => {
           setValue(`${name}.venue`, venue);
           setValue(`${name}.length`, length);
           setValue(`${name}.price`, price);
-          setValue(`${name}.staff`, staff);
+          if (staff) {
+            setValue(`${name}.staff`, staff);
+          }
         });
       } catch (error) {
         toast({
@@ -368,8 +371,9 @@ export const ServicesTab = ({ venueId }: Props) => {
       >
         {servicesComponents}
         <Button
-          disabled={auth?.role === 'reader'}
-          width="100px"
+          leftIcon={<HiCheck />}
+          disabled={auth?.role !== 'admin'}
+          width="150px"
           marginTop="15px !important"
           size="lg"
           message={{ id: 'button.save' }}

@@ -8,10 +8,6 @@ export const venueCreateMessages: MessageObject = {
   // labels
   'venue.create.input.ico.label': 'Adresa',
 
-  // buttons
-  'venue.create.button.submit': 'Vytvořit',
-  'venue.create.button.back': 'zpět',
-
   // errors
   'venue.create.input.address.required': 'Vyberte prosím adresu',
 

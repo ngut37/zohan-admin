@@ -11,12 +11,7 @@ import { useIntl } from 'react-intl';
 import { format } from 'date-fns';
 import ToastUIReactCalendar from '@toast-ui/react-calendar';
 import { ExternalEventTypes, Options } from '@toast-ui/calendar';
-import {
-  HiArrowNarrowLeft,
-  HiArrowNarrowRight,
-  HiInformationCircle,
-  HiPlus,
-} from 'react-icons/hi';
+import { HiArrowNarrowLeft, HiArrowNarrowRight, HiPlus } from 'react-icons/hi';
 
 import { Service } from '@api/services';
 
@@ -227,7 +222,19 @@ const TUICalendarWrapper = () => {
           ))}
         </Select>
       </>
-    ) : null;
+    ) : (
+      <>
+        <Button
+          size="lg"
+          width="200px"
+          colorScheme="orange"
+          message={{ id: 'button.open_onboarding_modal' }}
+          onClick={() => {
+            onOpen();
+          }}
+        />
+      </>
+    );
 
     return (
       <HStack
@@ -236,7 +243,9 @@ const TUICalendarWrapper = () => {
         paddingY="15px"
         justifyContent="space-between"
       >
-        <VStack width="500px">{venueSelect}</VStack>
+        <VStack width="500px" alignItems="flex-start">
+          {venueSelect}
+        </VStack>
         <VStack>
           <InputLabel
             message={{ id: m('input.view_type.label') }}
@@ -275,36 +284,6 @@ const TUICalendarWrapper = () => {
   ]);
 
   const calendarControls = useMemo(() => {
-    const ctaButton = selectedVenue ? (
-      <Button
-        disabled={auth?.role === 'reader'}
-        message={{ id: 'button.create_booking' }}
-        leftIcon={<HiPlus />}
-        onClick={() => {
-          setCreateModalOpen(true);
-        }}
-      />
-    ) : (
-      <>
-        <Button
-          disabled
-          message={{ id: 'button.create_booking' }}
-          leftIcon={<HiPlus />}
-          onClick={() => {
-            setCreateModalOpen(true);
-          }}
-        />
-        <Button
-          size="lg"
-          message={{ id: 'button.open_onboarding_modal' }}
-          leftIcon={<HiInformationCircle />}
-          onClick={() => {
-            onOpen();
-          }}
-        />
-      </>
-    );
-
     return (
       <HStack
         width="100%"
@@ -312,7 +291,14 @@ const TUICalendarWrapper = () => {
         paddingY="15px"
         justifyContent="space-between"
       >
-        {ctaButton}
+        <Button
+          disabled={auth?.role === 'reader' || !selectedVenue}
+          message={{ id: 'button.create_booking' }}
+          leftIcon={<HiPlus />}
+          onClick={() => {
+            setCreateModalOpen(true);
+          }}
+        />
         <HStack>
           <Text
             fontSize="2xl"

@@ -2,17 +2,13 @@ import { MessageObject } from '../../../types';
 
 export const staffListMessages: MessageObject = {
   // LIST
-  // buttons
-  'staff-list.button.create_venue': 'Vytvořit',
-
-  'staff-list.item.button.edit': 'Upravit',
-
   // toasts
   'staff-list.item.toast.success': 'Zaměstnanec byl úspěsně upraven.',
 
   /* ITEM DRAWER */
   // headings
-  'staff-list.item.drawer.heading': 'Upravit zaměstnance',
+  'staff-list.item.drawer.heading.edit': 'Úprava zaměstnance',
+  'staff-list.item.drawer.heading.view': 'Zobrazení zaměstnance',
 
   // labels
   'staff-list.item.drawer.input.name.label': 'Celé jméno',

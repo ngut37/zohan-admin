@@ -14,9 +14,9 @@ export const globalMessages: MessageObject = {
   'gender.other': 'Jiné',
 
   // ROLES
-  'role.admin': 'Admin',
-  'role.editor': 'Editor',
-  'role.reader': 'Čtenář',
+  'role.admin': 'admin',
+  'role.editor': 'editor',
+  'role.reader': 'čtenář',
   'role.admin.tooltip': 'Administrátor s právem upravovat vše.',
   'role.editor.tooltip': 'Editor s právem upravovat rezervace.',
   'role.reader.tooltip': 'Čtenář nemá právo nic upravovat.',
@@ -55,7 +55,7 @@ export const globalMessages: MessageObject = {
   'input.label.optional': 'nepovinné',
 
   // misc
-  no_content: 'Nic tu bohužel není',
+  no_content: 'Nic tu bohužel není...',
 
   // service types
   'service_type.hair': 'Vlasová péče',

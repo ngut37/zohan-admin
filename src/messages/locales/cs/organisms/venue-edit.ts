@@ -19,7 +19,7 @@ export const venueEditMessages: MessageObject = {
   'venue.edit.information_tab.input.address_region_district.label':
     'Vybraný region a okres',
   'venue.edit.information_tab.input.business_hours.label':
-    'Vyberte otevírací dobu pobocky',
+    'Vyberte otevírací dobu pobočky',
   'venue.edit.information_tab.input.opening_time.label': 'Otevírací doba',
   'venue.edit.information_tab.input.closing_time.label': 'Zavírací doba',
 

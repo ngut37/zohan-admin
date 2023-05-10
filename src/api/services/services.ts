@@ -13,6 +13,7 @@ export type ServiceUpsertPayload = {
 };
 
 export type UpsertManyServicesPayload = {
+  venue: string;
   services: ServiceUpsertPayload[];
 };
 

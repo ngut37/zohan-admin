@@ -116,7 +116,7 @@ export const ServicesTab = ({ venueId }: Props) => {
           }
           return acc;
         },
-        { services: [] },
+        { services: [], venue: venueId },
       );
 
       setSubmitting(true);
@@ -134,7 +134,7 @@ export const ServicesTab = ({ venueId }: Props) => {
         setSubmitting(false);
       }
     },
-    [setSubmitting],
+    [setSubmitting, venueId],
   );
 
   const {

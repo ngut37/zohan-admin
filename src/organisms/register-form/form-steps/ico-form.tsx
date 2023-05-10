@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 
 import { useIntl } from 'react-intl';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { MdOutlineSearch } from 'react-icons/md';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CompanyFormData, fetchCompanyByIco } from '@api/companies';
@@ -106,6 +107,7 @@ export const IcoForm = ({ afterSubmit }: Props) => {
             error={errors?.ico}
           />
           <Button
+            leftIcon={<MdOutlineSearch />}
             size="lg"
             type="submit"
             width="100%"

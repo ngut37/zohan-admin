@@ -18,16 +18,19 @@ import { Button, Card, Text } from '@atoms';
 import { AddressSuggestionInput } from '@molecules/address-suggestion-input';
 import { InputLabel } from '@molecules/input-label';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import { FormControl, Divider, Flex, useToast, VStack } from '@chakra-ui/react';
 
 const m = messageIdConcat('venue.create');
 
 export const VenueCreateForm = () => {
-  const [submitting, setSubmitting] = useState(false);
-
   const intl = useIntl();
   const toast = useToast();
   const router = useRouter();
+  const { auth } = useAuth();
+
+  const [submitting, setSubmitting] = useState(false);
 
   const schema = yup.object().shape({
     stringAddress: yup
@@ -142,12 +145,13 @@ export const VenueCreateForm = () => {
             onInputChange={onAddressInputChangeHandler}
           />
           <Button
+            disabled={auth?.role !== 'admin'}
             leftIcon={<HiPlus />}
             size="lg"
             type="submit"
             marginTop="20px"
             width="100%"
-            message={{ id: m('button.submit') }}
+            message={{ id: 'button.create' }}
             isLoading={submitting}
             onClick={handleSubmit(onSubmit)}
           />
@@ -157,7 +161,7 @@ export const VenueCreateForm = () => {
           leftIcon={<HiArrowSmLeft width="20px" />}
           variant="link"
           onClick={() => router.push('/venues', undefined, { shallow: true })}
-          message={{ id: m('button.back') }}
+          message={{ id: 'button.back' }}
         />
       </Card>
     </Flex>

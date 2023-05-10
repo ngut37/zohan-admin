@@ -11,7 +11,7 @@ export const registerMessages: MessageObject = {
   'register.ico.input.placeholder': 'např. 12345678',
 
   // buttons
-  'register.ico.button.look_up_ico': 'Vyhledat',
+  'register.ico.button.look_up_ico': 'vyhledat',
 
   // form errors
   'register.ico.input.error.required': 'Zadejte prosím IČO',
@@ -88,8 +88,8 @@ export const registerMessages: MessageObject = {
     'Zadaná hesla nesouhlasí',
 
   // buttons
-  'register.company.button.submit': 'Registrovat se',
-  'register.company.button.back': 'Zadat jiné IČO',
+  'register.company.button.submit': 'registrovat se',
+  'register.company.button.back': 'zadat jiné IČO',
 
   // toasts
   'register.company.toast.success':

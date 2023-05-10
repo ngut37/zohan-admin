@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useIntl } from 'react-intl';
+import { HiCheck } from 'react-icons/hi';
 
 import { messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';
@@ -49,7 +50,7 @@ export const OnboardingModal = ({ isOpen, onClose }: Props) => {
           </OrderedList>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={onClose} size="lg">
+          <Button leftIcon={<HiCheck />} onClick={onClose} size="lg">
             {messageToString({ id: 'button.understood' }, intl)}
           </Button>
         </ModalFooter>

@@ -3,7 +3,13 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { HiArrowSmLeft, HiOutlineTrash } from 'react-icons/hi';
+import {
+  HiArrowSmLeft,
+  HiOutlineTrash,
+  HiOutlinePencil,
+  HiOutlineEye,
+  HiCheck,
+} from 'react-icons/hi';
 import { HiUser } from 'react-icons/hi2';
 import { MdInfo, MdInfoOutline } from 'react-icons/md';
 import { Select, SingleValue } from 'chakra-react-select';
@@ -220,6 +226,20 @@ export const StaffListItem = ({
     onOpen();
   };
 
+  const disableDeleteButton = useMemo(() => {
+    const userIsOpenedStaff = auth?.staffId === _id;
+
+    const userIsNotAdmin = auth?.role !== 'admin';
+
+    return userIsOpenedStaff || userIsNotAdmin;
+  }, [auth, _id]);
+
+  const disableEditButton = useMemo(() => {
+    const userIsNotAdmin = auth?.role !== 'admin';
+
+    return userIsNotAdmin;
+  }, [auth]);
+
   return (
     <>
       <Flex
@@ -266,8 +286,11 @@ export const StaffListItem = ({
           <Text message={{ text: email }} fontSize="md" color="gray.600" />
         </Stack>
         <Button
+          leftIcon={
+            auth?.role !== 'admin' ? <HiOutlineEye /> : <HiOutlinePencil />
+          }
           message={{
-            id: `button.${auth?.role === 'reader' ? 'view' : 'edit'}`,
+            id: `button.${auth?.role !== 'admin' ? 'view' : 'edit'}`,
           }}
           onClick={onButtonClick}
           marginRight="40px"
@@ -284,7 +307,13 @@ export const StaffListItem = ({
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>
-            <Text message={{ id: m('drawer.heading') }} />
+            <Text
+              message={{
+                id: m(
+                  `drawer.heading.${auth?.role === 'admin' ? 'edit' : 'view'}`,
+                ),
+              }}
+            />
           </DrawerHeader>
 
           <DrawerBody>
@@ -397,7 +426,7 @@ export const StaffListItem = ({
             alignItems="center"
           >
             <Button
-              leftIcon={<HiArrowSmLeft width="20px" />}
+              leftIcon={<HiArrowSmLeft />}
               message={{
                 id: 'button.close',
               }}
@@ -405,8 +434,8 @@ export const StaffListItem = ({
               onClick={onClose}
             />
             <Button
-              disabled={auth?.role === 'reader'}
-              leftIcon={<HiOutlineTrash width="20px" />}
+              disabled={disableDeleteButton}
+              leftIcon={<HiOutlineTrash />}
               width="120px"
               message={{
                 id: 'button.delete',
@@ -425,7 +454,8 @@ export const StaffListItem = ({
               }}
             />
             <Button
-              disabled={auth?.role === 'reader'}
+              leftIcon={<HiCheck />}
+              disabled={disableEditButton}
               width="140px"
               size="lg"
               message={{ id: 'button.save' }}

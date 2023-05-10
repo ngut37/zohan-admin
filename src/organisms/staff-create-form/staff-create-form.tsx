@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 import { HiArrowSmLeft, HiPlus } from 'react-icons/hi';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Select, SingleValue } from 'chakra-react-select';
-import { MdInfo } from 'react-icons/md';
+import { MdInfo, MdInfoOutline } from 'react-icons/md';
 
 import { config } from '@config';
 
@@ -23,6 +23,8 @@ import { Button, Card, Input, Text, Tooltip } from '@atoms';
 
 import { InputLabel } from '@molecules/input-label';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import {
   Divider,
   Flex,
@@ -34,6 +36,7 @@ import {
   FormControl,
   FormErrorMessage,
   Box,
+  HStack,
 } from '@chakra-ui/react';
 
 import classes from './staff-create-form.module.scss';
@@ -43,12 +46,13 @@ type Option = SingleValue<{ value: string; label: string }>;
 const m = messageIdConcat('create.staff');
 
 export const StaffCreateForm = () => {
-  const [submitting, setSubmitting] = useState(false);
-  const [venueOptions, setVenueOptions] = useState<Venue[]>([]);
-
   const intl = useIntl();
   const toast = useToast();
   const router = useRouter();
+  const { auth } = useAuth();
+
+  const [submitting, setSubmitting] = useState(false);
+  const [venueOptions, setVenueOptions] = useState<Venue[]>([]);
 
   const rolesRadioOptions: { value: string; label: string; tooltip: string }[] =
     Object.keys(STAFF_ROLES_ENUM).map((role) => ({
@@ -263,13 +267,17 @@ export const StaffCreateForm = () => {
                     {rolesRadioOptions.map(
                       ({ value, label, tooltip }, index) => {
                         return (
-                          <Radio
-                            key={index}
-                            value={value}
-                            textDecoration="underline"
-                          >
-                            <Tooltip label={tooltip} placement="right">
-                              {label}
+                          <Radio key={index} value={value}>
+                            <Tooltip
+                              label={tooltip}
+                              placement="right"
+                              position="absolute"
+                              display="initial"
+                            >
+                              <HStack spacing="5px">
+                                <Text message={{ text: label }} />
+                                <MdInfoOutline fontSize="17px" />
+                              </HStack>
                             </Tooltip>
                           </Radio>
                         );
@@ -302,12 +310,13 @@ export const StaffCreateForm = () => {
               />
             </VStack>
             <Button
+              disabled={auth?.role !== 'admin'}
               leftIcon={<HiPlus />}
               size="lg"
               onClick={handleSubmit(onSubmit)}
               marginTop="20px"
               width="150px"
-              message={{ id: m('button.submit') }}
+              message={{ id: 'button.create' }}
               isLoading={submitting}
             />
           </VStack>
@@ -317,7 +326,7 @@ export const StaffCreateForm = () => {
           leftIcon={<HiArrowSmLeft width="20px" />}
           variant="link"
           onClick={() => router.push('/staff', undefined, { shallow: true })}
-          message={{ id: m('button.back') }}
+          message={{ id: 'button.back' }}
         />
       </Card>
     </Flex>

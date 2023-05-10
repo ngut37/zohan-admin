@@ -23,6 +23,8 @@ import {
   StaffListItemSkeleton,
 } from '@molecules/staff-list-item/staff-list-item';
 
+import { useAuth } from '@modules/root/context/auth';
+
 import {
   AlertDialog,
   AlertDialogBody,
@@ -42,6 +44,7 @@ export const StaffList = () => {
   const intl = useIntl();
   const toast = useToast();
   const router = useRouter();
+  const { auth } = useAuth();
   const {
     isOpen: isDisclosureOpen,
     onOpen: onDisclosureOpen,
@@ -181,8 +184,10 @@ export const StaffList = () => {
       <Stack width="100%" maxWidth="780px" minWidth="780px" spacing="30px">
         <Flex width="100%" height="60px" direction="row-reverse">
           <Button
+            disabled={auth?.role !== 'admin'}
+            size="lg"
             leftIcon={<HiPlus />}
-            message={{ id: m('button.create_venue') }}
+            message={{ id: 'button.create' }}
             onClick={onCreateButtonClick}
           />
         </Flex>

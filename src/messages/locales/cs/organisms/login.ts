@@ -15,7 +15,7 @@ export const loginMessages: MessageObject = {
   /* TOASTS */
   'login.toast.login_error': 'Chybně zadané heslo nebo emailová adresa.',
   /* BUTTONS */
-  'login.input.button': 'Přihlásit se',
+  'login.input.button': 'přihlásit se',
   /* LINKS */
-  'login.link.register': 'Vytvořte si účet',
+  'login.link.register': 'vytvořte si účet',
 };

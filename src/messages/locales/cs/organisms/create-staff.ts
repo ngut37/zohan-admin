@@ -15,10 +15,6 @@ export const staffCreateMessages: MessageObject = {
   'create.staff.input.staff_name.placeholder': 'Jan Srna',
   'create.staff.input.email.placeholder': 'jan.srna@email.cz',
 
-  // buttons
-  'create.staff.button.submit': 'Vytvořit',
-  'create.staff.button.back': 'zpět',
-
   // errors
   'create.staff.input.name.error.required': 'Jméno nemůže být prázdné',
   'create.staff.input.name.error.min': `Jméno musí obsahovat nejméně {length} {length, plural, 

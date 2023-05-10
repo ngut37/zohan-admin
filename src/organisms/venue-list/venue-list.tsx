@@ -7,7 +7,6 @@ import { useRouter } from 'next/router';
 import { getAllVenuesOrFail, Venue } from '@api/venues';
 
 import { messageToString } from '@utils/message';
-import { messageIdConcat } from '@utils/message-id-concat';
 
 import { Button } from '@atoms';
 
@@ -17,14 +16,15 @@ import {
 } from '@molecules/venue-list-item';
 import { NoContentInfo } from '@molecules/no-content-info';
 
-import { Flex, Stack, useToast } from '@chakra-ui/react';
+import { useAuth } from '@modules/root/context/auth';
 
-const m = messageIdConcat('venues-list');
+import { Flex, Stack, useToast } from '@chakra-ui/react';
 
 export const VenueList = () => {
   const intl = useIntl();
   const toast = useToast();
   const router = useRouter();
+  const { auth } = useAuth();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [venues, setVenues] = useState<Venue[]>([]);
@@ -92,8 +92,10 @@ export const VenueList = () => {
       <Stack width="100%" maxWidth="780px" minWidth="780px" spacing="30px">
         <Flex width="100%" height="60px" direction="row-reverse">
           <Button
+            size="lg"
+            disabled={auth?.role !== 'admin'}
             leftIcon={<HiPlus />}
-            message={{ id: m('button.create_venue') }}
+            message={{ id: 'button.create' }}
             onClick={onCreateButtonClick}
           />
         </Flex>

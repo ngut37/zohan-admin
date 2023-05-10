@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 
 import { useIntl } from 'react-intl';
+import { HiArrowLeft, HiOutlineTrash, HiCheck } from 'react-icons/hi';
 import {
   addMinutes,
   startOfMonth,
@@ -292,6 +293,7 @@ export const BookingEditModal = () => {
     return (
       <>
         <Button
+          leftIcon={<HiOutlineTrash />}
           disabled={auth?.role === 'reader'}
           colorScheme="red"
           onClick={onOpen}
@@ -564,7 +566,7 @@ export const BookingEditModal = () => {
                     {availableServices.map((service) => {
                       if (
                         !selectedStaff ||
-                        !service.staff.includes(selectedStaff._id)
+                        !service.staff?.includes(selectedStaff._id)
                       ) {
                         return null;
                       }
@@ -632,6 +634,68 @@ export const BookingEditModal = () => {
                     onChange={(date) => {
                       if (!date) return;
                       if (!selectedService) return;
+                      if (!selectedVenue) return;
+
+                      // check if the date is during business hours and if not then set the starting date to day's opening time
+                      const dayName = getDayName(getDay(date));
+
+                      if (!selectedVenue.businessHours[dayName]) return false;
+
+                      const openingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).openingTime.minute,
+                        ),
+                      );
+
+                      const closingDateTime = new Date(
+                        setHours(
+                          date,
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.hour,
+                        ).setMinutes(
+                          (
+                            selectedVenue.businessHours[
+                              dayName
+                            ] as BusinessHoursInterval
+                          ).closingTime.minute,
+                        ),
+                      );
+
+                      if (isBefore(date, openingDateTime)) {
+                        setSelectedStartDate(openingDateTime);
+                        setValue('start', openingDateTime);
+                        setValue(
+                          'end',
+                          addMinutes(openingDateTime, selectedService.length),
+                        );
+                        return;
+                      }
+
+                      if (isAfter(date, closingDateTime)) {
+                        setSelectedStartDate(
+                          addMinutes(closingDateTime, -selectedService.length),
+                        );
+                        setValue(
+                          'start',
+                          addMinutes(closingDateTime, -selectedService.length),
+                        );
+                        setValue('end', closingDateTime);
+                        return;
+                      }
 
                       const serviceLength = selectedService.length;
                       const startDateTime = date;
@@ -848,6 +912,7 @@ export const BookingEditModal = () => {
 
           <ModalFooter width="100%" justifyContent="space-between">
             <Button
+              leftIcon={<HiArrowLeft />}
               message={{ id: 'button.close' }}
               size="lg"
               variant="ghost"
@@ -857,6 +922,7 @@ export const BookingEditModal = () => {
             <HStack>
               {deleteBookingAlertDialog}
               <Button
+                leftIcon={<HiCheck />}
                 disabled={auth?.role === 'reader'}
                 message={{ id: 'button.save' }}
                 onClick={handleSubmit(onSubmit)}

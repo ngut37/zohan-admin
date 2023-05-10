@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { useRouter } from 'next/router';
-import { HiOutlineLogout, HiOutlineUserCircle } from 'react-icons/hi';
+import { HiOutlineUserCircle } from 'react-icons/hi';
 
 import { messageIdConcat } from '@utils/message-id-concat';
 
@@ -52,15 +52,37 @@ export const Navbar = () => {
       // );
       const isStaff = router.route.includes('/staff');
       const isVenue = router.route.includes('/venues');
+      const isDashboard = router.route === '/';
 
       const userAvatar = (
         <HiOutlineUserCircle width="20px" color={colors.whitesmoke.hex()} />
       );
       return (
         <>
-          <HStack spacing="20px">
-            <Button onClick={() => router.push('/venues')} variant="link">
+          <HStack
+            spacing="50px"
+            height="40px"
+            paddingX="40px"
+            width="500px"
+            justifyContent="center"
+          >
+            <Link href="/">
               <Text
+                width="85px"
+                color="whitesmoke"
+                fontSize="lg"
+                fontWeight="normal"
+                message={{ id: m('link.calendar') }}
+                transition="0.2s"
+                borderBottom={`1px solid ${
+                  isDashboard ? 'whitesmoke' : 'transparent'
+                }`}
+                _hover={{ fontWeight: 'semibold' }}
+              />
+            </Link>
+            <Link href="/venues">
+              <Text
+                width="75px"
                 color="whitesmoke"
                 fontSize="lg"
                 message={{ id: m('link.venues') }}
@@ -68,11 +90,12 @@ export const Navbar = () => {
                 borderBottom={`1px solid ${
                   isVenue ? 'whitesmoke' : 'transparent'
                 }`}
-                _hover={{ borderBottom: '1px solid whitesmoke' }}
+                _hover={{ fontWeight: 'semibold' }}
               />
-            </Button>
-            <Button onClick={() => router.push('/staff')} variant="link">
+            </Link>
+            <Link href="/staff">
               <Text
+                width="116px"
                 color="whitesmoke"
                 fontSize="lg"
                 message={{ id: m('link.staff') }}
@@ -80,19 +103,19 @@ export const Navbar = () => {
                 borderBottom={`1px solid ${
                   isStaff ? 'whitesmoke' : 'transparent'
                 }`}
-                _hover={{ borderBottom: '1px solid whitesmoke' }}
+                _hover={{ fontWeight: 'semibold' }}
               />
-            </Button>
+            </Link>
           </HStack>
           <HStack>
             {userAvatar}
-            <Text color="white" message={{ text: name }} />
+            <Text color="white" message={{ text: name }} paddingRight="20px" />
             <Button
-              rightIcon={<HiOutlineLogout color="whitesmoke" />}
               variant="solid"
+              colorScheme="whiteAlpha"
               onClick={logout}
               message={{ id: 'navbar.logout' }}
-            ></Button>
+            />
           </HStack>
         </>
       );
@@ -118,7 +141,7 @@ export const Navbar = () => {
             <Text
               type="heading"
               message={{ id: 'brand_name' }}
-              size="md"
+              size="lg"
               color="whitesmoke"
             />
           </Link>

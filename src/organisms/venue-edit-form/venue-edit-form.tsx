@@ -72,7 +72,7 @@ export const VenueEditForm = () => {
           </Flex>
         </Flex>
         <VStack w="70%" h="600px" paddingLeft="20px" alignItems="flex-start">
-          <Tabs variant="enclosed" colorScheme="teal">
+          <Tabs variant="enclosed" colorScheme="teal" width="100%">
             <TabList>
               <Tab _focus={{ outline: 'none' }}>
                 {messageToString({ id: m('tab.information') }, intl)}

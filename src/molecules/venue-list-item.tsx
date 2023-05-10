@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useRouter } from 'next/router';
 import { HiBuildingStorefront } from 'react-icons/hi2';
+import { HiOutlinePencil, HiOutlineEye } from 'react-icons/hi';
 
 import { Venue } from '@api/venues';
 
@@ -81,8 +82,11 @@ export const VenueListItem = ({
           />
         </Stack>
         <Button
+          leftIcon={
+            auth?.role !== 'admin' ? <HiOutlineEye /> : <HiOutlinePencil />
+          }
           message={{
-            id: `button.${auth?.role === 'reader' ? 'view' : 'edit'}`,
+            id: `button.${auth?.role !== 'admin' ? 'view' : 'edit'}`,
           }}
           onClick={() => {
             router.push(`/venues/${id}`, undefined, { shallow: true });

@@ -11,6 +11,7 @@ import { useIntl } from 'react-intl';
 import { useRouter } from 'next/router';
 
 import { deleteStaffOrFail, getAllStaffOrFail, Staff } from '@api/staff';
+import { getAllVenuesOrFail, Venue } from '@api/venues';
 
 import { messageToString } from '@utils/message';
 import { messageIdConcat } from '@utils/message-id-concat';
@@ -65,8 +66,21 @@ export const StaffList = () => {
     [onDisclosureOpen, setDialogStaffId],
   );
 
+  const [venueOptions, setVenueOptions] = useState<Venue[]>([]);
+
   useEffect(() => {
     (async () => {
+      try {
+        const venues = await getAllVenuesOrFail();
+        setVenueOptions(venues);
+      } catch (error) {
+        toast({
+          description: messageToString({ id: 'error.api' }, intl),
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
       await fetchAndSetStaff();
     })();
   }, []);
@@ -110,6 +124,7 @@ export const StaffList = () => {
         {...staff}
         onAfterSubmit={fetchAndSetStaff}
         onDelete={extendedOnDisclosureOpen}
+        existingVenues={venueOptions}
       />
     ));
   }, [loading, staff]);

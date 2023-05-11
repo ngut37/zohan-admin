@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import { useIntl } from 'react-intl';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -17,7 +17,7 @@ import { Select, SingleValue } from 'chakra-react-select';
 import { config } from '@config';
 
 import { EditStaffBody, editStaffOrFail, Staff } from '@api/staff';
-import { getAllVenuesOrFail, Venue } from '@api/venues';
+import { Venue } from '@api/venues';
 import { HttpStatusCode } from '@api/utils';
 
 import { messageIdConcat } from '@utils/message-id-concat';
@@ -64,6 +64,7 @@ type Option = SingleValue<{ value?: string; label?: string }>;
 type Props = Staff & {
   onAfterSubmit?: () => Promise<void>;
   onDelete?: (staffId: string) => void;
+  existingVenues: Venue[];
 };
 
 export const StaffListItem = ({
@@ -72,6 +73,7 @@ export const StaffListItem = ({
   name,
   role,
   venue: initialVenue,
+  existingVenues,
   onAfterSubmit,
   onDelete,
 }: Props) => {
@@ -79,23 +81,6 @@ export const StaffListItem = ({
   const { auth } = useAuth();
 
   const [submitting, setSubmitting] = useState(false);
-  const [venueOptions, setVenueOptions] = useState<Venue[]>([]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const venues = await getAllVenuesOrFail();
-        setVenueOptions(venues);
-      } catch (error) {
-        toast({
-          description: messageToString({ id: 'error.api' }, intl),
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        });
-      }
-    })();
-  }, []);
 
   const intl = useIntl();
   const toast = useToast();
@@ -209,11 +194,11 @@ export const StaffListItem = ({
 
   const options = useMemo<Option[]>(
     () =>
-      venueOptions.map((venue) => ({
+      existingVenues.map((venue) => ({
         value: venue._id,
         label: venue.stringAddress,
       })),
-    [venueOptions],
+    [existingVenues],
   );
 
   const onVenueMultiSelectChange = (option: Option) => {

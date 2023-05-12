@@ -81,6 +81,7 @@ export const DashboardProvider = ({ children }: Props) => {
   // used for booking date range
   const todaysDate = new Date();
 
+  const [loading, setLoading] = useState<boolean>(true);
   const [availableVenues, setAvailableVenues] = useState<Venue[]>([]);
   const [availableStaff, setAvailableStaff] = useState<Staff[]>([]);
   const [selectedVenue, setSelectedVenue] = useState<Venue | undefined>();
@@ -104,6 +105,8 @@ export const DashboardProvider = ({ children }: Props) => {
   };
 
   const fetchVenueAndStaff = useCallback(async () => {
+    setLoading(true);
+
     // get venues
     const fetchVenues = async () => {
       const venues = await getAllVenuesOrFail();
@@ -128,10 +131,21 @@ export const DashboardProvider = ({ children }: Props) => {
         setAvailableStaff(staff);
       })
       .catch((_error) => {});
-  }, []);
+  }, [setLoading]);
 
   useEffect(() => {
-    fetchVenueAndStaff().then(() => {});
+    (async () => {
+      try {
+        setLoading(true);
+        await fetchVenueAndStaff();
+        console.log('fetched venues and staff');
+      } catch {
+        setLoading(false);
+      }
+      // setting venues happends after setting loading to false for some reason
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      setLoading(false);
+    })();
   }, []);
 
   const refetchBookings = useCallback(async () => {
@@ -204,6 +218,7 @@ export const DashboardProvider = ({ children }: Props) => {
   return (
     <DashboardContext.Provider
       value={{
+        loading,
         availableVenues,
         setAvailableVenues,
         availableStaff,

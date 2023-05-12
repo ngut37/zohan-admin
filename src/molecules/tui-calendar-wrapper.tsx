@@ -32,11 +32,15 @@ import { useAuth } from '@modules/root/context/auth';
 import {
   Box,
   Divider,
+  Flex,
   HStack,
   Select,
+  Spinner,
   useDisclosure,
   VStack,
 } from '@chakra-ui/react';
+
+import { colors } from '@styles';
 
 import { InputLabel } from './input-label';
 import { OnboardingModal } from './onboarding-modal';
@@ -51,6 +55,7 @@ const TUICalendarWrapper = () => {
   const { auth } = useAuth();
 
   const {
+    loading,
     availableVenues,
     availableStaff,
     setBookingDateRange,
@@ -244,7 +249,19 @@ const TUICalendarWrapper = () => {
         justifyContent="space-between"
       >
         <VStack width="500px" alignItems="flex-start">
-          {venueSelect}
+          {loading || (!loading && !availableVenues.length) ? (
+            <Flex width="200px" justifyContent="center">
+              <Spinner
+                thickness="4px"
+                speed="0.85s"
+                emptyColor={colors.white.hex()}
+                color={colors.teal_500.hex()}
+                size="xl"
+              />
+            </Flex>
+          ) : (
+            venueSelect
+          )}
         </VStack>
         <VStack>
           <InputLabel
@@ -277,6 +294,7 @@ const TUICalendarWrapper = () => {
       </HStack>
     );
   }, [
+    loading,
     calendarRef,
     availableVenues,
     setBookingDateRange,

@@ -46,6 +46,7 @@ export type BookingDateRange = {
 };
 
 export type DashboardContextType = {
+  loading: boolean;
   availableVenues: Venue[];
   setAvailableVenues: Dispatch<SetStateAction<Venue[]>>;
   availableStaff: Staff[];
@@ -72,6 +73,7 @@ export type DashboardContextType = {
 const todaysDate = new Date();
 
 export const DashboardContext = createContext<DashboardContextType>({
+  loading: true,
   availableVenues: [],
   setAvailableVenues: () => {},
   availableStaff: [],

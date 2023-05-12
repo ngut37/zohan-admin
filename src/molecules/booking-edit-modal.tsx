@@ -563,23 +563,45 @@ export const BookingEditModal = () => {
                     defaultValue={selectedService?._id || modalData?.service}
                     value={selectedService?._id || modalData?.service}
                   >
-                    {availableServices.map((service) => {
-                      if (
-                        !selectedStaff ||
-                        !service.staff?.includes(selectedStaff._id)
-                      ) {
-                        return null;
-                      }
+                    {availableServices
+                      .sort((a, b) => {
+                        const aType = a.type;
+                        const bType = b.type;
 
-                      return (
-                        <option key={service._id} value={service._id}>
-                          {messageToString(
-                            { id: `service_name.${service.name}` },
-                            intl,
-                          )}
-                        </option>
-                      );
-                    })}
+                        if (aType < bType) {
+                          return -1;
+                        }
+                        if (aType > bType) {
+                          return 1;
+                        }
+                        return 0;
+                      })
+                      .map((service) => {
+                        if (
+                          !selectedStaff ||
+                          !service.staff?.includes(selectedStaff._id)
+                        ) {
+                          return null;
+                        }
+
+                        const serviceType = messageToString(
+                          { id: `service_type.${service.type}` },
+                          intl,
+                        );
+
+                        const serviceName = messageToString(
+                          { id: `service_name.${service.name}` },
+                          intl,
+                        );
+
+                        const optionMessage = `[${serviceType}] ${serviceName}`;
+
+                        return (
+                          <option key={service._id} value={service._id}>
+                            {optionMessage}
+                          </option>
+                        );
+                      })}
                   </Select>
                   <HStack width="100%" justifyContent="space-between">
                     <InputLabel

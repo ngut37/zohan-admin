@@ -160,10 +160,17 @@ export const DashboardProvider = ({ children }: Props) => {
               intl,
             );
 
+            const serviceType = messageToString(
+              {
+                id: `service_type.${booking.service.type}`,
+              },
+              intl,
+            );
+
             const customerName =
               booking.existingCustomer?.name || booking.customCustomer?.name;
 
-            const concatenatedTitle = `${serviceName} - ${customerName}`;
+            const concatenatedTitle = `[${serviceType}] ${serviceName} - ${customerName}`;
 
             return {
               id: booking._id,

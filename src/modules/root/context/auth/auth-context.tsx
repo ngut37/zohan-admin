@@ -23,6 +23,6 @@ export const AuthContext = createContext<AuthContextType>({
   hasOneOfRoles: () => false,
   authenticate: async () => {},
   logout: async () => {},
-  loading: false,
+  loading: true,
   setLoading: () => {},
 });

@@ -28,8 +28,10 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
   const [auth, setAuthState] = useState<Staff | undefined>();
 
   const authenticate = useCallback(async () => {
+    setLoading(true);
     if (!protectedPage) {
       // A not a protected page -> no need to authenticate
+      setLoading(false);
       return;
     }
 
@@ -48,6 +50,7 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
         await logoutOrFail();
         setAuthState(undefined);
         router.push('/login');
+        return;
       } else {
         // B_2 persist new access token in localstorage
         saveAccessTokenToken(refreshedAccessToken);
@@ -60,6 +63,8 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
     if (data) {
       setAuthState(data);
     }
+
+    setLoading(false);
     return;
   }, [setAuthState, router]);
 
@@ -82,8 +87,6 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
       router.push('/login');
     } catch {
       console.error('Logout API failed.');
-    } finally {
-      setLoading(false);
     }
   }, [setAuthState, router, setLoading]);
 
@@ -92,7 +95,6 @@ export const AuthProvider = ({ protectedPage = false, children }: Props) => {
       try {
         setLoading(true);
         await authenticate();
-        setLoading(false);
       } catch {
         console.error('Authentication failed.');
       }

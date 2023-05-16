@@ -24,7 +24,7 @@ export const upsertManyServices = async (
     const response = await protectedApiClient.request<{
       success: boolean;
     }>({
-      url: '/services/upsert-many',
+      url: '/admin/services/upsert-many',
       method: 'POST',
       data: payload,
     });

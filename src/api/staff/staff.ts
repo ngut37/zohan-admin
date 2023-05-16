@@ -16,7 +16,7 @@ type AuthorizationData = {
 
 export const loginOrFail = async (body: LoginBody) => {
   const response = await apiClient.request<ResponseResult<AuthorizationData>>({
-    url: '/staff/login',
+    url: '/admin/staff/login',
     method: 'POST',
     data: body,
     withCredentials: true,
@@ -27,7 +27,7 @@ export const loginOrFail = async (body: LoginBody) => {
 
 export const logoutOrFail = async () => {
   const response = await apiClient.request<ResponseResult>({
-    url: '/staff/logout',
+    url: '/admin/staff/logout',
     method: 'POST',
     withCredentials: true,
   });
@@ -40,7 +40,7 @@ export const refreshToken = async () => {
     const response = await protectedApiClient.request<
       ResponseResult<AuthorizationData>
     >({
-      url: '/staff/refresh-token',
+      url: '/admin/staff/refresh-token',
       method: 'GET',
       withCredentials: true,
     });
@@ -61,7 +61,7 @@ export type Staff = {
 
 export const getAllStaffOrFail = async () => {
   const response = await protectedApiClient.request<ResponseResult<Staff[]>>({
-    url: '/staff',
+    url: '/admin/staff',
     method: 'get',
   });
 
@@ -77,7 +77,7 @@ export type CreateStaffBody = {
 
 export const createStaffOrFail = async (body: CreateStaffBody) => {
   const response = await protectedApiClient.request<ResponseResult<Staff>>({
-    url: '/staff/create',
+    url: '/admin/staff/create',
     method: 'post',
     data: body,
   });
@@ -89,7 +89,7 @@ export type EditStaffBody = Partial<CreateStaffBody>;
 
 export const editStaffOrFail = async (id: string, body: EditStaffBody) => {
   const response = await protectedApiClient.request<ResponseResult<Staff>>({
-    url: `/staff/${id}/edit`,
+    url: `/admin/staff/${id}/edit`,
     method: 'post',
     data: body,
   });
@@ -100,7 +100,7 @@ export const editStaffOrFail = async (id: string, body: EditStaffBody) => {
 export const deleteStaffOrFail = async (id: string) => {
   try {
     await protectedApiClient.request({
-      url: `/staff/${id}`,
+      url: `/admin/staff/${id}`,
       method: 'delete',
     });
   } catch (error) {
@@ -121,7 +121,7 @@ export const getBookingsByStaffOrFail = async ({
   end,
 }: GetBookingsByStaffQuery) => {
   const response = await protectedApiClient.request<ResponseResult<Booking[]>>({
-    url: `/staff/${id}/bookings`,
+    url: `/admin/staff/${id}/bookings`,
     method: 'get',
     params: {
       start: start.toISOString(),

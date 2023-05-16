@@ -249,7 +249,7 @@ const TUICalendarWrapper = () => {
         justifyContent="space-between"
       >
         <VStack width="500px" alignItems="flex-start">
-          {loading || (!loading && !availableVenues.length) ? (
+          {loading ? (
             <Flex width="200px" justifyContent="center">
               <Spinner
                 thickness="4px"

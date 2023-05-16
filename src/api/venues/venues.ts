@@ -15,7 +15,7 @@ export type Venue = {
 
 export const getAllVenuesOrFail = async () => {
   const response = await protectedApiClient.request<ResponseResult<Venue[]>>({
-    url: '/venues',
+    url: '/admin/venues',
     method: 'get',
   });
 
@@ -24,7 +24,7 @@ export const getAllVenuesOrFail = async () => {
 
 export const getVenueByIdOrFail = async (venueId: string) => {
   const response = await protectedApiClient.request<ResponseResult<Venue>>({
-    url: `/venues/${venueId}`,
+    url: `/admin/venues/${venueId}`,
     method: 'get',
   });
 
@@ -41,7 +41,7 @@ export type CreateVenueBody = {
 
 export const createVenueOrFail = async (body: CreateVenueBody) => {
   const response = await protectedApiClient.request<ResponseResult<Venue>>({
-    url: '/venues/create',
+    url: '/admin/venues/create',
     method: 'post',
     data: body,
   });
@@ -55,7 +55,7 @@ export type EditVenueBody = CreateVenueBody & {
 
 export const editVenueOrFail = async (id: string, body: EditVenueBody) => {
   const response = await protectedApiClient.request<ResponseResult<Venue>>({
-    url: `/venues/${id}/edit`,
+    url: `/admin/venues/${id}/edit`,
     method: 'post',
     data: body,
   });
@@ -69,7 +69,7 @@ export const getServices = async (venueId: string) => {
   const response = await protectedApiClient.request<
     ResponseResult<GetServicesData>
   >({
-    url: `/venues/${venueId}/services`,
+    url: `/admin/venues/${venueId}/services`,
     method: 'get',
   });
 
@@ -82,7 +82,7 @@ export const getStaff = async (venueId: string) => {
   const response = await protectedApiClient.request<
     ResponseResult<GetStaffData>
   >({
-    url: `/venues/${venueId}/staff`,
+    url: `/admin/venues/${venueId}/staff`,
     method: 'get',
   });
 
@@ -92,7 +92,7 @@ export const getStaff = async (venueId: string) => {
 export const deleteVenueByIdOrFail = async (id: string) => {
   try {
     await protectedApiClient.request({
-      url: `/venues/${id}`,
+      url: `/admin/venues/${id}`,
       method: 'delete',
     });
   } catch (error) {

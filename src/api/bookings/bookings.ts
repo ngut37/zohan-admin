@@ -27,7 +27,7 @@ export const getManyBookings = async ({
       })[]
     >
   >({
-    url: '/bookings',
+    url: '/admin/bookings',
     params: {
       venueId,
       start,
@@ -54,7 +54,7 @@ export type CreateBookingParams = {
 
 export const createBooking = async (data: CreateBookingParams) => {
   const response = await protectedApiClient.request<ResponseResult<Booking>>({
-    url: '/bookings',
+    url: '/admin/bookings',
     method: 'post',
     data,
   });
@@ -81,7 +81,7 @@ export const editBookingById = async (
   data: EditBookingByIdParams,
 ) => {
   const response = await protectedApiClient.request<ResponseResult<Booking>>({
-    url: `/bookings/${bookingId}`,
+    url: `/admin/bookings/${bookingId}`,
     method: 'put',
     data,
   });
@@ -91,7 +91,7 @@ export const editBookingById = async (
 
 export const deleteBookingById = async (bookingId: string) => {
   await protectedApiClient.request({
-    url: `/bookings/${bookingId}`,
+    url: `/admin/bookings/${bookingId}`,
     method: 'delete',
   });
 };

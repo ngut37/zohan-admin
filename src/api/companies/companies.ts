@@ -8,7 +8,7 @@ export const fetchCompanyByIco = async (ico: string) => {
       success: boolean;
       data: CompanyFormData;
     }>({
-      url: '/companies/fetch-by-ico',
+      url: '/admin/companies/fetch-by-ico',
       method: 'POST',
       data: {
         ico,
@@ -27,7 +27,7 @@ export const createCompany = async (payload: CompleteCompanyFormData) => {
       success: boolean;
       data: Company;
     }>({
-      url: '/companies/create',
+      url: '/admin/companies/create',
       method: 'PUT',
       data: payload,
     });

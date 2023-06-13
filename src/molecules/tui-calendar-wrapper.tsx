@@ -244,7 +244,8 @@ const TUICalendarWrapper = () => {
     return (
       <HStack
         width="100%"
-        paddingX="200px"
+        maxWidth="1000px"
+        paddingX="50px"
         paddingY="15px"
         justifyContent="space-between"
       >
@@ -305,7 +306,8 @@ const TUICalendarWrapper = () => {
     return (
       <HStack
         width="100%"
-        paddingX="200px"
+        maxWidth="1000px"
+        paddingX="50px"
         paddingY="15px"
         justifyContent="space-between"
       >

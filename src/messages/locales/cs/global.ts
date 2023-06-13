@@ -56,6 +56,9 @@ export const globalMessages: MessageObject = {
 
   // misc
   no_content: 'Nic tu bohužel není...',
+  'device_not_supported.title': 'Váše zařízení není podporováno',
+  'device_not_supported.description':
+    'Zkuste to prosím na tabletu, počítači nebo notebooku.',
 
   // months
   'month.january': 'Leden',

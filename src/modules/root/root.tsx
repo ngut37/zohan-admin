@@ -1,6 +1,10 @@
 import React, { PropsWithChildren } from 'react';
 
+import { NotSupportedDevice } from '@molecules/not-supported-device';
+
 import { Navbar } from '@organisms/navbar';
+
+import { Show } from '@chakra-ui/react';
 
 import { Content } from './content';
 import { MessagesProvider } from './context/message-provider';
@@ -15,7 +19,12 @@ export const Root = ({ protectedPage = false, hidden, children }: Props) => {
     <AuthProvider protectedPage={protectedPage}>
       <MessagesProvider>
         <Navbar />
-        <Content hidden={hidden}>{children}</Content>
+        <Show above="lg">
+          <Content hidden={hidden}>{children}</Content>
+        </Show>
+        <Show below="lg">
+          <NotSupportedDevice />
+        </Show>
       </MessagesProvider>
     </AuthProvider>
   );

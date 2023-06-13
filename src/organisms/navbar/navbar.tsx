@@ -143,6 +143,7 @@ export const Navbar = () => {
               message={{ id: 'brand_name' }}
               size="lg"
               color="whitesmoke"
+              whiteSpace="nowrap"
             />
           </Link>
         </Flex>

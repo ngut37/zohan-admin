@@ -1,17 +1,17 @@
 export type Config = {
-  APP_ENV: EnvironmentName;
-  PORT: number;
+  // TODO: remove after auth is overhauled to use http-only access token (https://zohan-app.atlassian.net/browse/ZOH-129)
+  NEXT_PUBLIC_ACCESS_TOKEN_SECRET: string;
 
-  API_URL: string;
-  APP_URL: string;
-
-  ACCESS_TOKEN_SECRET: string;
+  NEXT_PUBLIC_API_URL: string;
+  NEXT_PUBLIC_APP_URL: string;
 
   // auth constrains
   MIN_NAME_LENGTH: number;
   MAX_NAME_LENGTH: number;
+
   MIN_PASSWORD_LENGTH: number;
   MAX_PASSWORD_LENGTH: number;
+
   SERVICE_LENGTH_CHUNK_SIZE_IN_MINUTES: number;
 };
 

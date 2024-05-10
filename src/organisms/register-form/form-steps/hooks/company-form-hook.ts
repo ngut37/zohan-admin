@@ -173,7 +173,9 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
           isClosable: true,
         });
 
-        router.push(`/register-done?email=${restData.email}`);
+        // TODO: route to success - validate email page (https://zohan-app.atlassian.net/browse/ZOH-124)
+        // router.push(`/register-done?email=${restData.email}`);
+        router.push(`/login`);
       } catch (error) {
         if (error?.response?.status === HttpStatusCode.CONFLICT) {
           setError(

@@ -19,23 +19,28 @@ Yup.addMethod(Yup.number, 'ignoreEmptyString', function () {
 
 Yup.addMethod(Yup.string, 'ico', function (message?) {
   return this.test('ico', message, (value: string | undefined) => {
-    const numbers = (value || '').split('').map(Number);
-    const checkingNumber = numbers.pop();
+    if (!value) {
+      return false;
+    }
+    if (value.length !== 8) {
+      return false;
+    }
 
-    const multipliedValues = numbers.map((number, i) => {
-      return number * (8 - i);
-    });
+    if (value.length < 8) {
+      value = value.padStart(8, '0');
+    }
 
-    const sum = multipliedValues.reduce((acc, curr) => {
-      acc = acc + curr;
-      return acc;
-    }, 0);
+    const digits = [...value].slice(0, 7);
+    const sum = digits.reduce<number>(
+      (acc, digit, i) => acc + Number(digit) * (8 - i),
+      0,
+    );
 
-    const modulus = sum % 11;
+    if (Number.isNaN(sum)) {
+      return false;
+    }
 
-    const result = 11 - modulus === checkingNumber;
-
-    return result;
+    return ((11 - (sum % 11)) % 10).toString() === value.charAt(7);
   });
 });
 

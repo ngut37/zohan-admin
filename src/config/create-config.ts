@@ -5,7 +5,7 @@ export const createConfig = (envs: Environments, defaultConfig: Config) => {
   const APP_ENV = process.env.NEXT_PUBLIC_APP_ENV as EnvironmentName;
 
   // MERGE DEFAULT CONFIG
-  let defaults: Config = {
+  let defaults = {
     ...defaultConfig,
     APP_ENV,
   };

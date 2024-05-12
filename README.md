@@ -27,6 +27,7 @@ Follow these steps to install necessary packages and to run the application.
 
 ## Prerequisites
 
+- [Node.js 18+](https://nodejs.org/en/)
 - [yarn](https://yarnpkg.com/)
 - [git](https://git-scm.com/)
 - [git-cz](https://www.npmjs.com/package/git-cz) - optional, but recommended for commit messages
@@ -60,24 +61,39 @@ $ yarn start
 
 ## Environment variables
 
-Can be found in `src/config/config.ts`.
+These variables are necessary for the application to run. They can be set up in two ways:
 
-- `APP_ENV` - application environment (`development`, `production`)
-- `PORT` - port number on which the application will run
-- `API_URL` - URL of the API (make sure end with a `/`)
-- `APP_URL` - URL of the application (make sure end with a `/`)
-- `ACCESS_TOKEN_SECRET` - secret used for signing JWT tokens on the API
+### Set up .env.local
+
+To set up environment variables, create a `.env.local` by copying the `.env.local.example` file and fill in the values.
+
+### Set by environment variables (injected from `process.env`)
+
+- `NEXT_PUBLIC_APP_ENV` - application environment (`production`, `preview`, `development`)
+- `NEXT_PUBLIC_ACCESS_TOKEN_SECRET` - secret used for signing JWT tokens on the API
+  - this will be removed after auth mini-overhaul (see [Jira - ZOH-128](https://zohan-app.atlassian.net/browse/ZOH-128))
+- `NEXT_PUBLIC_API_URL` - URL of the API (make sure it ends with a `/`)
+- `NEXT_PUBLIC_APP_URL` - URL of the application (make sure ends with a `/`)
+
+_📌 note: `NEXT_PUBLIC_` prefix is necessary for the environment variables to be injected into the application, this also makes them accessible on client-side.\_
+
+### Hardcoded values (found in `src/config/config.ts`)
+
 - `MIN_NAME_LENGTH` - minimum length of the staff and company names (number should be lower or equal to `MAX_NAME_LENGTH`)
 - `MAX_NAME_LENGTH` - maximum length of the staff and company names (number should be higher or equal to `MIN_NAME_LENGTH`)
 - `MIN_PASSWORD_LENGTH` - minimum length of the password
 - `MAX_PASSWORD_LENGTH` - maximum length of the password
 - `SERVICE_LENGTH_CHUNK_SIZE_IN_MINUTES` - chunk size in minutes for the service length
 
-# Usage
+### Changing environment variables
 
-Make sure have running API server. In case you need to use production API server locally, change `API_URL` in `src/config/config.ts` to `https://zohan-services.oa.r.appspot.com/`.
+To change the environment variables, you can either change the `.env.local` file or set the environment variables directly in the terminal. For changes in production, make sure to edit the Vercel application settings.
 
-_📌 note: API / backend repository can be found on [Github - ngut37/zohan-services](https://github.com/ngut37/zohan-services)_
+In case you need to change hardcoded values lets say `SERVICE_LENGTH_CHUNK_SIZE_IN_MINUTES`, change the value in `src/config/config.ts` from e.g. `15` to `30`. Then push to the `master` branch and deploy the application.
+
+# API
+
+Backend API repository can be found on [Github - ngut37/zohan-services](https://github.com/ngut37/zohan-services).
 
 # Available scripts
 

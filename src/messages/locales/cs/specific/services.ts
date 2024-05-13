@@ -80,11 +80,11 @@ export const serviceMessages: MessageObject = {
   'service_name.pedicure_callus_removal': 'Odstranění kuřích ok',
 
   // massage
-  'service_name.massage_thai_massage': 'Thajské masáž',
-  'service_name.massage_classic_massage': 'Klasické masáž',
+  'service_name.massage_thai_massage': 'Thajská masáž',
+  'service_name.massage_classic_massage': 'Klasická masáž',
   'service_name.massage_medical_massage': 'Zdravotní masáž',
   'service_name.massage_reflexology_massage': 'Reflexní masáž',
   'service_name.massage_special_massage': 'Speciální masáž',
-  'service_name.massage_lymphatic_massage': 'Lymfatické masáž',
+  'service_name.massage_lymphatic_massage': 'Lymfatická masáž',
   'service_name.massage_tantra_massage': 'Tantra masáž',
 };

@@ -124,6 +124,10 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
         config.MAX_PASSWORD_LENGTH,
         messageToString({ id: m('input.password.error.max') }, intl),
       )
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        messageToString({ id: m('input.password.error.format') }, intl),
+      )
       .required(
         messageToString({ id: m('input.password.error.required') }, intl),
       ),

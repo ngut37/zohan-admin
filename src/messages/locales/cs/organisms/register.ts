@@ -84,6 +84,8 @@ export const registerMessages: MessageObject = {
   'register.company.input.password.error.min':
     'Heslo musí obsahovat nejméně 6 znaků',
   'register.company.input.password.error.max': 'Heslo je příliš dlouhé',
+  'register.company.input.password.error.format':
+    'Heslo musí obsahovat alespoň jedno velké písmeno, jedno malé písmeno a jednu číslici',
   'register.company.input.password_confirm.error.match':
     'Zadaná hesla nesouhlasí',
 

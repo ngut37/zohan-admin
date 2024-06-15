@@ -47,7 +47,7 @@ export const RegisterForm = () => {
       default:
         return null;
     }
-  }, [formStep]);
+  }, [formStep, companyFormData]);
 
   return (
     <Flex

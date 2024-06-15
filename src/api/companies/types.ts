@@ -15,6 +15,7 @@ export type CompleteCompanyFormData = CompanyFormData & {
 export type Company = {
   ico: string;
   name: string;
+  legalForm: number;
 
   stringAddress: string;
 

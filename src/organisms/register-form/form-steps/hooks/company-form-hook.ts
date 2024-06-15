@@ -64,6 +64,7 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
         ),
       )
       .required(messageToString({ id: m('input.name.error.required') }, intl)),
+    legalForm: yup.number().optional(),
     stringAddress: yup
       .string()
       .required(

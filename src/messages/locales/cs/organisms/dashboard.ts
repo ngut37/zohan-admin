@@ -18,6 +18,11 @@ export const dashboardMessages: MessageObject = {
   'dashboard.input.custom_customer.email.invalid': 'Neplatný email zákazníka',
   'dashboard.input.custom_customer.phone.invalid': 'Neplatný telefon zákazníka',
 
+  /* ASSIGN STAFF MODAL */
+  // heading
+  'dashboard.assign_staff_modal.heading': 'Přiřazení zaměstnance',
+  // other than the heading, assign staff modal uses the same messages as the booking edit modal
+
   /* BOOKING EDIT MODAL */
   // heading
   'dashboard.booking_edit_modal.heading': 'Úprava rezervace',

@@ -26,6 +26,7 @@ import {
 import { Button, Text } from '@atoms';
 
 import { useDashboard } from '@organisms/main-dashboard/context/dashboard-context';
+import { UNASSIGNED_BOOKING_CALENDAR_ID } from '@organisms/main-dashboard/context/dashboard-provider';
 
 import { useAuth } from '@modules/root/context/auth';
 
@@ -62,6 +63,7 @@ const TUICalendarWrapper = () => {
     bookings,
     setModalOpen,
     setCreateModalOpen,
+    setAssignStaffModalOpen,
     selectedVenue,
     setSelectedVenue,
     setModalData,
@@ -153,7 +155,15 @@ const TUICalendarWrapper = () => {
     );
 
     const calendarRefInstance = getCalendarRefInstance();
-    calendarRefInstance.setCalendars(calendars);
+    calendarRefInstance.setCalendars([
+      ...calendars,
+      {
+        id: UNASSIGNED_BOOKING_CALENDAR_ID,
+        name: 'NOT ASSIGNED',
+        color: colors.white.hex(),
+        backgroundColor: colors.red_800.hex(),
+      },
+    ]);
   }, [calendarRef, availableStaff]);
 
   useEffect(() => {
@@ -165,12 +175,6 @@ const TUICalendarWrapper = () => {
       const staffData = availableStaff.find(
         (staff) => staff._id === event.event.raw.staff,
       );
-      if (!staffData) {
-        console.error(
-          `Could not find staff data for staff id: ${event.event.raw.staff}`,
-        );
-        return;
-      }
 
       const venueData = availableVenues.find(
         (venue) => venue._id === event.event.raw.service.venue,
@@ -195,7 +199,14 @@ const TUICalendarWrapper = () => {
         existingCustomerData: event.event.raw.existingCustomerData,
         customCustomer: event.event.raw.customCustomer,
       });
-      setModalOpen(true);
+
+      if (staffData) {
+        return setModalOpen(true);
+      }
+
+      if (!staffData) {
+        return setAssignStaffModalOpen(true);
+      }
     };
 
     calendarRef.current?.getInstance()?.on('clickEvent', clickEventHandler);

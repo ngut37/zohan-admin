@@ -16,7 +16,7 @@ export type ModalData = Pick<
   '_id' | 'venue' | 'staff' | 'service' | 'start' | 'end' | 'customCustomer'
 > & {
   venueData: Venue;
-  staffData: Staff;
+  staffData?: Staff;
   serviceData: Service;
   existingCustomerData: {
     id: string;
@@ -62,6 +62,8 @@ export type DashboardContextType = {
   setModalOpen: Dispatch<SetStateAction<boolean>>;
   createModalOpen: boolean;
   setCreateModalOpen: Dispatch<SetStateAction<boolean>>;
+  assignStaffModalOpen: boolean;
+  setAssignStaffModalOpen: Dispatch<SetStateAction<boolean>>;
   modalData: ModalData | undefined;
   setModalData: (modalDate: ModalData) => void;
   clearModalData: () => void;
@@ -92,6 +94,8 @@ export const DashboardContext = createContext<DashboardContextType>({
   setModalOpen: () => {},
   createModalOpen: false,
   setCreateModalOpen: () => {},
+  assignStaffModalOpen: false,
+  setAssignStaffModalOpen: () => {},
   modalData: undefined,
   setModalData: () => {},
   clearModalData: () => {},

@@ -1,7 +1,7 @@
 export type Booking = {
   _id: string;
   venue: string;
-  staff: string;
+  staff?: string;
   service: string;
   start: string;
   end: string;

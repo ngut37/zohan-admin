@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
 
 import { BookingEditModal } from '@molecules/booking-edit-modal';
-
 import { BookingCreateModal } from '@molecules/booking-create-modal';
+import { AssignStaffModal } from '@molecules/assign-staff-modal';
 
 import { DashboardProvider } from './context/dashboard-provider';
 
@@ -19,6 +19,7 @@ export const MainDashboard = () => {
     <DashboardProvider>
       <BookingEditModal />
       <BookingCreateModal />
+      <AssignStaffModal />
       <Calendar />
     </DashboardProvider>
   );

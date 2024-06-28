@@ -22,6 +22,8 @@ const named = {
   interdimensional_blue: Color('#470dd9'),
 
   blue_600: Color('#2b6cb0'),
+
+  red_800: Color('#C53030'),
 };
 
 export const colors = { ...base, ...named };

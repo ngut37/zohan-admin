@@ -35,6 +35,8 @@ type Props = PropsWithChildren<{}>;
 
 const m = messageIdConcat('dashboard');
 
+export const UNASSIGNED_BOOKING_CALENDAR_ID = 'unassigned';
+
 export const DashboardProvider = ({ children }: Props) => {
   const toast = useToast();
   const intl = useIntl();
@@ -42,7 +44,7 @@ export const DashboardProvider = ({ children }: Props) => {
   const schema = useMemo(() => {
     return yup.object().shape({
       venueId: yup.string().required(),
-      staffId: yup.string().required(),
+      staffId: yup.string(),
       serviceId: yup.string().required(),
       start: yup.date().required(),
       end: yup.date().required(),
@@ -94,6 +96,8 @@ export const DashboardProvider = ({ children }: Props) => {
   const [modalData, setModalData] = useState<ModalData | undefined>();
 
   const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
+  const [assignStaffModalOpen, setAssignStaffModalOpen] =
+    useState<boolean>(false);
 
   const extendedSetModalData = (data: ModalData) => {
     setModalData(data);
@@ -138,7 +142,6 @@ export const DashboardProvider = ({ children }: Props) => {
       try {
         setLoading(true);
         await fetchVenueAndStaff();
-        console.log('fetched venues and staff');
       } catch {
         setLoading(false);
       }
@@ -188,7 +191,7 @@ export const DashboardProvider = ({ children }: Props) => {
 
             return {
               id: booking._id,
-              calendarId: booking.staff,
+              calendarId: booking.staff ?? UNASSIGNED_BOOKING_CALENDAR_ID,
               title: concatenatedTitle,
               category: 'time',
               start: booking.start,
@@ -234,6 +237,8 @@ export const DashboardProvider = ({ children }: Props) => {
         setModalOpen,
         createModalOpen,
         setCreateModalOpen,
+        assignStaffModalOpen,
+        setAssignStaffModalOpen,
         modalData,
         setModalData: extendedSetModalData,
         clearModalData: () => setModalData(undefined),

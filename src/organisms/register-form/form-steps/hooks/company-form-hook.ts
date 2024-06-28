@@ -117,7 +117,7 @@ export const useCompanyFormHook = ({ defaultData }: HookParams) => {
     password: yup
       .string()
       .min(
-        config.MIN_PASSWORD_LENGTH,
+        config.MIN_PASSWORD_LENGTH || 8,
         messageToString({ id: m('input.password.error.min') }, intl),
       )
       .max(
